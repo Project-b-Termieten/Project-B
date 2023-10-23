@@ -7,7 +7,19 @@ public static class Reserve
     public static void Reservation()
     {
         Console.WriteLine("For how many people would you like to make a reservation?");
-  
+        int groupAmount;
+        while (!int.TryParse(Console.ReadLine(), out groupAmount) || groupAmount <= 0)
+        {
+            Console.WriteLine("Invalid input. Please enter a valid number.");
+        }
+
+        Console.WriteLine("Is this reservation for the bar? (yes/no)");
+        string isBarReservation;
+        while (true)
+        {
+            isBarReservation = Console.ReadLine().ToLower();
+            if (isBarReservation == "yes" || isBarReservation == "no")
+            {
                 break;
             }
             else
