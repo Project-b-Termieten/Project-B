@@ -6,7 +6,6 @@
     {
         while (true)
         {
-            Console.WriteLine("test");
             Console.WriteLine("+--------------------------------+");
             Console.WriteLine("|                                |");
             Console.WriteLine("|  Welcome to Jake’s restaurant! |");
