@@ -21,7 +21,7 @@ public class Table
             return false;
     }
 
-    public void WriteToJson()
+    public static void WriteToJson()
     {
         string filePath = "Reservations.json";
         string jsonString = JsonConvert.SerializeObject(this, Formatting.Indented);
