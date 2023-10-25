@@ -50,6 +50,7 @@
         Console.WriteLine("Jake’s restaurant information:");
         Console.WriteLine("Location: Wijnhaven 107, 3011 WN in Rotterdam");
         Console.WriteLine("Phone: (123) 456-7890");
+        Console.WriteLine("\t\t\t\tEmail: jakes@example.com");
     }
 
     static void showMenu()
