@@ -15,7 +15,8 @@
             Console.WriteLine("| 1. Make Reservation            |");
             Console.WriteLine("| 2. Menu                        |");
             Console.WriteLine("| 3. Location                    |");
-            Console.WriteLine("| 4. Exit                        |");
+            Console.WriteLine("| 4. login                       |");
+            Console.WriteLine("| 5. Exit                        |");
             Console.WriteLine("+--------------------------------+");
             Console.Write("Please select an option (1/2/3/4/5): ");
             string userInput = Console.ReadLine();
@@ -33,10 +34,10 @@
                     restInfo();
                     break;
                 case "4":
-                    ExitGame();
+                    AdminManager.();
                     break;
                 case "5":
-                    Add_Item_Menu();
+                    ExitGame();
                     break;
                 default:
                     Console.WriteLine("Invalid input. Please select a valid option.");
