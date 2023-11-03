@@ -2,37 +2,29 @@ using Newtonsoft.Json;
 
 public class Table
 {
-    public int TableNum;
-    public int Capacity;
-    // public Account = null; Persoon assignen aan tafel
-    // public int Amount = null; Aantal personen aan tafel
+    public int TableID { get; }
+    public int Capacity { get; }
+    public string Name = null; //Persoon assignen aan tafel
+    public int Amount = 0; //Aantal personen aan tafel
 
-    public Table(int tablenum, int capacity)
+    public Table(int tableID, int capacity)
     {
-        TableNum = tablenum;
+        TableID = tableID;
         Capacity = capacity;
     }
 
-    public bool TableAvailable()
+/*    public bool TableAvailable()
     {
         if (Account == null)
             return true;
         else
             return false;
-    }
+    }*/
 
-    public static void WriteToJson()
+    public void WriteToJson()
     {
         string filePath = "Reservations.json";
         string jsonString = JsonConvert.SerializeObject(this, Formatting.Indented);
         File.WriteAllText(filePath, jsonString);
-    }
-
-    public static List<Table> ReadFromJsonFile()
-    {
-        string filePath = "Reservations.json";
-        string jsonData = File.ReadAllText(filePath);
-        List<Table> objects = JsonConvert.DeserializeObject<List<Table>>(jsonData);
-        return objects;
     }
 }
