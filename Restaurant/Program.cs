@@ -29,7 +29,7 @@
             switch (userInput)
             {
                 case "1":
-                    RestaurantMap.show();
+                    RestaurantMap.DisplayMap();
                     Reserve.Reservation();
                     break;
                 case "2":
