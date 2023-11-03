@@ -1,8 +1,8 @@
-class RestaurantMap
+static class RestaurantMap
 {
-    public string DisplayMap()
+    public static string DisplayMap()
     {
-        return
+        Console.WriteLine(
         @"Map van het restaurant:
 
 +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
@@ -25,6 +25,6 @@ class RestaurantMap
 |          | [2] |                                        | [6] |          |
 +----+----+----+----+----+----+----/    \----+----+----+----+----+----+----+
                                   [Entree]
-";
+");
     }
 }
