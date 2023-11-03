@@ -1,6 +1,11 @@
 ﻿class Program
 {
-    static Menu menu = new Menu();
+    public static Menu menu = new Menu();
+    public static List<Table> tables = new List<Table>()
+    {
+        new Table(1, 2), new Table(2, 2), new Table(3, 2), new Table(4, 2), new Table(5, 2), new Table(6, 2), new Table(7, 2),
+        new Table(8, 2), new Table(9, 4), new Table(10, 4), new Table(11, 4),new Table(12, 4), new Table(13, 4), new Table(14, 6), new Table(15, 6)
+    };
 
     static void Main(string[] args)
     {
