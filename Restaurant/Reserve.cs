@@ -1,6 +1,30 @@
+using Newtonsoft.Json;
+
 public static class Reserve
 {
-    public static int[] tables = { 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 6, 6 };
+    public static void Reservation(List<Table> tables)
+    {
+        Console.WriteLine("For how many people would you like to make a reservation?");
+        int groupAmount;
+        while (!int.TryParse(Console.ReadLine(), out groupAmount) || groupAmount <= 0)
+        {
+            Console.WriteLine("Invalid input. Please enter a valid number.");
+        }
+        // hier kiezen welke tafel, check al geserveerd of niet genoeg plaatsen // if  ReadFromJsonFile() is null => is niet geserveerd
+
+        // foreach table in table list => if gekozen tafel == tafelID => Account  = UserAccount.Name & Amount = groupAmount=> Table.WriteToJson()
+    }
+
+    public static List<Table> ReadFromJsonFile()
+    {
+        string filePath = "Reservations.json";
+        string jsonData = File.ReadAllText(filePath);
+        List<Table> objects = JsonConvert.DeserializeObject<List<Table>>(jsonData);
+        return objects;
+    }
+
+
+    /*public static int[] tables = { 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 6, 6 };
     public static List<int> reservedList = new List<int>();
     public static int barChairs = 8;
 
@@ -68,5 +92,5 @@ public static class Reserve
                 }
             }
         }
-    }
+    }*/
 }
