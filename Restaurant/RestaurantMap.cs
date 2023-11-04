@@ -1,6 +1,6 @@
 static class RestaurantMap
 {
-    public static string DisplayMap()
+    public static void DisplayMap()
     {
         Console.WriteLine(
         @"Map van het restaurant:
