@@ -7,105 +7,138 @@
         new Table(8, 2), new Table(9, 4), new Table(10, 4), new Table(11, 4),new Table(12, 4), new Table(13, 4), new Table(14, 4), new Table(15, 6)
     };
 
-    static void Main(string[] args)
+static void Main(string[] args)
+{
+    while (true)
     {
-        while (true)
-        {
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("|  Welcome to Jake’s restaurant! |");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("| Options:                       |");
-            Console.WriteLine("| 1. Make Reservation            |");
-            Console.WriteLine("| 2. Menu                        |");
-            Console.WriteLine("| 3. Location                    |");
-            Console.WriteLine("| 4. login                       |");
-            Console.WriteLine("| 5. Exit                        |");
-            Console.WriteLine("+--------------------------------+");
-            Console.Write("Please select an option (1/2/3/4/5): ");
-            string userInput = Console.ReadLine();
-
-            switch (userInput)
-            {
-                case "1":
-                    RestaurantMap.DisplayMap();
-                    Reserve.Reservation();
-                    break;
-                case "2":
-                    showMenu();
-                    break;
-                case "3":
-                    restInfo();
-                    break;
-                case "4":
-                    AdminManager.();
-                    break;
-                case "5":
-                    ExitGame();
-                    break;
-                default:
-                    Console.WriteLine("Invalid input. Please select a valid option.");
-                    break;
-            }
-        }
-    }
-
-    static void restInfo()
-    {
-        Console.WriteLine("Jake’s restaurant information:");
-        Console.WriteLine("Location: Wijnhaven 107, 3011 WN in Rotterdam");
-        Console.WriteLine("Phone: (123) 456-7890");
-        Console.WriteLine("\t\t\t\tEmail: jakes@example.com");
-    }
-
-    static void showMenu()
-    {
-        Console.WriteLine("\nMenu:");
-        menu.Display_menu();
-    }
-
-    static void ExitGame()
-    {
-        Console.WriteLine("Exiting the app. Goodbye!");
-        Environment.Exit(0);
-    }
-
-    static void Add_Item_Menu()
-    {
-        Console.WriteLine("What would you like to add?\n1: Food\n2: Drink");
+        Console.WriteLine("+--------------------------------+");
+        Console.WriteLine("|                                |");
+        Console.WriteLine("|  Welcome to Jake’s restaurant! |");
+        Console.WriteLine("|                                |");
+        Console.WriteLine("+--------------------------------+");
+        Console.WriteLine("| Options:                       |");
+        Console.WriteLine("| 1. Make Reservation            |");
+        Console.WriteLine("| 2. Menu                        |");
+        Console.WriteLine("| 3. Location                    |");
+        Console.WriteLine("| 4. login                       |");
+        Console.WriteLine("| 5. Exit                        |");
+        Console.WriteLine("+--------------------------------+");
+        Console.Write("Please select an option (1/2/3/4/5): ");
         string userInput = Console.ReadLine();
+
         switch (userInput)
         {
             case "1":
-                bool Dish_vegan;
-                Console.WriteLine("What is the name of the dish?");
-                string Dish_name = Console.ReadLine();
-                Console.WriteLine("What is the price of the dish?");
-                double Dish_price = Convert.ToDouble(Console.ReadLine());
-                Console.WriteLine("Is the dish vegan?");
-                string action = Console.ReadLine();
-                if (action == "yes")
-                {
-                    Dish_vegan = true;
-                }
-                else
-                {
-                    Dish_vegan = false;
-                }
-                Food new_dish = new Food(Dish_name, Dish_price, Dish_vegan);
-                Console.WriteLine("The item has been added to the menu.");
-                menu.Add_food(new_dish);
+                RestaurantMap.DisplayMap();
+                Reserve.Reservation(tables);
                 break;
             case "2":
-                Console.WriteLine("What is the name of the drink?");
-                string drink_name = Console.ReadLine();
-                Console.WriteLine("What is the price of the drink?");
-                double drink_price = Convert.ToDouble(Console.ReadLine());
-                Drink new_drink = new Drink(drink_name, drink_price);
-                menu.Add_drink(new_drink);
-                Console.WriteLine("The item has been added to the menu.");
+                showMenu();
+                break;
+            case "3":
+                restInfo();
+                break;
+            case "4":
+                login_or_Signup();
+                break;
+            case "5":
+                ExitGame();
+                break;
+            default:
+                Console.WriteLine("Invalid input. Please select a valid option.");
                 break;
         }
     }
+}
+static void login_or_Signup()
+{
+    Console.WriteLine("Do you want to LOGIN or Sign up ");
+    string user_answer = Console.ReadLine().ToLower();
+
+    if (user_answer == "login")
+    {
+        Login userLogin = new Login();
+        userLogin.PromptForLogin();
+
+        string email = userLogin.Email;
+        string password = userLogin.Password;
+
+        Console.WriteLine("Logging in with email: " + email);
+    }
+    else if (user_answer == "sign up")
+    {
+        Signup usersignup = new Signup();
+        Console.WriteLine("Please enter your name: ");
+        string name = Console.ReadLine();
+        Console.WriteLine("Please enter your email: ");
+        string email = Console.ReadLine();
+        Console.WriteLine("Please enter your password: ");
+        string password = Console.ReadLine();
+
+        // Call the SignUp method to validate and save user information
+        usersignup.SignUp(name, email, password);
+    }
+    else
+    {
+        Console.WriteLine("Invalid choice. Please select 'Login' or 'Sign up'.");
+    }
+}
+
+static void restInfo()
+{
+    Console.WriteLine("Jake’s restaurant information:");
+    Console.WriteLine("Location: Wijnhaven 107, 3011 WN in Rotterdam");
+    Console.WriteLine("Phone: (123) 456-7890");
+    Console.WriteLine("Email: jakes@example.com");
+}
+
+static void showMenu()
+{
+    Console.WriteLine("\nMenu:");
+    menu.Display_menu();
+}
+
+static void ExitGame()
+{
+    Console.WriteLine("Exiting the app. Goodbye!");
+    Environment.Exit(0);
+}
+
+static void Add_Item_Menu()
+{
+    Console.WriteLine("What would you like to add?\n1: Food\n2: Drink");
+    string userInput = Console.ReadLine();
+    switch (userInput)
+    {
+        case "1":
+            bool Dish_vegan;
+            Console.WriteLine("What is the name of the dish?");
+            string Dish_name = Console.ReadLine();
+            Console.WriteLine("What is the price of the dish?");
+            double Dish_price = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Is the dish vegan?");
+            string action = Console.ReadLine();
+            if (action == "yes")
+            {
+                Dish_vegan = true;
+            }
+            else
+            {
+                Dish_vegan = false;
+            }
+            Food new_dish = new Food(Dish_name, Dish_price, Dish_vegan);
+            Console.WriteLine("The item has been added to the menu.");
+            menu.Add_food(new_dish);
+            break;
+        case "2":
+            Console.WriteLine("What is the name of the drink?");
+            string drink_name = Console.ReadLine();
+            Console.WriteLine("What is the price of the drink?");
+            double drink_price = Convert.ToDouble(Console.ReadLine());
+            Drink new_drink = new Drink(drink_name, drink_price);
+            menu.Add_drink(new_drink);
+            Console.WriteLine("The item has been added to the menu.");
+            break;
+    }
+}
 }
