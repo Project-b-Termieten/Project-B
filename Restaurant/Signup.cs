@@ -24,11 +24,11 @@ public class Signup
         return !string.IsNullOrEmpty(password) && password.Length >= 8;
     }
 
-    public bool SignUp(string name, string email, string password)
+    public User SignUp(string name, string email, string password)
     {
         while (true)
         {
-            bool valid = true; 
+            bool valid = true;
 
             if (!ValidateName(name))
             {
@@ -50,7 +50,7 @@ public class Signup
 
             if (valid)
             {
-                string filePath = "C:\\Users\\altaa\\OneDrive\\Documents\\Restuarant pro\\Restuarant pro\\User_info.json";
+                string filePath = @"../../../User_info.json";
 
                 List<User> users = new List<User>();
                 if (File.Exists(filePath))
@@ -58,26 +58,17 @@ public class Signup
                     string existingData = File.ReadAllText(filePath);
                     users = JsonSerializer.Deserialize<List<User>>(existingData);
                 }
-
-                // Create a new User object for the new user
-                var newUser = new User
-                {
-                    Name = name,
-                    Email = email,
-                    Password = password
-                };
-
+                // Create a new User object for the new use
+                var newUser = new User(name, email, password);
                 // Add the new user to the list of existing users
                 users.Add(newUser);
-
-                // Serialize the updated list to JSON
                 string jsonString = JsonSerializer.Serialize(users);
 
                 // Write the JSON data back to the file, overwriting the existing data
                 File.WriteAllText(filePath, jsonString);
 
                 Console.WriteLine("Signup successful! User information saved to User_info.json.");
-                return true;
+                return newUser;
             }
             else
             {
