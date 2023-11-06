@@ -6,6 +6,52 @@
     {
         while (true)
         {
+<<<<<<< Updated upstream
+=======
+            // Check if User is a admin (Incomplete)
+            if (true)
+            {
+                Console.WriteLine("+--------------------------------+");
+                Console.WriteLine("|                                |");
+                Console.WriteLine("|  Welcome Admin                 |");
+                Console.WriteLine("|                                |");
+                Console.WriteLine("+--------------------------------+");
+                Console.WriteLine("| Options:                       |");
+                Console.WriteLine("| 1. Add item to Menu            |");
+                Console.WriteLine("| 2. Remove item from Menu       |");
+                Console.WriteLine("| 3. Create Admin                |");
+                Console.WriteLine("| 4.                             |");
+                Console.WriteLine("| 5. Exit                        |");
+                Console.WriteLine("+--------------------------------+");
+                Console.Write("Please select an option (1/2/3/4/5): ");
+                string AdminInput = Console.ReadLine();
+
+                switch (AdminInput)
+                {
+                    case "1":
+                        Add_Item_Menu();
+                        break;
+                    case "2":
+                        Remove_Item_Menu();
+                        break;
+                    case "3":
+                        // Check if user is a Superadmin (incomplete)
+                        if (true)
+                        {
+                            // create Admin
+                            break;
+                        }
+                        Console.WriteLine("User does not have the privalages to proceed.");
+                        break;
+                    case "5":
+                        ExitGame();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Please select a valid option.");
+                        break;
+                }
+            }
+>>>>>>> Stashed changes
             Console.WriteLine("+--------------------------------+");
             Console.WriteLine("|                                |");
             Console.WriteLine("|  Welcome to Jake’s restaurant! |");
@@ -15,7 +61,12 @@
             Console.WriteLine("| 1. Make Reservation            |");
             Console.WriteLine("| 2. Menu                        |");
             Console.WriteLine("| 3. Location                    |");
+<<<<<<< Updated upstream
             Console.WriteLine("| 4. Exit                        |");
+=======
+            Console.WriteLine("| 4. login                       |");
+            Console.WriteLine("| 5. Exit                        |");
+>>>>>>> Stashed changes
             Console.WriteLine("+--------------------------------+");
             Console.Write("Please select an option (1/2/3/4/5): ");
             string userInput = Console.ReadLine();
@@ -23,8 +74,13 @@
             switch (userInput)
             {
                 case "1":
+<<<<<<< Updated upstream
                     RestaurantMap.show();
                     Reserve.Reservation();
+=======
+                    RestaurantMap.DisplayMap();
+                    Reserve.Reservation(tables);
+>>>>>>> Stashed changes
                     break;
                 case "2":
                     showMenu();
@@ -33,10 +89,17 @@
                     restInfo();
                     break;
                 case "4":
+<<<<<<< Updated upstream
                     ExitGame();
                     break;
                 case "5":
                     Add_Item_Menu();
+=======
+                    login_or_Signup();
+                    break;
+                case "5":
+                    ExitGame();
+>>>>>>> Stashed changes
                     break;
                 default:
                     Console.WriteLine("Invalid input. Please select a valid option.");
@@ -44,12 +107,52 @@
             }
         }
     }
+<<<<<<< Updated upstream
+=======
+    static void login_or_Signup()
+    {
+        Console.WriteLine("Do you want to LOGIN or Sign up ");
+        string user_answer = Console.ReadLine().ToLower();
+
+        if (user_answer == "login")
+        {
+            Login userLogin = new Login();
+            userLogin.PromptForLogin();
+
+            string email = userLogin.Email;
+            string password = userLogin.Password;
+
+            Console.WriteLine("Logging in with email: " + email);
+        }
+        else if (user_answer == "sign up")
+        {
+            Signup usersignup = new Signup();
+            Console.WriteLine("Please enter your name: ");
+            string name = Console.ReadLine();
+            Console.WriteLine("Please enter your email: ");
+            string email = Console.ReadLine();
+            Console.WriteLine("Please enter your password: ");
+            string password = Console.ReadLine();
+
+            // Call the SignUp method to validate and save user information
+            usersignup.SignUp(name, email, password);
+        }
+        else
+        {
+            Console.WriteLine("Invalid choice. Please select 'Login' or 'Sign up'.");
+        }
+    }
+>>>>>>> Stashed changes
 
     static void restInfo()
     {
         Console.WriteLine("Jake’s restaurant information:");
         Console.WriteLine("Location: Wijnhaven 107, 3011 WN in Rotterdam");
         Console.WriteLine("Phone: (123) 456-7890");
+<<<<<<< Updated upstream
+=======
+        Console.WriteLine("Email: jakes@example.com");
+>>>>>>> Stashed changes
     }
 
     static void showMenu()
@@ -98,7 +201,28 @@
                 Drink new_drink = new Drink(drink_name, drink_price);
                 menu.Add_drink(new_drink);
                 Console.WriteLine("The item has been added to the menu.");
+<<<<<<< Updated upstream
                 break;
         }
     }
 }
+=======
+                break;
+        }
+    }
+    static void Remove_Item_Menu()
+    {
+        Console.WriteLine("What would you like to remove?\n1: Food item\n2: Drink item");
+        string userInput = Console.ReadLine();
+        switch (userInput)
+        {
+            case "1":
+                menu.Delete_food();
+                break;
+            case "2":
+                menu.Delete_drink();
+                break;
+        }
+    }
+}
+>>>>>>> Stashed changes

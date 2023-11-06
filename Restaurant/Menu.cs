@@ -64,6 +64,7 @@ public class Menu
     {
         Console.WriteLine("Name of the dish that you want to delete: ");
         string foodName = Console.ReadLine();
+<<<<<<< Updated upstream
 
 
         // Deserialize the existing data from the JSON file
@@ -88,6 +89,30 @@ public class Menu
         }
 
 
+=======
+
+
+        // Deserialize the existing data from the JSON file
+        string json = File.ReadAllText("Menu_Food.json");
+        List<Food> existingFoods = JsonConvert.DeserializeObject<List<Food>>(json);
+
+        // Find and remove the food item by its name
+        Food foodToRemove = existingFoods.FirstOrDefault(food => food.Name == foodName);
+        if (foodToRemove != null)
+        {
+            existingFoods.Remove(foodToRemove);
+
+            // Serialize and write the updated list back to the JSON file
+            string updatedJson = JsonConvert.SerializeObject(existingFoods, Formatting.Indented);
+            File.WriteAllText("Menu_Food.json", updatedJson);
+
+            Console.WriteLine($"Food item '{foodName}' has been deleted from the menu.");
+        }
+        else
+        {
+            Console.WriteLine($"Food item '{foodName}' was not found in the menu.");
+        }
+>>>>>>> Stashed changes
     }
 
     public void Delete_drink()
@@ -117,4 +142,8 @@ public class Menu
             Console.WriteLine($"Drink item '{drinkName}' was not found in the menu.");
         }
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
