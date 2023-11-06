@@ -11,6 +11,48 @@
     {
         while (true)
         {
+            // Check if User is a admin (Incomplete)
+            if (true)
+            {
+                Console.WriteLine("+--------------------------------+");
+                Console.WriteLine("|                                |");
+                Console.WriteLine("|  Welcome Admin                 |");
+                Console.WriteLine("|                                |");
+                Console.WriteLine("+--------------------------------+");
+                Console.WriteLine("| Options:                       |");
+                Console.WriteLine("| 1. Add item to Menu            |");
+                Console.WriteLine("| 2. Remove item from Menu       |");
+                Console.WriteLine("| 3. Create Admin                |");
+                Console.WriteLine("| 4.                             |");
+                Console.WriteLine("| 5. Exit                        |");
+                Console.WriteLine("+--------------------------------+");
+                Console.Write("Please select an option (1/2/3/4/5): ");
+                string AdminInput = Console.ReadLine();
+                switch (AdminInput)
+                {
+                    case "1":
+                        Add_Item_Menu();
+                        break;
+                    case "2":
+                        Remove_Item_Menu();
+                        break;
+                    case "3":
+                        // Check if user is a Superadmin (incomplete)
+                        if (true)
+                        {
+                            // create Admin
+                            break;
+                        }
+                        Console.WriteLine("User does not have the privalages to proceed.");
+                        break;
+                    case "5":
+                        ExitGame();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Please select a valid option.");
+                        break;
+                }
+            }
             Console.WriteLine("+--------------------------------+");
             Console.WriteLine("|                                |");
             Console.WriteLine("|  Welcome to Jake’s restaurant! |");
@@ -138,6 +180,20 @@
                 Drink new_drink = new Drink(drink_name, drink_price);
                 menu.Add_drink(new_drink);
                 Console.WriteLine("The item has been added to the menu.");
+                break;
+        }
+    }
+    static void Remove_Item_Menu()
+    {
+        Console.WriteLine("What would you like to remove?\n1: Food item\n2: Drink item");
+        string userInput = Console.ReadLine();
+        switch (userInput)
+        {
+            case "1":
+                menu.Delete_food();
+                break;
+            case "2":
+                menu.Delete_drink();
                 break;
         }
     }
