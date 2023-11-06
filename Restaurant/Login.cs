@@ -32,7 +32,7 @@ public class Login
         if (!ValidateEmail(Email))
         {
             Console.WriteLine("Invalid email format. Please enter a valid email address.");
-            return; // Return immediately if the email is invalid.
+            return;
         }
 
         Console.Write("Enter your password: ");
@@ -51,7 +51,7 @@ public class Login
 
             if (storedUser != null && Password == storedUser.Password)
             {
-                Console.WriteLine("Welcome!");
+                Console.WriteLine("Welcome! test");
             }
             else
             {
