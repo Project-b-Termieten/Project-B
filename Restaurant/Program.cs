@@ -112,27 +112,36 @@
     {
         Console.WriteLine("What would you like to add?\n1: Food\n2: Drink");
         string userInput = Console.ReadLine();
-
         switch (userInput)
         {
             case "1":
-                RestaurantMap.DisplayMap();
-                Reserve.Reservation(tables);
+                bool Dish_vegan;
+                Console.WriteLine("What is the name of the dish?");
+                string Dish_name = Console.ReadLine();
+                Console.WriteLine("What is the price of the dish?");
+                double Dish_price = Convert.ToDouble(Console.ReadLine());
+                Console.WriteLine("Is the dish vegan?");
+                string action = Console.ReadLine();
+                if (action == "yes")
+                {
+                    Dish_vegan = true;
+                }
+                else
+                {
+                    Dish_vegan = false;
+                }
+                Food new_dish = new Food(Dish_name, Dish_price, Dish_vegan);
+                Console.WriteLine("The item has been added to the menu.");
+                menu.Add_food(new_dish);
                 break;
             case "2":
-                showMenu();
-                break;
-            case "3":
-                restInfo();
-                break;
-            case "4":
-                login_or_Signup();
-                break;
-            case "5":
-                ExitGame();
-                break;
-            default:
-                Console.WriteLine("Invalid input. Please select a valid option.");
+                Console.WriteLine("What is the name of the drink?");
+                string drink_name = Console.ReadLine();
+                Console.WriteLine("What is the price of the drink?");
+                double drink_price = Convert.ToDouble(Console.ReadLine());
+                Drink new_drink = new Drink(drink_name, drink_price);
+                menu.Add_drink(new_drink);
+                Console.WriteLine("The item has been added to the menu.");
                 break;
         }
     }
