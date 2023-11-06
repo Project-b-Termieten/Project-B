@@ -26,9 +26,9 @@ public class Signup
 
     public bool SignUp(string name, string email, string password)
     {
-        while (true) // Keep asking until valid input is provided
+        while (true)
         {
-            bool valid = true; // A flag to check overall validity
+            bool valid = true; 
 
             if (!ValidateName(name))
             {
@@ -50,7 +50,6 @@ public class Signup
 
             if (valid)
             {
-                // Load the existing user data from the JSON file, if it exists
                 string filePath = "C:\\Users\\altaa\\OneDrive\\Documents\\Restuarant pro\\Restuarant pro\\User_info.json";
 
                 List<User> users = new List<User>();
@@ -84,7 +83,6 @@ public class Signup
             {
                 Console.WriteLine("Signup failed. Please check the error messages for details.");
                 Console.WriteLine("Please try again.");
-                // Repeat the input process
                 Console.WriteLine("Please enter your name: ");
                 name = Console.ReadLine();
                 Console.WriteLine("Please enter your email: ");
