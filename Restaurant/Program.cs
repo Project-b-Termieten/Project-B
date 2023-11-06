@@ -6,8 +6,6 @@
     {
         while (true)
         {
-<<<<<<< Updated upstream
-=======
             // Check if User is a admin (Incomplete)
             if (true)
             {
@@ -51,7 +49,6 @@
                         break;
                 }
             }
->>>>>>> Stashed changes
             Console.WriteLine("+--------------------------------+");
             Console.WriteLine("|                                |");
             Console.WriteLine("|  Welcome to Jake’s restaurant! |");
@@ -61,12 +58,8 @@
             Console.WriteLine("| 1. Make Reservation            |");
             Console.WriteLine("| 2. Menu                        |");
             Console.WriteLine("| 3. Location                    |");
-<<<<<<< Updated upstream
-            Console.WriteLine("| 4. Exit                        |");
-=======
             Console.WriteLine("| 4. login                       |");
             Console.WriteLine("| 5. Exit                        |");
->>>>>>> Stashed changes
             Console.WriteLine("+--------------------------------+");
             Console.Write("Please select an option (1/2/3/4/5): ");
             string userInput = Console.ReadLine();
@@ -74,13 +67,8 @@
             switch (userInput)
             {
                 case "1":
-<<<<<<< Updated upstream
-                    RestaurantMap.show();
-                    Reserve.Reservation();
-=======
                     RestaurantMap.DisplayMap();
                     Reserve.Reservation(tables);
->>>>>>> Stashed changes
                     break;
                 case "2":
                     showMenu();
@@ -89,17 +77,10 @@
                     restInfo();
                     break;
                 case "4":
-<<<<<<< Updated upstream
-                    ExitGame();
-                    break;
-                case "5":
-                    Add_Item_Menu();
-=======
                     login_or_Signup();
                     break;
                 case "5":
                     ExitGame();
->>>>>>> Stashed changes
                     break;
                 default:
                     Console.WriteLine("Invalid input. Please select a valid option.");
@@ -107,8 +88,6 @@
             }
         }
     }
-<<<<<<< Updated upstream
-=======
     static void login_or_Signup()
     {
         Console.WriteLine("Do you want to LOGIN or Sign up ");
@@ -142,17 +121,13 @@
             Console.WriteLine("Invalid choice. Please select 'Login' or 'Sign up'.");
         }
     }
->>>>>>> Stashed changes
 
     static void restInfo()
     {
         Console.WriteLine("Jake’s restaurant information:");
         Console.WriteLine("Location: Wijnhaven 107, 3011 WN in Rotterdam");
         Console.WriteLine("Phone: (123) 456-7890");
-<<<<<<< Updated upstream
-=======
         Console.WriteLine("Email: jakes@example.com");
->>>>>>> Stashed changes
     }
 
     static void showMenu()
@@ -201,12 +176,6 @@
                 Drink new_drink = new Drink(drink_name, drink_price);
                 menu.Add_drink(new_drink);
                 Console.WriteLine("The item has been added to the menu.");
-<<<<<<< Updated upstream
-                break;
-        }
-    }
-}
-=======
                 break;
         }
     }
@@ -225,4 +194,3 @@
         }
     }
 }
->>>>>>> Stashed changes
