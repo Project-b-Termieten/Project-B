@@ -1,1 +1,11 @@
-
+[
+  {
+    "Name": "bobbie",
+    "Email": "bob@gmail.com",
+    "Amount": 5,
+    "Table": {
+      "TableID": 15,
+      "Capacity": 6
+    }
+  }
+]
