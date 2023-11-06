@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 public static class Reserve
 {
-    public static void Reservation(List<Table> tables)
+    public static void MakingReservation(string name, string email, List<Table> tables)
     {
         Console.WriteLine("For how many people would you like to make a reservation?");
         int groupAmount;
@@ -10,17 +10,90 @@ public static class Reserve
         {
             Console.WriteLine("Invalid input. Please enter a valid number.");
         }
-        // hier kiezen welke tafel, check al geserveerd of niet genoeg plaatsen // if  ReadFromJsonFile() is null => is niet geserveerd
-
-        // foreach table in table list => if gekozen tafel == tafelID => Account  = UserAccount.Name & Amount = groupAmount=> Table.WriteToJson()
+        List<Reservation> reservations = ReadFromJsonFile();
+        if (reservations == null)
+        {
+            reservations = new List<Reservation>();
+        }
+        int TableID = ValidateTable(groupAmount, reservations, tables);
+        foreach (var table in tables)
+        {
+            if (table.TableID == TableID)
+            {
+                Reservation reservation = new(name, email, groupAmount, table);
+                reservations.Add(reservation);
+                WriteToJsonFile(reservations);
+                Console.WriteLine($"You places a reservation at table {reservation.Table.TableID} for {reservation.Amount}");
+                break;
+            }
+        }
     }
 
-    public static List<Table> ReadFromJsonFile()
+    public static int ValidateTable(int groupAmount, List<Reservation> reservations, List<Table> tables)
     {
-        string filePath = "Reservations.json";
+        Console.WriteLine("Which table would you like to reserve?");
+        int tableNum;
+
+        while (true)
+        {
+            Console.WriteLine("Please enter a number between 1 and 16:");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out tableNum) && tableNum >= 1 && tableNum <= 16)
+            {
+                bool isTableAvailable = true;
+
+                if (reservations != null)
+                {
+                    foreach (var reservation in reservations)
+                    {
+                        Table myTable = null;
+                        foreach (Table table in tables)
+                        {
+                            if (table.TableID == tableNum)
+                                myTable = table;
+                        }
+                        if (reservation.Table.TableID == tableNum)
+                        {
+                            Console.WriteLine($"Table {tableNum} has already been reserved. Please pick another table.");
+                            isTableAvailable = false;
+                            break;
+                        }
+                        else if (myTable.Capacity < groupAmount)
+                        {
+                            Console.WriteLine($"This table has less than {groupAmount} seats. Please pick another table. {myTable.Capacity}");
+                            isTableAvailable = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (isTableAvailable)
+                {
+                    break; // Valid table number, exit the loop
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Invalid input: '{input}'. Please enter a valid number between 1 and 16.");
+            }
+        }
+
+        return tableNum;
+    }
+    public static List<Reservation> ReadFromJsonFile()
+    {
+        string filePath = @"../../../Reservations.json";
         string jsonData = File.ReadAllText(filePath);
-        List<Table> objects = JsonConvert.DeserializeObject<List<Table>>(jsonData);
+        List<Reservation> objects = JsonConvert.DeserializeObject<List<Reservation>>(jsonData);
         return objects;
+    }
+
+    public static void WriteToJsonFile(List<Reservation> reservations)
+    {
+        string filePath = @"../../../Reservations.json";
+        string jsonString = JsonConvert.SerializeObject(reservations, Formatting.Indented);
+        File.WriteAllText(filePath, jsonString);
     }
 
 
