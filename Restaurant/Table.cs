@@ -4,8 +4,6 @@ public class Table
 {
     public int TableID { get; }
     public int Capacity { get; }
-    public string Name = null; //Persoon assignen aan tafel
-    public int Amount = 0; //Aantal personen aan tafel
 
     public Table(int tableID, int capacity)
     {
@@ -21,10 +19,10 @@ public class Table
             return false;
     }*/
 
-    public void WriteToJson()
+/*    public void WriteToJson()
     {
         string filePath = "Reservations.json";
         string jsonString = JsonConvert.SerializeObject(this, Formatting.Indented);
         File.WriteAllText(filePath, jsonString);
-    }
+    }*/
 }
