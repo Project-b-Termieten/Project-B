@@ -24,7 +24,7 @@ public class Signup
         return !string.IsNullOrEmpty(password) && password.Length >= 8;
     }
 
-    public User SignUp(string name, string email, string password)
+    public User SignUp(string name, string email, string password, bool Admin = false)
     {
         while (true)
         {
@@ -53,15 +53,27 @@ public class Signup
                 string filePath = @"../../../User_info.json";
 
                 List<User> users = new List<User>();
+
                 if (File.Exists(filePath))
                 {
                     string existingData = File.ReadAllText(filePath);
                     users = JsonSerializer.Deserialize<List<User>>(existingData);
                 }
-                // Create a new User object for the new use
-                var newUser = new User(name, email, password);
+
+                User newUser; // Declare the variable outside the if-else blocks
+
+                if (Admin)
+                {
+                    newUser = new User(name, email, password, true);
+                }
+                else
+                {
+                    newUser = new User(name, email, password);
+                }
+
                 // Add the new user to the list of existing users
                 users.Add(newUser);
+
                 string jsonString = JsonSerializer.Serialize(users);
 
                 // Write the JSON data back to the file, overwriting the existing data

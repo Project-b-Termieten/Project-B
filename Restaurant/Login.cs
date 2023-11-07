@@ -23,7 +23,7 @@ public class Login
         return !string.IsNullOrEmpty(email) && Regex.IsMatch(email, @"^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$");
     }
 
-    public void PromptForLogin()
+    public User PromptForLogin()
     {
         Console.Write("Enter your email: ");
         Email = Console.ReadLine();
@@ -32,7 +32,7 @@ public class Login
         if (!ValidateEmail(Email))
         {
             Console.WriteLine("Invalid email format. Please enter a valid email address.");
-            return;
+            return null;
         }
 
         Console.Write("Enter your password: ");
@@ -52,15 +52,19 @@ public class Login
             if (storedUser != null && Password == storedUser.Password)
             {
                 Console.WriteLine("Welcome! test");
+                return storedUser;
             }
             else
             {
                 Console.WriteLine("Login failed. Incorrect email or password.");
+                return null;
             }
         }
         else
         {
             Console.WriteLine("User data file not found. Please sign up first.");
+            return null;
         }
+
     }
 }

@@ -4,8 +4,6 @@ public class Program
 {
     public static User currentUser = null;
     public static Menu menu = new Menu();
-
-    public static Admin superadmin = new Admin("Owner", "Owner@hotmail.com", "SAPW", true);
     public static List<Table> tables = new List<Table>()
     {
         new Table(1, 2), new Table(2, 2), new Table(3, 2), new Table(4, 2), new Table(5, 2), new Table(6, 2), new Table(7, 2), new Table(16, 6),
@@ -27,7 +25,7 @@ public class Program
             Console.WriteLine("| 3. Location                    |");
             Console.WriteLine("| 4. login                       |");
             Console.WriteLine("| 5. Exit                        |");
-            if (currentUser is Admin)
+            if (currentUser.Admin)
             {
                 Console.WriteLine("| 6. Admin Menu------------------|");
             }
@@ -62,7 +60,7 @@ public class Program
                     ExitGame();
                     break;
                 case "6":
-                    if (currentUser is Admin)
+                    if (currentUser.Admin)
                     {
                         AdminMenu();
                         break;
@@ -220,16 +218,17 @@ public class Program
                         break;
                     case "3":
                         // Check if user is a Superadmin
-                        if (currentUser is Admin && ((Admin)currentUser).Superadmin)
+                        if (currentUser.Superadmin)
                         {
+                            Signup usersignup = new Signup();
                             Console.WriteLine("What is the name of the Admin?");
                             string Name = Console.ReadLine();
                             Console.WriteLine("What is the Email of the admin?");
                             string Email = Console.ReadLine();
                             Console.WriteLine("What is the password of the admin");
                             string Password = Console.ReadLine();
-                            Admin new_Admin = new Admin(Name, Email, Password);
-                            // Sign up new Admin
+                            usersignup.SignUp(Name, Email, Password, true);
+
                             break;
                         }
                         Console.WriteLine("User does not have the privalages to proceed.");
