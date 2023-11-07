@@ -30,8 +30,16 @@ public class Program
             switch (userInput)
             {
                 case "1":
-                    RestaurantMap.DisplayMap();
-                    Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables);
+                    if (currentUser == null)
+                    {
+                        Console.WriteLine("Please log or sign up in first to make a reservation.");
+                        login_or_Signup();
+                    }
+                    else
+                    {
+                        RestaurantMap.DisplayMap();
+                        Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables);
+                    }
                     break;
                 case "2":
                     showMenu();
@@ -63,6 +71,12 @@ public class Program
             if (user_answer == "login")
             {
                 Login userLogin = new Login();
+                currentUser = userLogin.PromptForLogin();
+                if (currentUser == null)
+                {
+                    Console.WriteLine("Please try again or sign up.");
+                }
+                
                 userLogin.PromptForLogin();
 
                 string email = userLogin.Email;
