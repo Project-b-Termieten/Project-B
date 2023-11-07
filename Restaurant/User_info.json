@@ -1,62 +1,16 @@
 [
-  {
-    "Name": "altaaf",
-    "Email": "djallied.d@hotmail.com",
-    "Password": "altaafsd"
-  },
-  {
-    "Name": "jerrel",
-    "Email": "jerrel.j@hotmail.com",
-    "Password": "jerrelishier"
-  },
-  {
-    "Name": "aidan",
-    "Email": "aidan.j@hotmail.com",
-    "Password": "aidanishier"
-  },
-  {
-    "Name": "hello",
-    "Email": "hello.o@hotmail.com",
-    "Password": "hellothis"
-  },
-  {
-    "Name": "altaaf",
-    "Email": "doekhie@hotmail.com",
-    "Password": "asdasdas"
-  },
-  {
-    "Name": "asdasda",
-    "Email": "asdasdas@hotmail.com",
-    "Password": "asdasdadasd"
-  },
-  {
-    "Name": "asdasda",
-    "Email": "asds@hotmail.com",
-    "Password": "asdasdasd"
-  },
-  {
-    "Name": "aadasdsa",
-    "Email": "asdasd@hotmail.com",
-    "Password": "asdasdasd"
-  },
-  {
-    "Name": "asdad",
-    "Email": "asdasd@hotmail.com",
-    "Password": "asdasdasd"
-  },
-  {
-    "Name": "asdasdas",
-    "Email": "dasdasd@hotmail.com",
-    "Password": "sasdasdas"
-  },
-  {
-    "Name": "asdasdasd",
-    "Email": "asdasdasd@hotmail.com",
-    "Password": "asdasdasdas"
-  },
-  {
-    "Name": "jerrelel",
-    "Email": "asdasda@hotmail.com",
-    "Password": "asdasdasds"
-  }
+    {
+        "Name": "Owner",
+        "Email": "Owner@hotmail.com",
+        "Password": "Ownerpassword",
+        "Admin": true,
+        "Superadmin": true
+    },
+    {
+        "Name": "Test",
+        "Email": "Test@hotmail.com",
+        "Password": "TestTest",
+        "Admin": false,
+        "Superadmin": false
+    }
 ]

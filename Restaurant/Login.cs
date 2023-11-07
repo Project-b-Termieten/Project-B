@@ -39,7 +39,7 @@ public class Login
         Password = Console.ReadLine();
 
         // Load user information from the JSON file
-        string filePath = "C:\\Users\\altaa\\OneDrive\\Documents\\Restuarant pro\\Restuarant pro\\User_info.json";
+        string filePath = "User_info.json";
 
         if (File.Exists(filePath))
         {

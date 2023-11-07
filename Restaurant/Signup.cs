@@ -50,7 +50,7 @@ public class Signup
 
             if (valid)
             {
-                string filePath = @"../../../User_info.json";
+                string filePath = @"User_info.json";
 
                 List<User> users = new List<User>();
 

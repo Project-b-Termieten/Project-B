@@ -25,7 +25,7 @@ public class Program
             Console.WriteLine("| 3. Location                    |");
             Console.WriteLine("| 4. login                       |");
             Console.WriteLine("| 5. Exit                        |");
-            if (currentUser.Admin)
+            if (currentUser != null && currentUser.Admin)
             {
                 Console.WriteLine("| 6. Admin Menu------------------|");
             }
@@ -90,8 +90,6 @@ public class Program
                 {
                     Console.WriteLine("Please try again or sign up.");
                 }
-
-                userLogin.PromptForLogin();
 
                 string email = userLogin.Email;
                 string password = userLogin.Password;
@@ -228,7 +226,6 @@ public class Program
                             Console.WriteLine("What is the password of the admin");
                             string Password = Console.ReadLine();
                             usersignup.SignUp(Name, Email, Password, true);
-
                             break;
                         }
                         Console.WriteLine("User does not have the privalages to proceed.");
