@@ -1,7 +1,11 @@
+﻿using System.Reflection.Metadata.Ecma335;
+
 public class Program
 {
     public static User currentUser = null;
     public static Menu menu = new Menu();
+
+    public static Admin superadmin = new Admin("Owner", "Owner@hotmail.com", "SAPW", true);
     public static List<Table> tables = new List<Table>()
     {
         new Table(1, 2), new Table(2, 2), new Table(3, 2), new Table(4, 2), new Table(5, 2), new Table(6, 2), new Table(7, 2), new Table(16, 6),
@@ -23,6 +27,10 @@ public class Program
             Console.WriteLine("| 3. Location                    |");
             Console.WriteLine("| 4. login                       |");
             Console.WriteLine("| 5. Exit                        |");
+            if (currentUser is Admin)
+            {
+                Console.WriteLine("| 6. Admin Menu------------------|");
+            }
             Console.WriteLine("+--------------------------------+");
             Console.Write("Please select an option (1/2/3/4/5): ");
             string userInput = Console.ReadLine();
@@ -49,14 +57,21 @@ public class Program
                     break;
                 case "4":
                     login_or_Signup();
-                    /*if (IsSuperAdmin)
-                    {
-                        displayOptions();
-                    }*/
                     break;
                 case "5":
                     ExitGame();
                     break;
+                case "6":
+                    if (currentUser is Admin)
+                    {
+                        AdminMenu();
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please select a valid option.");
+                        break;
+                    }
                 default:
                     Console.WriteLine("Invalid input. Please select a valid option.");
                     break;
@@ -71,12 +86,13 @@ public class Program
             if (user_answer == "login")
             {
                 Login userLogin = new Login();
+                // this causes error because the PromptForLogin method does not return a User.
                 currentUser = userLogin.PromptForLogin();
                 if (currentUser == null)
                 {
                     Console.WriteLine("Please try again or sign up.");
                 }
-                
+
                 userLogin.PromptForLogin();
 
                 string email = userLogin.Email;
@@ -162,19 +178,71 @@ public class Program
                     break;
             }
         }
-        /*    static void Remove_Item_Menu()
+        static void Remove_Item_Menu()
+        {
+            Console.WriteLine("What would you like to remove?\n1: Food item\n2: Drink item");
+            string userInput = Console.ReadLine();
+            switch (userInput)
             {
-                Console.WriteLine("What would you like to remove?\n1: Food item\n2: Drink item");
-                string userInput = Console.ReadLine();
-                switch (userInput)
+                case "1":
+                    menu.Delete_food();
+                    break;
+                case "2":
+                    menu.Delete_drink();
+                    break;
+            }
+        }
+        static void AdminMenu()
+        {
+            while (true)
+            {
+                Console.WriteLine("+--------------------------------+");
+                Console.WriteLine("|                                |");
+                Console.WriteLine("|  Welcome Admin                 |");
+                Console.WriteLine("|                                |");
+                Console.WriteLine("+--------------------------------+");
+                Console.WriteLine("| Options:                       |");
+                Console.WriteLine("| 1. Add item to Menu            |");
+                Console.WriteLine("| 2. Remove item from Menu       |");
+                Console.WriteLine("| 3. Create Admin                |");
+                Console.WriteLine("| 4.                             |");
+                Console.WriteLine("| 5. Exit                        |");
+                Console.WriteLine("+--------------------------------+");
+                Console.Write("Please select an option (1/2/3/4/5): ");
+                string AdminInput = Console.ReadLine();
+                switch (AdminInput)
                 {
                     case "1":
-                        menu.Delete_food();
+                        Add_Item_Menu();
                         break;
                     case "2":
-                        menu.Delete_drink();
+                        Remove_Item_Menu();
+                        break;
+                    case "3":
+                        // Check if user is a Superadmin
+                        if (currentUser is Admin && ((Admin)currentUser).Superadmin)
+                        {
+                            Console.WriteLine("What is the name of the Admin?");
+                            string Name = Console.ReadLine();
+                            Console.WriteLine("What is the Email of the admin?");
+                            string Email = Console.ReadLine();
+                            Console.WriteLine("What is the password of the admin");
+                            string Password = Console.ReadLine();
+                            Admin new_Admin = new Admin(Name, Email, Password);
+                            // Sign up new Admin
+                            break;
+                        }
+                        Console.WriteLine("User does not have the privalages to proceed.");
+                        break;
+                    case "5":
+                        ExitGame();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Please select a valid option.");
                         break;
                 }
-            }*/
+            }
+        }
     }
+
 }
