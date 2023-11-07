@@ -91,10 +91,12 @@ public class Program
 
         static void restInfo()
         {
-            Console.WriteLine("Jake’s restaurant information:");
-            Console.WriteLine("Location: Wijnhaven 107, 3011 WN in Rotterdam");
-            Console.WriteLine("Phone: (123) 456-7890");
-            Console.WriteLine("Email: jakes@example.com");
+            Console.WriteLine("+----------------------------------------------+");
+            Console.WriteLine("| Jake’s restaurant information:               |");
+            Console.WriteLine("| Location: Wijnhaven 107, 3011 WN in Rotterdam|");
+            Console.WriteLine("| Phone: (123) 456-7890                        |");
+            Console.WriteLine("| Email: jakes@example.com                     |");
+            Console.WriteLine("+----------------------------------------------+");
         }
 
         static void showMenu()
