@@ -88,10 +88,10 @@ public class Program
 
         static void login_or_Signup()
         {
-            Console.WriteLine("Do you want to LOGIN or Sign up ");
+            Console.WriteLine("Do you want to LOGIN(1) or Sign up(2) ");
             string user_answer = Console.ReadLine().ToLower();
 
-            if (user_answer == "login")
+            if (user_answer == "1")
             {
                 Login userLogin = new Login();
                 // this causes error because the PromptForLogin method does not return a User.
@@ -106,7 +106,7 @@ public class Program
 
                 Console.WriteLine("Logging in with email: " + email);
             }
-            else if (user_answer == "sign up")
+            else if (user_answer == "2")
             {
                 Signup usersignup = new Signup();
                 Console.WriteLine("Please enter your name: ");
