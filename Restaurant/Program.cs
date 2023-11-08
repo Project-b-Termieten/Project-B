@@ -27,7 +27,7 @@ public class Program
             Console.WriteLine("| 5. Exit                        |");
             if (currentUser != null && currentUser.Admin)
             {
-                Console.WriteLine("| 6. Admin Menu------------------|");
+                Console.WriteLine("| 6. Admin Menu                  |");
             }
             Console.WriteLine("+--------------------------------+");
             Console.Write("Please select an option (1/2/3/4/5): ");
@@ -40,21 +40,31 @@ public class Program
                     {
                         Console.WriteLine("Please log or sign up in first to make a reservation.");
                         login_or_Signup();
+                        Console.ReadKey();
+                        Console.Clear();
                     }
                     else
                     {
                         RestaurantMap.DisplayMap();
                         Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables);
+                        Console.ReadKey();
+                        Console.Clear();
                     }
                     break;
                 case "2":
                     showMenu();
+                    Console.ReadKey();
+                    Console.Clear();
                     break;
                 case "3":
                     restInfo();
+                    Console.ReadKey();
+                    Console.Clear();
                     break;
                 case "4":
                     login_or_Signup();
+                    Console.ReadKey();
+                    Console.Clear();
                     break;
                 case "5":
                     ExitGame();
@@ -192,6 +202,7 @@ public class Program
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("+--------------------------------+");
                 Console.WriteLine("|                                |");
                 Console.WriteLine("|  Welcome Admin                 |");
@@ -210,9 +221,13 @@ public class Program
                 {
                     case "1":
                         Add_Item_Menu();
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case "2":
                         Remove_Item_Menu();
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case "3":
                         // Check if user is a Superadmin
@@ -226,6 +241,8 @@ public class Program
                             Console.WriteLine("What is the password of the admin");
                             string Password = Console.ReadLine();
                             usersignup.SignUp(Name, Email, Password, true);
+                            Console.ReadKey();
+                            Console.Clear();
                             break;
                         }
                         Console.WriteLine("User does not have the privalages to proceed.");

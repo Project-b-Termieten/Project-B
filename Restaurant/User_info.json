@@ -12,5 +12,12 @@
         "Password": "TestTest",
         "Admin": false,
         "Superadmin": false
+    },
+    {
+        "Name": "NewAdmin",
+        "Email": "NewAdmin@hotmail.com",
+        "Password": "NewAdmin",
+        "Admin": true,
+        "Superadmin": false
     }
 ]

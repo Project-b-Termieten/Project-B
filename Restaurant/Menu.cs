@@ -28,7 +28,7 @@ public class Menu
         List<Drink> existingdrinks = JsonConvert.DeserializeObject<List<Drink>>(json_);
         foreach (Drink drink_item in existingdrinks)
         {
-            Console.WriteLine($"Dish: {drink_item.Name}, Price: {drink_item.Price}");
+            Console.WriteLine($"Drink: {drink_item.Name}, Price: {drink_item.Price}");
         }
         Console.WriteLine("-----------------------------");
     }
