@@ -230,7 +230,6 @@ public class Program
                     case "1":
                         Add_Item_Menu();
                         Console.ReadKey();
-                        Console.Clear();
                         break;
                     case "2":
                         Remove_Item_Menu();
