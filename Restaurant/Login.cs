@@ -51,7 +51,7 @@ public class Login
 
             if (storedUser != null && Password == storedUser.Password)
             {
-                Console.WriteLine("Welcome! test");
+                Console.WriteLine("Welcome!");
                 return storedUser;
             }
             else
