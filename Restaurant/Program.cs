@@ -155,26 +155,30 @@ public class Program
             {
                 case "1":
                     bool Dish_vegan = true;
-                    string action = "";
+                    string action;
+                    bool completed = true;
                     Console.WriteLine("What is the name of the dish?");
                     string Dish_name = Console.ReadLine();
                     Console.WriteLine("What is the price of the dish?");
                     double Dish_price = Convert.ToDouble(Console.ReadLine());
-                    while (action != "Y" || action != "N")
+
+                    while (completed)
                     {
                         Console.WriteLine("Is the dish vegan? (Y/N?)");
                         action = Console.ReadLine().ToUpper();
                         if (action == "Y")
                         {
                             Dish_vegan = true;
+                            completed = false;
                         }
                         else if (action == "N")
                         {
                             Dish_vegan = false;
+                            completed = false;
                         }
                         else
                         {
-                            Console.WriteLine("Invallid input");
+                            Console.WriteLine("Invalid input");
                         }
                     }
                     Food new_dish = new Food(Dish_name, Dish_price, Dish_vegan);
