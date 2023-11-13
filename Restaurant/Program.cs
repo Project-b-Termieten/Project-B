@@ -154,20 +154,28 @@ public class Program
             switch (userInput)
             {
                 case "1":
-                    bool Dish_vegan;
+                    bool Dish_vegan = true;
+                    string action = "";
                     Console.WriteLine("What is the name of the dish?");
                     string Dish_name = Console.ReadLine();
                     Console.WriteLine("What is the price of the dish?");
                     double Dish_price = Convert.ToDouble(Console.ReadLine());
-                    Console.WriteLine("Is the dish vegan?");
-                    string action = Console.ReadLine();
-                    if (action == "yes")
+                    while (action != "Y" || action != "N")
                     {
-                        Dish_vegan = true;
-                    }
-                    else
-                    {
-                        Dish_vegan = false;
+                        Console.WriteLine("Is the dish vegan? (Y/N?)");
+                        action = Console.ReadLine().ToUpper();
+                        if (action == "Y")
+                        {
+                            Dish_vegan = true;
+                        }
+                        else if (action == "N")
+                        {
+                            Dish_vegan = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invallid input");
+                        }
                     }
                     Food new_dish = new Food(Dish_name, Dish_price, Dish_vegan);
                     Console.WriteLine("The item has been added to the menu.");
