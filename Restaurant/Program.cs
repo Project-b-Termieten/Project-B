@@ -30,7 +30,14 @@ public class Program
                 Console.WriteLine("| 6. Admin Menu                  |");
             }
             Console.WriteLine("+--------------------------------+");
-            Console.Write("Please select an option (1/2/3/4/5): ");
+            if (currentUser != null && currentUser.Admin)
+            {
+                Console.Write("Please select an option (1/2/3/4/5/6): ");
+            }
+            else
+            {
+                Console.Write("Please select an option (1/2/3/4/5): ");
+            }
             string userInput = Console.ReadLine();
 
             switch (userInput)
