@@ -213,7 +213,7 @@ public class Program
                 Console.WriteLine("| 2. Remove item from Menu       |");
                 Console.WriteLine("| 3. Create Admin                |");
                 Console.WriteLine("| 4.                             |");
-                Console.WriteLine("| 5. Exit                        |");
+                Console.WriteLine("| 5. return                      |");
                 Console.WriteLine("+--------------------------------+");
                 Console.Write("Please select an option (1/2/3/4/5): ");
                 string AdminInput = Console.ReadLine();
@@ -227,7 +227,6 @@ public class Program
                     case "2":
                         Remove_Item_Menu();
                         Console.ReadKey();
-                        Console.Clear();
                         break;
                     case "3":
                         // Check if user is a Superadmin
@@ -242,13 +241,17 @@ public class Program
                             string Password = Console.ReadLine();
                             usersignup.SignUp(Name, Email, Password, true);
                             Console.ReadKey();
-                            Console.Clear();
                             break;
                         }
-                        Console.WriteLine("User does not have the privalages to proceed.");
-                        break;
+                        else
+                        {
+                            Console.WriteLine("User does not have the privalages to proceed.");
+                            Console.ReadKey();
+                            break;
+                        }
+
                     case "5":
-                        ExitGame();
+                        Main();
                         break;
                     default:
                         Console.WriteLine("Invalid input. Please select a valid option.");
