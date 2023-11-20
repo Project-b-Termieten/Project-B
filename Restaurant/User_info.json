@@ -1,0 +1,72 @@
+[
+  {
+    "Name": "Owner",
+    "Email": "Owner@hotmail.com",
+    "Password": "Ownerpassword",
+    "Admin": true,
+    "Superadmin": true
+  },
+  {
+    "Name": "Test",
+    "Email": "Test@hotmail.com",
+    "Password": "TestTest",
+    "Admin": false,
+    "Superadmin": false
+  },
+  {
+    "Name": "NewAdmin",
+    "Email": "NewAdmin@hotmail.com",
+    "Password": "NewAdmin",
+    "Admin": true,
+    "Superadmin": false
+  },
+  {
+    "Name": "altaaf",
+    "Email": "altaaf@hr.nnl",
+    "Password": "9c56cc51b374c3ba189210d5b6d4bf57790d351c96c47c02190ecf1e430635ab",
+    "Admin": false,
+    "Superadmin": false
+  },
+  {
+    "Name": "testt",
+    "Email": "testt@hr.nl",
+    "Password": "0aed2d39774c1eaacdf0f5409ee49d23f0f0939ab47411520a54aeec0ba24641",
+    "Admin": false,
+    "Superadmin": false
+  },
+  {
+    "Name": "blabla",
+    "Email": "blabla@hr.nl",
+    "Password": "9c56cc51b374c3ba189210d5b6d4bf57790d351c96c47c02190ecf1e430635ab",
+    "Admin": false,
+    "Superadmin": false
+  },
+  {
+    "Name": "yo",
+    "Email": "yoyo@hr.nl",
+    "Password": "9c56cc51b374c3ba189210d5b6d4bf57790d351c96c47c02190ecf1e430635ab",
+    "Admin": false,
+    "Superadmin": false
+  },
+  {
+    "Name": "jaa",
+    "Email": "ja@hr.nl",
+    "Password": "9c56cc51b374c3ba189210d5b6d4bf57790d351c96c47c02190ecf1e430635ab",
+    "Admin": false,
+    "Superadmin": false
+  },
+  {
+    "Name": "sadasd",
+    "Email": "asdasda@hr.nl",
+    "Password": "9c56cc51b374c3ba189210d5b6d4bf57790d351c96c47c02190ecf1e430635ab",
+    "Admin": false,
+    "Superadmin": false
+  },
+  {
+    "Name": "aidan",
+    "Email": "adain@hr.nl",
+    "Password": "9c56cc51b374c3ba189210d5b6d4bf57790d351c96c47c02190ecf1e430635ab",
+    "Admin": false,
+    "Superadmin": false
+  }
+]
