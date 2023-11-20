@@ -5,13 +5,58 @@
     "Vegan": false
   },
   {
+    "Name": "Hot Dog",
+    "Price": 6.99,
+    "Vegan": false
+  },
+  {
+    "Name": "Fried Chicken",
+    "Price": 8.99,
+    "Vegan": false
+  },
+  {
     "Name": "Salad",
     "Price": 7.99,
     "Vegan": true
   },
   {
-    "Name": "Hamburger",
-    "Price": 6.5,
+    "Name": "Sushi",
+    "Price": 12.99,
+    "Vegan": false
+  },
+  {
+    "Name": "Ramen",
+    "Price": 10.49,
+    "Vegan": true
+  },
+  {
+    "Name": "Taco",
+    "Price": 8.5,
+    "Vegan": false
+  },
+  {
+    "Name": "Burrito",
+    "Price": 9.99,
+    "Vegan": true
+  },
+  {
+    "Name": "Pizza",
+    "Price": 10.99,
+    "Vegan": false
+  },
+  {
+    "Name": "Pasta",
+    "Price": 8.99,
+    "Vegan": true
+  },
+  {
+    "Name": "Samosa",
+    "Price": 7.49,
+    "Vegan": true
+  },
+  {
+    "Name": "Butter Chicken",
+    "Price": 13.99,
     "Vegan": false
   }
 ]
