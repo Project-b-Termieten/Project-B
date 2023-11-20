@@ -120,7 +120,7 @@ public class Program
                 string name = Console.ReadLine();
                 Console.WriteLine("Please enter your email: ");
                 string email = Console.ReadLine();
-                Console.WriteLine("Please enter your password: ");
+                Console.WriteLine("Please enter a password that needs to be 8 characters.");
                 string password = Console.ReadLine();
 
                 // Call the SignUp method to validate and save user information
