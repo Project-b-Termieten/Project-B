@@ -54,35 +54,52 @@ public class Program
                     }
                     else
                     {
-                        RestaurantMap.DisplayMap();
-                        bool Incomplete = true;
-                        while (Incomplete)
+                        Console.WriteLine("1. Make Reservation");
+                        Console.WriteLine("2. Remove Reservation");
+                        Console.Write("Please select an option (1/2): ");
+                        string reservationOption = Console.ReadLine();
+                        switch (reservationOption)
                         {
-                            Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
-                            userInput = Console.ReadLine() + ":00";
-                            string format = "yyyy-MM-dd HH:mm:ss";
-
-                            if (userInput.ToUpper() == "EXIT")
-                            {
-                                Main();
-                            }
-
-                            if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
-                            {
-                                Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
-                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
-                                Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
-                                Incomplete = false;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid date format");
-                            }
+                            case "1":
+                                RestaurantMap.DisplayMap();
+                                bool Incomplete = true;
+                                while (Incomplete)
+                                {
+                                    Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
+                                    string reservationUserInput = Console.ReadLine() + ":00";
+                                    string format = "yyyy-MM-dd HH:mm:ss";
+                                    if (reservationOption.ToUpper() == "EXIT")
+                                    {
+                                        Main();
+                                    }
+                                    if (DateTime.TryParseExact(reservationUserInput, format, null, DateTimeStyles.None, out DateTime result))
+                                    {
+                                        Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
+                                        Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
+                                        Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
+                                        Incomplete = false;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Invalid date format");
+                                    }
+                                }
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            case "2":
+                                Reserve.CancelReservation(currentUser);
+                                Console.ReadKey();
+                                Console.Clear();
+                                break;
+                            default:
+                                Console.WriteLine("Invalid input. Please select a valid option.");
+                                break;
+                                        
                         }
-                        Console.ReadKey();
-                        Console.Clear();
                     }
                     break;
+
                 case "2":
                     showMenu();
                     Console.ReadKey();
