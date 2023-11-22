@@ -2,9 +2,9 @@ using Newtonsoft.Json;
 
 public static class Reserve
 {
-    public static void MakingReservation(string name, string email, List<Table> tables)
+    public static void MakingReservation(string name, string email, List<Table> tables, Tuple<DateTime, DateTime> Reservation_time)
     {
-        
+
         List<Reservation> reservations = ReadFromJsonFile();
         if (reservations == null)
         {
@@ -17,7 +17,30 @@ public static class Reserve
             if (table.TableID == TableID)
             {
                 Reservation reservation = new(name, email, groupAmount, table);
+                reservation.Time = Reservation_time;
                 reservations.Add(reservation);
+                WriteToJsonFile(reservations);
+                Console.WriteLine($"You places a reservation at table {reservation.Table.TableID} for {reservation.Amount}");
+                break;
+            }
+        }
+    }
+
+    public static void MakingReservation(string name, string email, List<Table> tables)
+    {
+
+        List<Reservation> reservations = ReadFromJsonFile();
+        if (reservations == null)
+        {
+            reservations = new List<Reservation>();
+        }
+        int groupAmount = ValidateAmount();
+        int TableID = ValidateTable(groupAmount, reservations, tables, name, email);
+        foreach (var table in tables)
+        {
+            if (table.TableID == TableID)
+            {
+                Reservation reservation = new(name, email, groupAmount, table);
                 WriteToJsonFile(reservations);
                 Console.WriteLine($"You places a reservation at table {reservation.Table.TableID} for {reservation.Amount}");
                 break;
@@ -90,7 +113,7 @@ public static class Reserve
     }
     public static List<Reservation> ReadFromJsonFile()
     {
-        string filePath = @"../../../Reservations.json";
+        string filePath = "Reservation.json";
         string jsonData = File.ReadAllText(filePath);
         List<Reservation> objects = JsonConvert.DeserializeObject<List<Reservation>>(jsonData);
         return objects;
@@ -98,7 +121,7 @@ public static class Reserve
 
     public static void WriteToJsonFile(List<Reservation> reservations)
     {
-        string filePath = @"../../../Reservations.json";
+        string filePath = @"Reservation.json";
         string jsonString = JsonConvert.SerializeObject(reservations, Formatting.Indented);
         File.WriteAllText(filePath, jsonString);
     }

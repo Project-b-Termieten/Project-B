@@ -1,4 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
+using System.Globalization;
+using System;
 
 public class Program
 {
@@ -43,7 +45,7 @@ public class Program
             switch (userInput)
             {
                 case "1":
-                    if (currentUser == null)
+                    if (currentUser is null)// currentUser is null
                     {
                         Console.WriteLine("Please log or sign up in first to make a reservation.");
                         login_or_Signup();
@@ -53,7 +55,30 @@ public class Program
                     else
                     {
                         RestaurantMap.DisplayMap();
-                        Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables);
+                        bool Incomplete = true;
+                        while (Incomplete)
+                        {
+                            Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
+                            userInput = Console.ReadLine() + ":00";
+                            string format = "yyyy-MM-dd HH:mm:ss";
+
+                            if (userInput.ToUpper() == "EXIT")
+                            {
+                                Main();
+                            }
+
+                            if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
+                            {
+                                Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
+                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
+                                Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
+                                Incomplete = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid date format");
+                            }
+                        }
                         Console.ReadKey();
                         Console.Clear();
                     }

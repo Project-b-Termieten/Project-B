@@ -1,32 +1,9 @@
 [
   {
-    "Name": "Altaaf Doekhie",
-    "Email": null,
-    "Amount": 2,
-    "Table": {
-      "TableID": 2,
-      "Capacity": 2
-    }
-  },
-  {
-    "Name": "Altaaf Doekhie",
-    "Email": null,
-    "Amount": 2,
-    "Table": {
-      "TableID": 3,
-      "Capacity": 2
-    }
-  },
-  {
-    "Name": "Altaaf Doekhie",
-    "Email": null,
-    "Amount": 2,
-    "Table": {
-      "TableID": 4,
-      "Capacity": 2
-    }
-  },
-  {
+    "Time": {
+      "Item1": "0001-01-01T00:00:00",
+      "Item2": "0001-01-01T00:00:00"
+    },
     "Name": "vxjkbjkdshgvkd",
     "Email": null,
     "Amount": 2,
@@ -36,6 +13,10 @@
     }
   },
   {
+    "Time": {
+      "Item1": "0001-01-01T00:00:00",
+      "Item2": "0001-01-01T00:00:00"
+    },
     "Name": "aidan",
     "Email": null,
     "Amount": 2,
@@ -45,12 +26,55 @@
     }
   },
   {
+    "Time": {
+      "Item1": "0001-01-01T00:00:00",
+      "Item2": "0001-01-01T00:00:00"
+    },
     "Name": "bobbie",
     "Email": "bob@gmail.com",
     "Amount": 5,
     "Table": {
       "TableID": 15,
       "Capacity": 6
+    }
+  },
+  {
+    "Time": {
+      "Item1": "2023-11-20T13:37:31.9404522+01:00",
+      "Item2": "2023-11-20T14:37:31.944056+01:00"
+    },
+    "Name": "Test",
+    "Email": "Test@hotmail.com",
+    "Amount": 2,
+    "Table": {
+      "TableID": 3,
+      "Capacity": 2
+    }
+  },
+  {
+    "Time": {
+      "Item1": "2023-11-13T09:30:00",
+      "Item2": "2023-11-13T10:30:00"
+    },
+    "Name": "Test",
+    "Email": "Test@hotmail.com",
+    "Amount": 2,
+    "Table": {
+      "TableID": 2,
+      "Capacity": 2
+    }
+  },
+  {
+    "Time": {
+      "Item1": "2023-11-23T10:00:00",
+      "Item2": "2023-11-23T11:00:00"
+    },
+    "Name": "Test",
+    "Email": "Test@hotmail.com",
+    "Amount": 2,
+    "Table": {
+      "TableID": 4,
+      "Capacity": 2
     }
   }
 ]
