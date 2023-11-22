@@ -2,6 +2,30 @@ using Newtonsoft.Json;
 
 public static class Reserve
 {
+    public static void CancelReservation(User currentUser)
+    {
+        List<Reservation> reservations = ReadFromJsonFile();
+
+        if (reservations == null || reservations.Count == 0)
+        {
+        Console.WriteLine("No reservations to cancel.");
+        return;
+        }
+        // Find the reservation to cancel
+        Reservation reservationToCancel = reservations.FirstOrDefault(
+        r => r.Name == currentUser.Name && r.Email == currentUser.Email);
+
+        if (reservationToCancel == null)
+        {
+        Console.WriteLine("Reservation not found. No reservation was canceled.");
+        return;
+        }
+        // Remove the reservation from the list
+        reservations.Remove(reservationToCancel);
+        WriteToJsonFile(reservations);
+
+        Console.WriteLine($"Reservation at table {reservationToCancel.Table.TableID} for {reservationToCancel.Amount} people at {reservationToCancel.Time.Item1} has been canceled.");
+    }
     public static void MakingReservation(string name, string email, List<Table> tables, Tuple<DateTime, DateTime> Reservation_time)
     {
 
