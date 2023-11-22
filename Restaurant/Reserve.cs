@@ -11,7 +11,7 @@ public static class Reserve
             reservations = new List<Reservation>();
         }
         int groupAmount = ValidateAmount();
-        int TableID = ValidateTable(groupAmount, reservations, tables, name, email);
+        int TableID = ValidateTable(groupAmount, reservations, tables, name, email, Reservation_time);
         foreach (var table in tables)
         {
             if (table.TableID == TableID)
@@ -19,28 +19,6 @@ public static class Reserve
                 Reservation reservation = new(name, email, groupAmount, table);
                 reservation.Time = Reservation_time;
                 reservations.Add(reservation);
-                WriteToJsonFile(reservations);
-                Console.WriteLine($"You places a reservation at table {reservation.Table.TableID} for {reservation.Amount}");
-                break;
-            }
-        }
-    }
-
-    public static void MakingReservation(string name, string email, List<Table> tables)
-    {
-
-        List<Reservation> reservations = ReadFromJsonFile();
-        if (reservations == null)
-        {
-            reservations = new List<Reservation>();
-        }
-        int groupAmount = ValidateAmount();
-        int TableID = ValidateTable(groupAmount, reservations, tables, name, email);
-        foreach (var table in tables)
-        {
-            if (table.TableID == TableID)
-            {
-                Reservation reservation = new(name, email, groupAmount, table);
                 WriteToJsonFile(reservations);
                 Console.WriteLine($"You places a reservation at table {reservation.Table.TableID} for {reservation.Amount}");
                 break;
@@ -58,7 +36,7 @@ public static class Reserve
         }
         return groupAmount;
     }
-    public static int ValidateTable(int groupAmount, List<Reservation> reservations, List<Table> tables, string name, string email)
+    public static int ValidateTable(int groupAmount, List<Reservation> reservations, List<Table> tables, string name, string email, Tuple<DateTime, DateTime> Reservation_time)
     {
         Console.WriteLine("Which table would you like to reserve?");
         int tableNum;
@@ -72,7 +50,7 @@ public static class Reserve
                 bool isTableAvailable = true;
 
                 if (tableNum == 0)
-                    MakingReservation(name, email, tables);
+                    MakingReservation(name, email, tables, Reservation_time);
                 else if (reservations != null)
                 {
                     foreach (var reservation in reservations)
@@ -85,9 +63,18 @@ public static class Reserve
                         }
                         if (reservation.Table.TableID == tableNum)
                         {
-                            Console.WriteLine($"Table {tableNum} has already been reserved. Please pick another table.");
-                            isTableAvailable = false;
-                            break;
+                            List<Reservation> List_Of_Reservations = ReadFromJsonFile();
+                            foreach (Reservation Existing_Reservation in List_Of_Reservations)
+                            {
+                                if (IsReservationOverlapping(Reservation_time, Existing_Reservation.Time))
+                                {
+                                    Console.WriteLine($"Table {tableNum} has already been reserved. Please pick another table.");
+                                    isTableAvailable = false;
+                                    break;
+                                }
+                            }
+
+
                         }
                         else if (myTable.Capacity < groupAmount)
                         {
@@ -124,5 +111,34 @@ public static class Reserve
         string filePath = @"Reservation.json";
         string jsonString = JsonConvert.SerializeObject(reservations, Formatting.Indented);
         File.WriteAllText(filePath, jsonString);
+    }
+
+    private static bool IsReservationOverlapping(Tuple<DateTime, DateTime> reservationTime, Tuple<DateTime, DateTime> existingReservation)
+    {
+        DateTime start_time = reservationTime.Item1;
+        DateTime end_time = reservationTime.Item2;
+        DateTime existing_start_time = existingReservation.Item1;
+        DateTime existing_end_time = existingReservation.Item2;
+
+        // Check if the start_time or end_time of the reservationTime is within the existingReservation
+        if ((existing_start_time <= start_time && start_time <= existing_end_time) ||
+            (existing_start_time <= end_time && end_time <= existing_end_time))
+        {
+            return true;
+        }
+
+        // Check if the reservationTime completely encloses the existingReservation
+        if (start_time <= existing_start_time && end_time >= existing_end_time)
+        {
+            return true;
+        }
+
+        // Check if the existingReservation completely encloses the reservationTime
+        if (existing_start_time <= start_time && existing_end_time >= end_time)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
