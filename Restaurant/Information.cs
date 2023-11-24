@@ -1,4 +1,4 @@
-static class RestaurantMap
+static class Information
 {
     public static void DisplayMap()
     {
@@ -26,5 +26,15 @@ static class RestaurantMap
 +----+----+----+----+----+----+----/    \----+----+----+----+----+----+----+
                                   [Entree]
 ");
+    }
+
+    public static void ContactInfo()
+    {
+        Console.WriteLine("+----------------------------------------------+");
+        Console.WriteLine("| Jake’s restaurant information:               |");
+        Console.WriteLine("| Location: Wijnhaven 107, 3011 WN in Rotterdam|");
+        Console.WriteLine("| Phone: (123) 456-7890                        |");
+        Console.WriteLine("| Email: jakes@example.com                     |");
+        Console.WriteLine("+----------------------------------------------+");
     }
 }
