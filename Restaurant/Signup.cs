@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
+using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 
 public class Signup
@@ -24,7 +21,7 @@ public class Signup
         return !string.IsNullOrEmpty(password) && password.Length >= 8;
     }
 
-    public User SignUp(string name, string email, string password, bool Admin = false)
+    public User SignUp(string name, string email, string password, bool admin)
     {
         while (true)
         {
@@ -50,50 +47,42 @@ public class Signup
 
             if (valid)
             {
-                string filePath = @"User_info.json";
+                string filePath = @"../../../User_info.json";
 
                 List<User> users = new List<User>();
 
                 if (File.Exists(filePath))
                 {
                     string existingData = File.ReadAllText(filePath);
-                    users = JsonSerializer.Deserialize<List<User>>(existingData);
+                    users = JsonConvert.DeserializeObject<List<User>>(existingData, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    });
                 }
 
-                User newUser; // Declare the variable outside the if-else blocks
+                User newUser;
 
-                if (Admin)
+                if (admin)
                 {
-                    newUser = new User(name, email, password, true);
+                    newUser = new Admin(name, email, password);
                 }
                 else
                 {
                     newUser = new User(name, email, password);
                 }
 
-                // Add the new user to the list of existing users
                 users.Add(newUser);
 
-                string jsonString = JsonSerializer.Serialize(users);
+                string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.All
+                });
 
-                // Write the JSON data back to the file, overwriting the existing data
                 File.WriteAllText(filePath, jsonString);
 
                 Console.WriteLine("Signup successful! User information saved to User_info.json.");
                 return newUser;
             }
-            else
-            {
-                Console.WriteLine("Signup failed. Please check the error messages for details.");
-                Console.WriteLine("Please try again.");
-                Console.WriteLine("Please enter your name: ");
-                name = Console.ReadLine();
-                Console.WriteLine("Please enter your email: ");
-                email = Console.ReadLine();
-                Console.WriteLine("Please enter your password: ");
-                password = Console.ReadLine();
-            }
         }
     }
-
 }
