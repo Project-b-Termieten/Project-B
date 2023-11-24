@@ -1,7 +1,5 @@
-
-using System.Text.Json;
+using Newtonsoft.Json;
 using System.Text.RegularExpressions;
-
 
 public class Login
 {
@@ -13,6 +11,7 @@ public class Login
         Email = email;
         Password = password;
     }
+
     public Login()
     {
     }
@@ -26,32 +25,59 @@ public class Login
     public User PromptForLogin()
     {
         Console.Write("Enter your email: ");
-        Email = Console.ReadLine();
+        string email = Console.ReadLine();
 
         // Validate the entered email
-        if (!ValidateEmail(Email))
+        if (!ValidateEmail(email))
         {
             Console.WriteLine("Invalid email format. Please enter a valid email address.");
             return null;
         }
 
         Console.Write("Enter your password: ");
-        Password = Console.ReadLine();
+        string password = Console.ReadLine();
 
         // Load user information from the JSON file
-        string filePath = "User_info.json";
+        string filePath = "C:\\Users\\jerre\\OneDrive\\Bureaublad\\projectbb\\projectbb\\User_info.json";
 
-        if (File.Exists(filePath))
+        // Ensure the file exists
+        if (!File.Exists(filePath))
         {
-            // Deserialize the JSON data to a List of User objects
-            List<User> users = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(filePath));
+            Console.WriteLine("User data file not found. Please create an account first.");
+            return null;
+        }
+
+        try
+        {
+            // Read all text from the file
+            string json = File.ReadAllText(filePath);
+
+            // Deserialize the JSON data to a List of User objects using Newtonsoft.Json
+            List<User> users = JsonConvert.DeserializeObject<List<User>>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
 
             // Find the user with the entered email
-            User storedUser = users.FirstOrDefault(user => user.Email == Email);
+            User storedUser = users?.FirstOrDefault(user => user.Email == email);
 
-            if (storedUser != null && Password == storedUser.Password)
+            if (storedUser != null && password == storedUser.Password)
             {
-                Console.WriteLine("Welcome!");
+                // Identify the type of the user
+                if (storedUser is SuperAdmin superAdmin)
+                {
+                    Console.WriteLine($"Welcome, Super Admin {superAdmin.Name}!");
+                }
+                else if (storedUser is Admin admin)
+                {
+                    Console.WriteLine($"Welcome, Admin {admin.Name}!");
+                }
+                else if (storedUser is User regularUser)
+                {
+                    Console.WriteLine($"Welcome, User {regularUser.Name}!");
+                }
+
+                // Return the deserialized user with the correct type
                 return storedUser;
             }
             else
@@ -60,11 +86,10 @@ public class Login
                 return null;
             }
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine("User data file not found. Please sign up first.");
+            Console.WriteLine($"Error reading or deserializing user data: {ex.Message}");
             return null;
         }
-
     }
 }
