@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 static class Information
 {
     public static void DisplayMap()
@@ -30,6 +32,9 @@ static class Information
 +----+----+----+----+----+----+----/    \----+----+----+----+----+----+----+
                                   [Entree]
 ");
+        Console.WriteLine("Tables that are already reserved:\n");
+        PrintReservedSeats();
+        Console.WriteLine();
     }
 
     public static void ContactInfo()
@@ -40,5 +45,27 @@ static class Information
         Console.WriteLine("| Phone: (123) 456-7890                        |");
         Console.WriteLine("| Email: jakes@example.com                     |");
         Console.WriteLine("+----------------------------------------------+");
+    }
+
+
+    
+    public static void PrintReservedSeats()
+    {
+        string filePath = "C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\Restaurantapp\\Restaurantapp\\Reservation.json";
+        string json = File.ReadAllText(filePath);
+
+        List<Reservation> reservations = JsonConvert.DeserializeObject<List<Reservation>>(json);
+
+       /* foreach (var reservation in reservations)
+        {
+            Console.WriteLine($"Table : {reservation.Table.TableID} | From: {reservation.Time.Item1} Till: {reservation.Time.Item2}");
+        }*/
+
+        foreach (var reservation in reservations)
+        {
+            Console.WriteLine($"Table {reservation.Table.TableID}: Reserved from {reservation.Time.Item1.ToString("MMMM dd, yyyy HH:mm")} to {reservation.Time.Item2.ToString("MMMM dd, yyyy HH:mm")}");
+        }
+
+
     }
 }
