@@ -63,7 +63,7 @@ static class Information
 
         foreach (var reservation in reservations)
         {
-            Console.WriteLine($"Table {reservation.Table.TableID}: Reserved from {reservation.Time.Item1.ToString("MMMM dd, yyyy HH:mm")} to {reservation.Time.Item2.ToString("MMMM dd, yyyy HH:mm")}");
+            Console.WriteLine($"Table {reservation.Table.TableID}: from {reservation.Time.Item1.ToString("MMMM dd yyyy, HH:mm")} till {reservation.Time.Item2.ToString("HH:mm")}");
         }
 
 
