@@ -3,7 +3,11 @@ static class Information
     public static void DisplayMap()
     {
         Console.WriteLine(
-        @"Map van het restaurant:
+        $@"Map of the restaurant:
+
+1-8: tables for 2
+9-11: tables for 4
+13-16: tables for 6
 
 +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
 |_________bar_____________|  |                                   |   wc    |
