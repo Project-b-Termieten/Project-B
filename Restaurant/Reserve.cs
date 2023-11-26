@@ -44,7 +44,7 @@ public static class Reserve
                 reservation.Time = Reservation_time;
                 reservations.Add(reservation);
                 WriteToJsonFile(reservations);
-                Console.WriteLine($"You places a reservation at table {reservation.Table.TableID} for {reservation.Amount}");
+                Console.WriteLine($"You placed a reservation at table {reservation.Table.TableID} for {reservation.Amount}");
                 break;
             }
         }
