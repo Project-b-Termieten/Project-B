@@ -38,7 +38,7 @@ public class Admin : User
             {
                 case "1":
                     Information.DisplayMap();
-                    Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables);
+                    Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, currentUser.Time); //26 oktober ->currentUser.Time);
                     Console.ReadKey();
                     Console.Clear();
                     return true;
