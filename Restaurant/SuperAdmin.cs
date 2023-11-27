@@ -1,5 +1,6 @@
 
 using Newtonsoft.Json;
+using System.Globalization;
 
 public class SuperAdmin : Admin
 {
@@ -28,7 +29,25 @@ public class SuperAdmin : Admin
             {
                 case "1":
                     Information.DisplayMap();
-                    Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, currentUser.Time); //26 oktober ->currentUser.Time);
+                    bool Incomplete = true;
+                    while (Incomplete)
+                    {
+                        Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
+                        userInput = Console.ReadLine() + ":00";
+                        string format = "yyyy-MM-dd HH:mm:ss";
+                        if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
+                        {
+                            Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
+                            Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
+                            Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
+                            Incomplete = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid date format");
+                        }
+                    }
+                    HasReserved = true;
                     Console.ReadKey();
                     Console.Clear();
                     return true;
