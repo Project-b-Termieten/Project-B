@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Globalization;
 
 public class Admin : User
 {
@@ -18,7 +19,7 @@ public class Admin : User
         Console.WriteLine("|                                |");
         Console.WriteLine("+--------------------------------+");
         Console.WriteLine("| Options:                       |");
-        Console.WriteLine("| 1. Make Reservation            |");
+        Console.WriteLine("| 1. Reservation                 |");
         Console.WriteLine("| 2. Menu                        |");
         Console.WriteLine("| 3. Restaurant Informatio       |");
         Console.WriteLine("| 4. Logout                      |");
@@ -37,8 +38,40 @@ public class Admin : User
             switch (userInput)
             {
                 case "1":
-                    Information.DisplayMap();
-                    Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, currentUser.Time); //26 oktober ->currentUser.Time);
+                    Console.WriteLine("(1.) Make Reservation");
+                    Console.WriteLine("(2.) Cancel Reservation");
+                    string reservationInput = Console.ReadLine();
+                    switch (reservationInput)
+                    {
+                        case "1":
+                            Information.DisplayMap();
+                            bool Incomplete = true;
+                            while (Incomplete)
+                            {
+                                Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
+                                userInput = Console.ReadLine() + ":00";
+                                string format = "yyyy-MM-dd HH:mm:ss";
+                                if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
+                                {
+                                    Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
+                                    Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
+                                    Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
+                                    Incomplete = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid date format");
+                                }
+                            }
+                            HasReserved = true;
+                            break;
+                        case "2":
+                            Reserve.CancelReservation(currentUser);
+                            break;
+                        default:
+                            Console.WriteLine("Invalid input. Please select a valid option.");
+                            break;
+                    }
                     Console.ReadKey();
                     Console.Clear();
                     return true;
