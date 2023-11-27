@@ -21,7 +21,7 @@ public class Admin : User
         Console.WriteLine("| Options:                       |");
         Console.WriteLine("| 1. Reservation                 |");
         Console.WriteLine("| 2. Menu                        |");
-        Console.WriteLine("| 3. Restaurant Informatio       |");
+        Console.WriteLine("| 3. Restaurant Information      |");
         Console.WriteLine("| 4. Logout                      |");
         Console.WriteLine("| 5. Exit                        |");
         Console.WriteLine("+--------------------------------+");
