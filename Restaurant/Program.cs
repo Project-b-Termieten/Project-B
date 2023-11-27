@@ -13,6 +13,26 @@ public static class Program
 
     public static void Main()
     {
+        /*string filePath = "C:\\Users\\jerre\\OneDrive\\Bureaublad\\projectbb\\projectbb\\User_info.json";
+
+        // Read existing user data from the file
+        List<User> users = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText(filePath), new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All
+        });
+
+        // Add the hardcoded superadmin to the list
+        SuperAdmin superAdmin = new SuperAdmin("superadmin", "superadmin@example.com", "superadmin");
+        users.Add(superAdmin);
+
+        // Serialize the updated list of users with type information
+        string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All
+        });
+
+        // Write the updated user data back to the file
+        File.WriteAllText(filePath, jsonString);*/
         while (true)
         {
             Console.WriteLine("+--------------------------------+");
@@ -88,7 +108,7 @@ public static class Program
             string name = Console.ReadLine();
             Console.WriteLine("Please enter your email: ");
             string email = Console.ReadLine();
-            Console.WriteLine("Please enter your password: ");
+            Console.WriteLine("Please enter your password: (Atleast 8 characters)");
             string password = Console.ReadLine();
 
             // Call the SignUp method to validate and save user information
