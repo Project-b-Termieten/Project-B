@@ -9,9 +9,10 @@ public class User
     public string Password { get; set; }
     public bool IsAdmin { get; set; }
     public bool IsSuperAdmin { get; set; }
+    [JsonIgnore]
 
     public bool HasReserved = false;
-
+    [JsonIgnore]
     public Tuple<DateTime, DateTime> Time { get; set; }
 
     public User(string name, string email, string password)
@@ -26,41 +27,19 @@ public class User
 
     public virtual void UserMenu()
     {
-        if (HasReserved == false)
-        {
             Console.WriteLine("+--------------------------------+");
             Console.WriteLine("|                                |");
             Console.WriteLine("|  Welcome to Jake’s restaurant! |");
             Console.WriteLine("|                                |");
             Console.WriteLine("+--------------------------------+");
             Console.WriteLine("| Options:                       |");
-            Console.WriteLine("| 1. Make Reservation            |");
+            Console.WriteLine("| 1. Reservation                 |");
             Console.WriteLine("| 2. Menu                        |");
             Console.WriteLine("| 3. Restaurant Information      |");
             Console.WriteLine("| 4. Logout                      |");
             Console.WriteLine("| 5. Exit                        |");
             Console.WriteLine("+--------------------------------+");
             Console.WriteLine("Please pick an option (1/2/3/4/5):");
-        }
-
-        else
-        {
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("|  Welcome to Jake’s restaurant! |");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("| Options:                       |");
-            Console.WriteLine("| 1. Make Reservation            |");
-            Console.WriteLine("| 2. Menu                        |");
-            Console.WriteLine("| 3. Restaurant Information      |");
-            Console.WriteLine("| 4. Logout                      |");
-            Console.WriteLine("| 5. Exit                        |");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("| 6. Cancel Reservation          |");
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("Please pick an option (1/2/3/4/5):");
-        }
     }
 
     public virtual bool UserInput(User currentUser, List<Table> tables)
@@ -70,26 +49,40 @@ public class User
         switch (userInput)
         {
             case "1":
-                Information.DisplayMap();
-                bool Incomplete = true;
-                while (Incomplete)
+                Console.WriteLine("(1.) Make Reservation");
+                Console.WriteLine("(2.) Cancel Reservation");
+                string reservationInput = Console.ReadLine();
+                switch (reservationInput)
                 {
-                    Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
-                    userInput = Console.ReadLine() + ":00";
-                    string format = "yyyy-MM-dd HH:mm:ss";
-                    if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
-                    {
-                        Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
-                        Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
-                        Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
-                        Incomplete = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid date format");
-                    }
+                    case "1":
+                        Information.DisplayMap();
+                        bool Incomplete = true;
+                        while (Incomplete)
+                        {
+                            Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
+                            userInput = Console.ReadLine() + ":00";
+                            string format = "yyyy-MM-dd HH:mm:ss";
+                            if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
+                            {
+                                Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
+                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
+                                Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
+                                Incomplete = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid date format");
+                            }
+                        }
+                        HasReserved = true;
+                        break;
+                    case "2":
+                        Reserve.CancelReservation(currentUser);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Please select a valid option.");
+                        break;
                 }
-                HasReserved = true;
                 Console.ReadKey();
                 Console.Clear();
                 return true;
