@@ -8,8 +8,8 @@ public static class Reserve
 
         if (reservations == null || reservations.Count == 0)
         {
-        Console.WriteLine("No reservations to cancel.");
-        return;
+            Console.WriteLine("No reservations to cancel.");
+            return;
         }
         // Find the reservation to cancel
         Reservation reservationToCancel = reservations.FirstOrDefault(
@@ -17,8 +17,8 @@ public static class Reserve
 
         if (reservationToCancel == null)
         {
-        Console.WriteLine("Reservation not found. No reservation was canceled.");
-        return;
+            Console.WriteLine("Reservation not found. No reservation was canceled.");
+            return;
         }
         // Remove the reservation from the list
         reservations.Remove(reservationToCancel);
@@ -52,11 +52,11 @@ public static class Reserve
 
     public static int ValidateAmount()
     {
-        Console.WriteLine("For how many people would you like to make a reservation?");
+        Console.WriteLine("For how many people would you like to make a reservation? (Maximum of 6 people. Call restaurant for bigger reservations)" );
         int groupAmount;
-        while (!int.TryParse(Console.ReadLine(), out groupAmount) || groupAmount <= 0)
+        while (!int.TryParse(Console.ReadLine(), out groupAmount) || groupAmount <= 0 || groupAmount > 6)
         {
-            Console.WriteLine("Invalid input. Please enter a valid number.");
+            Console.WriteLine("Invalid input. Please enter a valid number. (1 to 6)");
         }
         return groupAmount;
     }
@@ -124,7 +124,7 @@ public static class Reserve
     }
     public static List<Reservation> ReadFromJsonFile()
     {
-        string filePath = "Reservation.json";
+        string filePath = "C:\\Users\\jerre\\OneDrive\\Bureaublad\\projectbb\\projectbb\\Reservations.json";
         string jsonData = File.ReadAllText(filePath);
         List<Reservation> objects = JsonConvert.DeserializeObject<List<Reservation>>(jsonData);
         return objects;
@@ -132,7 +132,7 @@ public static class Reserve
 
     public static void WriteToJsonFile(List<Reservation> reservations)
     {
-        string filePath = @"Reservation.json";
+        string filePath = @"C:\Users\jerre\OneDrive\Bureaublad\projectbb\projectbb\Reservations.json";
         string jsonString = JsonConvert.SerializeObject(reservations, Formatting.Indented);
         File.WriteAllText(filePath, jsonString);
     }
