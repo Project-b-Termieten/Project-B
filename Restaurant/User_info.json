@@ -1,23 +1,13 @@
-[
+{
+  "$type": "System.Collections.Generic.List`1[[User, projectbb]], System.Private.CoreLib",
+  "$values": [
     {
-        "Name": "Owner",
-        "Email": "Owner@hotmail.com",
-        "Password": "Ownerpassword",
-        "Admin": true,
-        "Superadmin": true
-    },
-    {
-        "Name": "Test",
-        "Email": "Test@hotmail.com",
-        "Password": "TestTest",
-        "Admin": false,
-        "Superadmin": false
-    },
-    {
-        "Name": "NewAdmin",
-        "Email": "NewAdmin@hotmail.com",
-        "Password": "NewAdmin",
-        "Admin": true,
-        "Superadmin": false
+      "$type": "SuperAdmin, projectbb",
+      "Name": "superadmin",
+      "Email": "superadmin@example.com",
+      "Password": "superadmin",
+      "IsAdmin": true,
+      "IsSuperAdmin": true
     }
-]
+  ]
+}
