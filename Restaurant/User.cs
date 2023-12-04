@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using System.Globalization;
 
 
-public class User
+public class User : IUserOperations
 {
     public string Name { get; set; }
     public string Email { get; set; }  // Add a public setter
@@ -11,7 +11,7 @@ public class User
     public bool IsSuperAdmin { get; set; }
     [JsonIgnore]
 
-    public bool HasReserved = false;
+    public bool HasReserved { get; set; } = false;
     [JsonIgnore]
     public Tuple<DateTime, DateTime> Time { get; set; }
 
@@ -27,19 +27,18 @@ public class User
 
     public virtual void UserMenu()
     {
-        Console.WriteLine("+--------------------------------+");
-        Console.WriteLine("|                                |");
-        Console.WriteLine("|  Welcome to Jake’s restaurant! |");
-        Console.WriteLine("|                                |");
-        Console.WriteLine("+--------------------------------+");
-        Console.WriteLine("| Options:                       |");
-        Console.WriteLine("| 1. Reservation                 |");
-        Console.WriteLine("| 2. Menu                        |");
-        Console.WriteLine("| 3. Restaurant Information      |");
-        Console.WriteLine("| 4. Logout                      |");
-        Console.WriteLine("| 5. Exit                        |");
-        Console.WriteLine("+--------------------------------+");
-        Console.WriteLine("Please pick an option (1/2/3/4/5):");
+            Console.WriteLine("+--------------------------------+");
+            Console.WriteLine("|                                |");
+            Console.WriteLine("|  Welcome to Jake’s restaurant! |");
+            Console.WriteLine("|                                |");
+            Console.WriteLine("+--------------------------------+");
+            Console.WriteLine("| Options:                       |");
+            Console.WriteLine("| 1. Reservation                 |");
+            Console.WriteLine("| 2. Menu                        |");
+            Console.WriteLine("| 3. Restaurant Information      |");
+            Console.WriteLine("| 4. Logout                      |");
+            Console.WriteLine("| 5. Exit                        |");
+            Console.WriteLine("+--------------------------------+");
     }
 
     public virtual bool UserInput(User currentUser, List<Table> tables)
@@ -59,26 +58,19 @@ public class User
                         bool Incomplete = true;
                         while (Incomplete)
                         {
-                            // Get the date from the user
-                            Console.Write("Enter date (yyyy-MM-dd): ");
-                            string dateString = Console.ReadLine();
-
-                            // Get the time from the user
-                            Console.Write("Enter time (HH:mm): ");
-                            string timeString = Console.ReadLine();
-
-                            // Parse date and time strings
-                            if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
+                            Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
+                            userInput = Console.ReadLine() + ":00";
+                            string format = "yyyy-MM-dd HH:mm:ss";
+                            if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
                             {
-                                // Display the selected date and time
-                                Console.WriteLine($"Selected Date and Time: {selectedDateTime}");
-                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
+                                Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
+                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
                                 Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
                                 Incomplete = false;
                             }
                             else
                             {
-                                Console.WriteLine("Invalid date or time format.");
+                                Console.WriteLine("Invalid date format");
                             }
                         }
                         HasReserved = true;
@@ -110,10 +102,6 @@ public class User
                 return false;
             case "5":
                 Console.WriteLine("Exiting the app. Goodbye!");
-                Environment.Exit(0);
-                return true;
-            case "6":
-                Reserve.CancelReservation(currentUser);
                 Environment.Exit(0);
                 return true;
             default:
