@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Globalization;
 
-public class SuperAdmin : Admin
+public class SuperAdmin : Admin, IUserOperations
 {
     [JsonProperty("IsSuperAdmin", Order = 5)]
     public bool IsSuperAdmin { get; set; }
@@ -71,7 +71,13 @@ public class SuperAdmin : Admin
                     Environment.Exit(0);
                     return true;
                 case "6":
-                    AdminMenu();
+                    bool adminMenu = true;
+                    while (adminMenu)
+                    {
+                        AdminMenu();
+                        Console.Write("Please select an option (1/2/3/4/5): ");
+                        adminMenu = AdminInput();
+                    }
                     return true;
                 default:
                     Console.WriteLine("Invalid input. Please select a valid option.");
@@ -82,25 +88,10 @@ public class SuperAdmin : Admin
 
     protected override void AdminMenu()
     {
-        bool AdminMenu = true;
-        while (AdminMenu)
-        {
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("|  Welcome Admin                 |");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("| Options:                       |");
-            Console.WriteLine("| 1. Add item to Menu            |");
-            Console.WriteLine("| 2. Remove item from Menu       |");
-            Console.WriteLine("| 3. return                      |");
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("| 4. Create Admin User           |");
-            Console.WriteLine("| 5. Delete Admin User           |");
-            Console.WriteLine("+--------------------------------+");
-            Console.Write("Please select an option (1/2/3/4/5):  ");
-            AdminMenu = AdminInput();
-        }
+        base.AdminMenu();
+        Console.WriteLine("| 4. Create Admin User           |");
+        Console.WriteLine("| 5. Delete Admin User           |");
+        Console.WriteLine("+--------------------------------+");
     }
 
     protected override bool AdminInput()
@@ -157,9 +148,8 @@ public class SuperAdmin : Admin
             if (user.Email == Email)
             {
                 users.Remove(user);
-                Console.WriteLine("TEST");
                 break;
-            }
+            }  
         }
         string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
         {
