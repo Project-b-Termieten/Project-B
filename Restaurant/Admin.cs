@@ -5,8 +5,6 @@ public class Admin : User, IUserOperations
 {
     [JsonProperty("IsAdmin", Order = 4)]
     public bool IsAdmin { get; set; }
-
-    public bool HasReserved { get; set; }
     public Admin(string username, string email, string password)
         : base(username, email, password)
     {
@@ -20,7 +18,7 @@ public class Admin : User, IUserOperations
         Console.WriteLine("+--------------------------------+");
     }
 
-    public virtual new bool UserInput(User currentUser, List<Table> tables)
+    public override bool UserInput(User currentUser, List<Table> tables)
     {
         {
             string userInput = Console.ReadLine();
@@ -85,7 +83,13 @@ public class Admin : User, IUserOperations
                     Environment.Exit(0);
                     return true;
                 case "6":
-                    AdminMenu();
+                    bool adminMenu = true;
+                    while (adminMenu)
+                    {
+                        AdminMenu();
+                        Console.Write("Please select an option (1/2/3): ");
+                        adminMenu = AdminInput();
+                    }
                     return true;
                 default:
                     Console.WriteLine("Invalid input. Please select a valid option.");
@@ -96,8 +100,6 @@ public class Admin : User, IUserOperations
 
     protected virtual void AdminMenu()
     {
-        bool adminMenu = true;
-        while (adminMenu)
         {
             Console.WriteLine("+--------------------------------+");
             Console.WriteLine("|                                |");
@@ -109,8 +111,6 @@ public class Admin : User, IUserOperations
             Console.WriteLine("| 2. Remove item from Menu       |");
             Console.WriteLine("| 3. Return to User Menu         |");
             Console.WriteLine("+--------------------------------+");
-            Console.Write("Please select an option (1/2/3): ");
-            adminMenu = AdminInput();
         }
     }
 
