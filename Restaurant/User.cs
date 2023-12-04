@@ -27,19 +27,19 @@ public class User
 
     public virtual void UserMenu()
     {
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("|  Welcome to Jake’s restaurant! |");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("| Options:                       |");
-            Console.WriteLine("| 1. Reservation                 |");
-            Console.WriteLine("| 2. Menu                        |");
-            Console.WriteLine("| 3. Restaurant Information      |");
-            Console.WriteLine("| 4. Logout                      |");
-            Console.WriteLine("| 5. Exit                        |");
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("Please pick an option (1/2/3/4/5):");
+        Console.WriteLine("+--------------------------------+");
+        Console.WriteLine("|                                |");
+        Console.WriteLine("|  Welcome to Jake’s restaurant! |");
+        Console.WriteLine("|                                |");
+        Console.WriteLine("+--------------------------------+");
+        Console.WriteLine("| Options:                       |");
+        Console.WriteLine("| 1. Reservation                 |");
+        Console.WriteLine("| 2. Menu                        |");
+        Console.WriteLine("| 3. Restaurant Information      |");
+        Console.WriteLine("| 4. Logout                      |");
+        Console.WriteLine("| 5. Exit                        |");
+        Console.WriteLine("+--------------------------------+");
+        Console.WriteLine("Please pick an option (1/2/3/4/5):");
     }
 
     public virtual bool UserInput(User currentUser, List<Table> tables)
@@ -59,19 +59,26 @@ public class User
                         bool Incomplete = true;
                         while (Incomplete)
                         {
-                            Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
-                            userInput = Console.ReadLine() + ":00";
-                            string format = "yyyy-MM-dd HH:mm:ss";
-                            if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
+                            // Get the date from the user
+                            Console.Write("Enter date (yyyy-MM-dd): ");
+                            string dateString = Console.ReadLine();
+
+                            // Get the time from the user
+                            Console.Write("Enter time (HH:mm): ");
+                            string timeString = Console.ReadLine();
+
+                            // Parse date and time strings
+                            if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
                             {
-                                Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
-                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
+                                // Display the selected date and time
+                                Console.WriteLine($"Selected Date and Time: {selectedDateTime}");
+                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
                                 Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
                                 Incomplete = false;
                             }
                             else
                             {
-                                Console.WriteLine("Invalid date format");
+                                Console.WriteLine("Invalid date or time format.");
                             }
                         }
                         HasReserved = true;
