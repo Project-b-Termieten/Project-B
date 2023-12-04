@@ -96,7 +96,7 @@ public class SuperAdmin : Admin
             Console.WriteLine("| 3. return                      |");
             Console.WriteLine("+--------------------------------+");
             Console.WriteLine("| 4. Create Admin User           |");
-            Console.WriteLine("| 5. Upgrade User to Admin       |");
+            Console.WriteLine("| 5. Delete Admin User           |");
             Console.WriteLine("+--------------------------------+");
             Console.Write("Please select an option (1/2/3/4/5):  ");
             AdminMenu = AdminInput();
@@ -114,7 +114,7 @@ public class SuperAdmin : Admin
                 CreateAdmin();
                 return true;
             case "5":
-                UpgradeUser();
+                DeleteAdmin();
                 return true;
             default:
                 base.AdminInput();
@@ -136,28 +136,39 @@ public class SuperAdmin : Admin
         Console.Clear();
     }
 
-    private void UpgradeUser()
+    private void DeleteAdmin()
     {
-        User UserForUpgrade = null;
-        Login userlogin = new Login();
-        UserForUpgrade = userlogin.PromptForLogin();
-        if (UserForUpgrade is null)
-            return;
-        Admin newAdmin = new Admin(UserForUpgrade.Name, UserForUpgrade.Email, UserForUpgrade.Password);
-        string filePath = "C:\\Users\\jerre\\OneDrive\\Bureaublad\\projectbb\\projectbb\\User_info.json";
-        string json = File.ReadAllText(filePath);
-        List<User> users = JsonConvert.DeserializeObject<List<User>>(json);
+        string filePath = @"../../../User_info.json";
+
+        List<User> users = new List<User>();
+
+        if (File.Exists(filePath))
+        {
+            string existingData = File.ReadAllText(filePath);
+            users = JsonConvert.DeserializeObject<List<User>>(existingData, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
+        }
+        Console.WriteLine("What is the Email of the admin you wish to delete?");
+        string Email = Console.ReadLine();
         foreach (User user in users)
         {
-            if (UserForUpgrade.Email == user.Email)
+            if (user.Email == Email)
             {
                 users.Remove(user);
+                Console.WriteLine("TEST");
                 break;
-            }
+            }  
         }
-        users.Add(newAdmin);
-        string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented);
+        string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All
+        });
+
         File.WriteAllText(filePath, jsonString);
-        Console.WriteLine($"User {newAdmin.Name} has been promoted to Admin!");
+        Console.WriteLine("Admin has been successfully deleted.");
+        Console.ReadKey();
+        Console.Clear();
     }
 }
