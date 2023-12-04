@@ -1,17 +1,12 @@
-public class Drink
+public class Drink : MenuItem
 {
-    public string Name;
-    public double Price;
-
-    public Drink(string name, double price)
+    public Drink(string name, double price) : base(name, price)
     {
-        Name = name;
-        Price = price;
     }
 
-    public string Display()
+    public override string Display()
     {
-        string Display_price = Price.ToString("F2");
-        return $"{Name} {Display_price}";
+        string DisplayPrice = Price.ToString("F2");
+        return $"{Name} {DisplayPrice}";
     }
 }
