@@ -5,6 +5,8 @@ public class Admin : User, IUserOperations
 {
     [JsonProperty("IsAdmin", Order = 4)]
     public bool IsAdmin { get; set; }
+
+    public bool HasReserved { get; set; }
     public Admin(string username, string email, string password)
         : base(username, email, password)
     {
@@ -18,7 +20,7 @@ public class Admin : User, IUserOperations
         Console.WriteLine("+--------------------------------+");
     }
 
-    public new bool UserInput(User currentUser, List<Table> tables)
+    public virtual new bool UserInput(User currentUser, List<Table> tables)
     {
         {
             string userInput = Console.ReadLine();

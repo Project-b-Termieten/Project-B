@@ -159,7 +159,7 @@ public class SuperAdmin : Admin
                 users.Remove(user);
                 Console.WriteLine("TEST");
                 break;
-            }  
+            }
         }
         string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
         {
