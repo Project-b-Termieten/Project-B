@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -57,6 +58,10 @@ public static class Program
                     while (Loggedin)
                     {
                         currentUser.UserMenu();
+                        if (currentUser is Admin)
+                            Console.WriteLine("Please select an option (1/2/3/4/5/6):");
+                        else
+                            Console.WriteLine("Please select an option (1/2/3/4/5):");
                         if (currentUser.UserInput(currentUser, tables) is false)
                             Loggedin = false;
                     }
