@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using System.Globalization;
 
-public class Admin : User
+public class Admin : User, IUserOperations
 {
     [JsonProperty("IsAdmin", Order = 4)]
     public bool IsAdmin { get; set; }
@@ -13,24 +13,12 @@ public class Admin : User
 
     public override void UserMenu()
     {
-        Console.WriteLine("+--------------------------------+");
-        Console.WriteLine("|                                |");
-        Console.WriteLine("|  Welcome to Jake’s restaurant! |");
-        Console.WriteLine("|                                |");
-        Console.WriteLine("+--------------------------------+");
-        Console.WriteLine("| Options:                       |");
-        Console.WriteLine("| 1. Reservation                 |");
-        Console.WriteLine("| 2. Menu                        |");
-        Console.WriteLine("| 3. Restaurant Information      |");
-        Console.WriteLine("| 4. Logout                      |");
-        Console.WriteLine("| 5. Exit                        |");
-        Console.WriteLine("+--------------------------------+");
+        base.UserMenu();
         Console.WriteLine("| 6. Admin Menu                  |");
         Console.WriteLine("+--------------------------------+");
-        Console.WriteLine("Please select an option (1/2/3/4/5/6):");
     }
 
-    public override bool UserInput(User currentUser, List<Table> tables)
+    public new bool UserInput(User currentUser, List<Table> tables)
     {
         {
             string userInput = Console.ReadLine();
