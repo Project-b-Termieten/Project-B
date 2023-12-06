@@ -38,6 +38,7 @@ public class User : IUserOperations
             Console.WriteLine("| 3. Restaurant Information      |");
             Console.WriteLine("| 4. Logout                      |");
             Console.WriteLine("| 5. Exit                        |");
+            Console.WriteLine("| 6. Place Order                 |");
             Console.WriteLine("+--------------------------------+");
     }
 
@@ -103,6 +104,17 @@ public class User : IUserOperations
             case "5":
                 Console.WriteLine("Exiting the app. Goodbye!");
                 Environment.Exit(0);
+                return true;
+            case "6":
+                if (!currentUser.IsAdmin && !currentUser.IsSuperAdmin)
+                {
+                    Order order = new Order();
+                    order.PlaceOrder(currentUser);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please select a valid option.");
+                }
                 return true;
             default:
                 Console.WriteLine("Invalid input. Please select a valid option.");
