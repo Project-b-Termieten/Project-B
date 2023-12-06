@@ -179,4 +179,14 @@ public static class Menu
             Console.WriteLine($"Drink item '{drinkName}' was not found in the menu.");
         }
     }
+    public static Food FindFoodByName(string foodName)
+    {
+        string json = File.ReadAllText("C:\\Users\\altaa\\OneDrive\\Documents\\Restuarant pro\\Restuarant pro\\Menu_Food.json");
+
+        List<Food> existingFoods = JsonConvert.DeserializeObject<List<Food>>(json);
+
+        Food selectedFood = existingFoods.FirstOrDefault(food => food.Name.Equals(foodName, StringComparison.OrdinalIgnoreCase));
+
+        return selectedFood;
+    }
 }
