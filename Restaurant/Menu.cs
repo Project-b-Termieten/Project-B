@@ -189,4 +189,14 @@ public static class Menu
 
         return selectedFood;
     }
+    public static Drink FindDrinkByName(string drinkName)
+    {
+        string json = File.ReadAllText("C:\\Users\\altaa\\OneDrive\\Documents\\Restuarant pro\\Restuarant pro\\Menu_Drink.json");
+
+        List<Drink> existingDrinks = JsonConvert.DeserializeObject<List<Drink>>(json);
+
+        Drink selectedDrink = existingDrinks.FirstOrDefault(drink => drink.Name.Equals(drinkName, StringComparison.OrdinalIgnoreCase));
+
+        return selectedDrink;
+    }
 }
