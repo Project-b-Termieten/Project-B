@@ -35,11 +35,6 @@ public static class Program
 
         // Write the updated user data back to the file
         File.WriteAllText(filePath, jsonString);*/
-        ShowReservationsWithEmail("Reservation.json", "Owner@hotmail.com");
-        RemoveReservationByIndex("Reservation.json", 7);
-        ShowReservationsWithEmail("Reservation.json", "Owner@hotmail.com");
-        Console.WriteLine("End of Test");
-        Console.ReadLine();
         while (true)
         {
             Console.WriteLine("+--------------------------------+");
