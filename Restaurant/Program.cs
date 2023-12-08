@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json.Linq;
 
 public static class Program
 {
@@ -34,6 +35,11 @@ public static class Program
 
         // Write the updated user data back to the file
         File.WriteAllText(filePath, jsonString);*/
+        ShowReservationsWithEmail("Reservation.json", "Owner@hotmail.com");
+        RemoveReservationByIndex("Reservation.json", 7);
+        ShowReservationsWithEmail("Reservation.json", "Owner@hotmail.com");
+        Console.WriteLine("End of Test");
+        Console.ReadLine();
         while (true)
         {
             Console.WriteLine("+--------------------------------+");
@@ -121,6 +127,53 @@ public static class Program
         }
         Console.ReadKey();
         Console.Clear();
+    }
+    static void ShowReservationsWithEmail(string jsonFilePath, string targetEmail)
+    {
+        // Read JSON file content
+        string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
+
+        // Parse JSON data
+        JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
+
+        // Display reservations with the provided email
+        Console.WriteLine($"Reservations for Email: {targetEmail}");
+        for (int i = 0; i < reservations.Count; i++)
+        {
+            if (String.Equals(reservations[i]["Email"]?.ToString(), targetEmail, StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine($"Index: {i}, Email: {reservations[i]["Email"]}, Time {reservations[i]["Time"]}");
+            }
+        }
+    }
+
+    static void RemoveReservationByIndex(string jsonFilePath, int index)
+    {
+        // Read JSON file content
+        string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
+
+        // Parse JSON data
+        JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
+
+
+        // Check if the index is valid
+        if (index >= 0 && index < reservations.Count)
+        {
+            // Remove the reservation at the specified index
+            reservations.RemoveAt(index);
+
+            // Serialize the updated data back to JSON
+            string updatedJsonContent = JsonConvert.SerializeObject(reservations, Formatting.Indented);
+
+            // Write the updated JSON content back to the file
+            System.IO.File.WriteAllText(jsonFilePath, updatedJsonContent);
+
+            Console.WriteLine($"Reservation at index {index} removed successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Invalid index. No reservation removed.");
+        }
     }
     //CODE BELOW TO HARDCODE A SUPERADMIN
     //==================================

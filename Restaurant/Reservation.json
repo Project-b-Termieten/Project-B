@@ -92,19 +92,6 @@
   },
   {
     "Time": {
-      "Item1": "2023-11-24T10:15:00",
-      "Item2": "2023-11-24T11:15:00"
-    },
-    "Name": "Owner",
-    "Email": "Owner@hotmail.com",
-    "Amount": 4,
-    "Table": {
-      "TableID": 11,
-      "Capacity": 4
-    }
-  },
-  {
-    "Time": {
       "Item1": "2023-11-24T09:30:00",
       "Item2": "2023-11-24T10:30:00"
     },
