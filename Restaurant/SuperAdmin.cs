@@ -177,8 +177,7 @@ public class SuperAdmin : Admin, IUserOperations
         string Email_User = Console.ReadLine();
         if (!Check_User_Present(Email_User))
         {
-            // Optionally handle the case where the user isn't present
-            return; // Exit the method if user not present
+            return; // exit als die user niet bestaat
         }
         Console.WriteLine("+--------------------------------+");
         Console.WriteLine("| 1. Remove Reservation          |");
@@ -217,10 +216,9 @@ public class SuperAdmin : Admin, IUserOperations
     bool Check_User_Present(string Email_User)
     {
         string jsonFilePath = "C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\User_info.json";
-        // Read JSON file content
+
         string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
 
-        // Parse JSON data
         JObject jsonData = JsonConvert.DeserializeObject<JObject>(jsonContent);
 
         // Extract the list of users
@@ -239,13 +237,11 @@ public class SuperAdmin : Admin, IUserOperations
 
     static void ShowReservationsWithEmail(string jsonFilePath, string targetEmail)
     {
-        // Read JSON file content
         string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
 
-        // Parse JSON data
         JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
 
-        // Display reservations with the provided email
+        // Printen van reserveringen voor de email
         Console.WriteLine($"Reservations for Email: {targetEmail}");
         for (int i = 0; i < reservations.Count; i++)
         {
@@ -260,24 +256,20 @@ public class SuperAdmin : Admin, IUserOperations
     }
 
     static void RemoveReservationByIndex(string jsonFilePath, int index)
-    {
-        // Read JSON file content
+    {        
         string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
 
-        // Parse JSON data
         JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
 
-
-        // Check if the index is valid
+        // checken van index
         if (index >= 0 && index < reservations.Count)
         {
-            // Remove the reservation at the specified index
             reservations.RemoveAt(index);
 
-            // Serialize the updated data back to JSON
+            // Lezen van json
             string updatedJsonContent = JsonConvert.SerializeObject(reservations, Formatting.Indented);
 
-            // Write the updated JSON content back to the file
+            // Updaten van de json
             System.IO.File.WriteAllText(jsonFilePath, updatedJsonContent);
 
             Console.WriteLine($"Reservation at index {index} removed successfully.");
@@ -299,7 +291,7 @@ public class SuperAdmin : Admin, IUserOperations
             Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
             Tuple<DateTime, DateTime> New_Reservation_Time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
             string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
-            // Parse JSON data
+            // Json data pakken
             JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
             if (index >= 0 && index < reservations.Count)
             {
@@ -308,12 +300,19 @@ public class SuperAdmin : Admin, IUserOperations
                 string updatedJsonContent = JsonConvert.SerializeObject(reservations, Formatting.Indented);
                 System.IO.File.WriteAllText(jsonFilePath, updatedJsonContent);
             }
-            return; // Successfully changed reservation time, returning from method
+            Console.Clear();
+
+            Console.WriteLine(
+@"+--------------------------------+
+|                                |
+| Succesfully changed the reser- |
+| vation!!                       |
+|                                |");
+            return; // Voltooid van reservering aanpssen, terug naar super admin menu
         }
         else
         {
             Console.WriteLine("Invalid date format");
-            // You may add further handling for invalid date input here
         }
     }
 
