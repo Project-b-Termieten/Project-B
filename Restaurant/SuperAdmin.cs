@@ -102,22 +102,42 @@ public class SuperAdmin : Admin, IUserOperations
         string AdminInput = Console.ReadLine();
         switch (AdminInput)
         {
+            case "1":
+                Menu.Add_Item_Menu();
+                Console.ReadKey();
+                Console.Clear();
+                return true;
+            case "2":
+                Menu.Remove_Item_Menu();
+                Console.ReadKey();
+                Console.Clear();
+                return true;
             case "3":
+                Console.Clear();
                 return false;
             case "4":
                 CreateAdmin();
+                Console.ReadKey();
+                Console.Clear();
                 return true;
             case "5":
                 DeleteAdmin();
+                Console.ReadKey();
+                Console.Clear();
                 return true;
             case "6":
                 Change_Reservation();
+                Console.ReadKey();
+                Console.Clear();
                 return true;
             default:
-                base.AdminInput();
+                Console.WriteLine("Incorrect input");
+                Console.ReadKey();
+                Console.Clear();
                 return true;
         }
     }
+
 
     private void CreateAdmin()
     {
