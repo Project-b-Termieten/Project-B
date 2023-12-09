@@ -197,7 +197,7 @@ public class SuperAdmin : Admin, IUserOperations
                     Console.WriteLine("+--------------------------------+");
                     Console.WriteLine("| Reservation to change:         |");
                     Console.WriteLine("+--------------------------------+");
-                    ShowReservationsWithEmail("Reservation.json", Email);
+                    ShowReservationsWithEmail("Reservation.json", Email_User);
                     int index_ = int.Parse(Console.ReadLine());
                     Change_Reservation_method("Reservation.json", index_);
                     break;
