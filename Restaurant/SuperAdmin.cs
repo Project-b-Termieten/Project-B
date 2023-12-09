@@ -301,15 +301,33 @@ public class SuperAdmin : Admin, IUserOperations
         Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
         string userInput = Console.ReadLine() + ":00";
         string format = "yyyy-MM-dd HH:mm:ss";
+        if (userInput.ToUpper() == "EXIT:00")
+        {
+            return;
+        }
         if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
         {
             Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
             Tuple<DateTime, DateTime> New_Reservation_Time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
+            List<Reservation> List_of_Reservations = Reserve.ReadFromJsonFile();
+            foreach (Reservation Existing_reservation in List_of_Reservations)
+            {
+                if (Reserve.IsReservationOverlapping(Existing_reservation.Time, New_Reservation_Time))
+                {
+                    continue;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid date");
+                    Change_Reservation_method(jsonFilePath, index);
+                }
+            }
             string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
             // Json data pakken
             JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
             if (index >= 0 && index < reservations.Count)
             {
+                
                 JToken newTimeToken = JToken.FromObject(New_Reservation_Time);
                 reservations[index]["Time"] = newTimeToken;
                 string updatedJsonContent = JsonConvert.SerializeObject(reservations, Formatting.Indented);
@@ -330,7 +348,6 @@ public class SuperAdmin : Admin, IUserOperations
             Console.WriteLine("Invalid date format");
         }
     }
-
 
 
 }

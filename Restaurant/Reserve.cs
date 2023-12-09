@@ -138,7 +138,7 @@ public static class Reserve
         File.WriteAllText(filePath, jsonString);
     }
 
-    private static bool IsReservationOverlapping(Tuple<DateTime, DateTime> reservationTime, Tuple<DateTime, DateTime> existingReservation)
+    public static bool IsReservationOverlapping(Tuple<DateTime, DateTime> reservationTime, Tuple<DateTime, DateTime> existingReservation)
     {
         DateTime start_time = reservationTime.Item1;
         DateTime end_time = reservationTime.Item2;
