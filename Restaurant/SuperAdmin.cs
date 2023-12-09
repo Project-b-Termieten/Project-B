@@ -135,7 +135,7 @@ public class SuperAdmin : Admin, IUserOperations
 
     private void DeleteAdmin()
     {
-        string filePath = @"../../../User_info.json";
+        string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\User_info.json";
 
         List<User> users = new List<User>();
 
@@ -155,7 +155,7 @@ public class SuperAdmin : Admin, IUserOperations
             {
                 users.Remove(user);
                 break;
-            }  
+            }
         }
         string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
         {
@@ -167,53 +167,56 @@ public class SuperAdmin : Admin, IUserOperations
         Console.ReadKey();
         Console.Clear();
     }
-    private void Change_Reservation()
+    
+
+    public void Change_Reservation()
     {
         Console.WriteLine("+--------------------------------+");
-        Console.WriteLine("| Enter Email User               |");
+        Console.WriteLine("| Enter Email of the reservation |");
         Console.WriteLine("+--------------------------------+");
         string Email_User = Console.ReadLine();
         if (!Check_User_Present(Email_User))
         {
-            Change_Reservation();
+            // Optionally handle the case where the user isn't present
+            return; // Exit the method if user not present
         }
         Console.WriteLine("+--------------------------------+");
         Console.WriteLine("| 1. Remove Reservation          |");
         Console.WriteLine("| 2. Change Reservation Time     |");
         Console.WriteLine("| 3. Exit                        |");
         Console.WriteLine("+--------------------------------+");
-        string userInput = Console.ReadLine();
-        while(true)
+
+        while (true)
         {
+            string userInput = Console.ReadLine();
             switch (userInput)
             {
                 case "1":
-                    ShowReservationsWithEmail("Reservation.json", Email_User);
                     Console.WriteLine("Please Enter the Index of the Email,\nYou wish to remove");
                     int index = int.Parse(Console.ReadLine());
-                    RemoveReservationByIndex("Reservation.json", index);
-                    break;
+                    RemoveReservationByIndex("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", index);
+                    return; // Exit the method after removing reservation
                 case "2":
                     Console.WriteLine("+--------------------------------+");
                     Console.WriteLine("| Reservation to change:         |");
                     Console.WriteLine("+--------------------------------+");
-                    ShowReservationsWithEmail("Reservation.json", Email_User);
+                    ShowReservationsWithEmail("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", Email_User);
                     int index_ = int.Parse(Console.ReadLine());
-                    Change_Reservation_method("Reservation.json", index_);
-                    break;
+                    Change_Reservation_method("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", index_);
+                    return; // Exit the method after changing reservation time
                 case "3":
-                    return;
+                    return; // Exit the method without making any changes
                 default:
-                    Change_Reservation();
-                    break;
+                    Console.WriteLine("Invalid input. Please select a valid option.");
+                    break; // Keep the loop running for invalid inputs
             }
         }
-
     }
+
 
     bool Check_User_Present(string Email_User)
     {
-        string jsonFilePath = "User_info.json";
+        string jsonFilePath = "C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\User_info.json";
         // Read JSON file content
         string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
 
@@ -251,6 +254,9 @@ public class SuperAdmin : Admin, IUserOperations
                 Console.WriteLine($"Index: {i}, Email: {reservations[i]["Email"]}, Time {reservations[i]["Time"]}");
             }
         }
+        Console.WriteLine("+--------------------------------+");
+        Console.WriteLine("| Enter index of reservation:    |");
+        Console.WriteLine("+--------------------------------+");
     }
 
     static void RemoveReservationByIndex(string jsonFilePath, int index)
@@ -282,6 +288,7 @@ public class SuperAdmin : Admin, IUserOperations
         }
     }
 
+
     static void Change_Reservation_method(string jsonFilePath, int index)
     {
         Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
@@ -301,7 +308,15 @@ public class SuperAdmin : Admin, IUserOperations
                 string updatedJsonContent = JsonConvert.SerializeObject(reservations, Formatting.Indented);
                 System.IO.File.WriteAllText(jsonFilePath, updatedJsonContent);
             }
+            return; // Successfully changed reservation time, returning from method
         }
-        else { Change_Reservation_method(jsonFilePath, index); }
+        else
+        {
+            Console.WriteLine("Invalid date format");
+            // You may add further handling for invalid date input here
+        }
     }
+
+
+
 }
