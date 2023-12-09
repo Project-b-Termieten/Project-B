@@ -130,6 +130,7 @@ public class Admin : User, IUserOperations
                 Console.Clear();
                 return true;
             case "3":
+                Console.Clear();
                 return false;  // Exiting the AdminMenu loop
             default:
                 Console.WriteLine("Invalid input. Please select a valid option.");
