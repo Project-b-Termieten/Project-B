@@ -17,11 +17,6 @@ public class SuperAdmin : Admin, IUserOperations
         IsSuperAdmin = true;
     }
 
-    public override void UserMenu()
-    {
-        base.UserMenu();
-    }
-
     public override bool UserInput(User currentUser, List<Table> tables)
     {
         {
