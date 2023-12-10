@@ -2,36 +2,31 @@ using Newtonsoft.Json;
 
 public static class Reserve
 {
-    public static void CancelReservation(string name, string email)
+    public static void CancelReservation(User currentUser)
     {
         List<Reservation> reservations = ReadFromJsonFile();
-        if (reservations != null)
+
+        if (reservations == null || reservations.Count == 0)
         {
-            Reservation reservationToRemove = null;
-
-            foreach (var reservation in reservations)
-            {
-                if (reservation.Email == email)
-                {
-                    reservationToRemove = reservation;
-                    break;
-                }
-            }
-
-            if (reservationToRemove != null)
-            {  
-                reservations.Remove(reservationToRemove);
-                WriteToJsonFile(reservations);
-                Console.WriteLine($"Reservation from {name}  has been canceled.");
-            }
-            else
-            {
-                Console.WriteLine("No matching reservation found for the provided email.");
-            }
+            Console.WriteLine("No reservations to cancel.");
+            return;
         }
-    }
+        // Find the reservation to cancel
+        Reservation reservationToCancel = reservations.FirstOrDefault(
+        r => r.Name == currentUser.Name && r.Email == currentUser.Email);
 
-    public static void MakingReservation(string name, string email, List<Table> tables)
+        if (reservationToCancel == null)
+        {
+            Console.WriteLine("Reservation not found. No reservation was canceled.");
+            return;
+        }
+        // Remove the reservation from the list
+        reservations.Remove(reservationToCancel);
+        WriteToJsonFile(reservations);
+
+        Console.WriteLine($"Reservation at table {reservationToCancel.Table.TableID} for {reservationToCancel.Amount} people at {reservationToCancel.Time.Item1} has been canceled.");
+    }
+    public static void MakingReservation(string name, string email, List<Table> tables, Tuple<DateTime, DateTime> Reservation_time)
     {
 
         List<Reservation> reservations = ReadFromJsonFile();
@@ -40,15 +35,16 @@ public static class Reserve
             reservations = new List<Reservation>();
         }
         int groupAmount = ValidateAmount();
-        int TableID = ValidateTable(groupAmount, reservations, tables, name, email);
+        int TableID = ValidateTable(groupAmount, reservations, tables, name, email, Reservation_time);
         foreach (var table in tables)
         {
             if (table.TableID == TableID)
             {
                 Reservation reservation = new(name, email, groupAmount, table);
+                reservation.Time = Reservation_time;
                 reservations.Add(reservation);
                 WriteToJsonFile(reservations);
-                Console.WriteLine($"You places a reservation at table {reservation.Table.TableID} for {reservation.Amount}");
+                Console.WriteLine($"You placed a reservation at table {reservation.Table.TableID} for {reservation.Amount}");
                 break;
             }
         }
@@ -56,15 +52,15 @@ public static class Reserve
 
     public static int ValidateAmount()
     {
-        Console.WriteLine("For how many people would you like to make a reservation?");
+        Console.WriteLine("For how many people would you like to make a reservation? (Maximum of 6 people. Call restaurant for bigger reservations)");
         int groupAmount;
-        while (!int.TryParse(Console.ReadLine(), out groupAmount) || groupAmount <= 0)
+        while (!int.TryParse(Console.ReadLine(), out groupAmount) || groupAmount <= 0 || groupAmount > 6)
         {
-            Console.WriteLine("Invalid input. Please enter a valid number.");
+            Console.WriteLine("Invalid input. Please enter a valid number. (1 to 6)");
         }
         return groupAmount;
     }
-    public static int ValidateTable(int groupAmount, List<Reservation> reservations, List<Table> tables, string name, string email)
+    public static int ValidateTable(int groupAmount, List<Reservation> reservations, List<Table> tables, string name, string email, Tuple<DateTime, DateTime> Reservation_time)
     {
         Console.WriteLine("Which table would you like to reserve?");
         int tableNum;
@@ -78,7 +74,7 @@ public static class Reserve
                 bool isTableAvailable = true;
 
                 if (tableNum == 0)
-                    MakingReservation(name, email, tables);
+                    MakingReservation(name, email, tables, Reservation_time);
                 else if (reservations != null)
                 {
                     foreach (var reservation in reservations)
@@ -91,9 +87,18 @@ public static class Reserve
                         }
                         if (reservation.Table.TableID == tableNum)
                         {
-                            Console.WriteLine($"Table {tableNum} has already been reserved. Please pick another table.");
-                            isTableAvailable = false;
-                            break;
+                            List<Reservation> List_Of_Reservations = ReadFromJsonFile();
+                            foreach (Reservation Existing_Reservation in List_Of_Reservations)
+                            {
+                                if (IsReservationOverlapping(Reservation_time, Existing_Reservation.Time))
+                                {
+                                    Console.WriteLine($"Table {tableNum} has already been reserved. Please pick another table.");
+                                    isTableAvailable = false;
+                                    break;
+                                }
+                            }
+
+
                         }
                         else if (myTable.Capacity < groupAmount)
                         {
@@ -117,9 +122,15 @@ public static class Reserve
 
         return tableNum;
     }
+
     public static List<Reservation> ReadFromJsonFile()
     {
-        string filePath = @"../../../Reservations.json";
+        string filePath = "C:\\Users\\altaa\\OneDrive\\Documents\\Restuarant pro\\Restuarant pro\\Reservation.json";
+        if (!File.Exists(filePath))
+        {
+            return new List<Reservation>();
+        }
+
         string jsonData = File.ReadAllText(filePath);
         List<Reservation> objects = JsonConvert.DeserializeObject<List<Reservation>>(jsonData);
         return objects;
@@ -127,8 +138,57 @@ public static class Reserve
 
     public static void WriteToJsonFile(List<Reservation> reservations)
     {
-        string filePath = @"../../../Reservations.json";
+        string filePath = @"C:\Users\altaa\OneDrive\Documents\Restuarant pro\Restuarant pro\Reservation.json";
         string jsonString = JsonConvert.SerializeObject(reservations, Formatting.Indented);
         File.WriteAllText(filePath, jsonString);
+    }
+
+    private static bool IsReservationOverlapping(Tuple<DateTime, DateTime> reservationTime, Tuple<DateTime, DateTime> existingReservation)
+    {
+        DateTime start_time = reservationTime.Item1;
+        DateTime end_time = reservationTime.Item2;
+        DateTime existing_start_time = existingReservation.Item1;
+        DateTime existing_end_time = existingReservation.Item2;
+
+        // Check if the start_time or end_time of the reservationTime is within the existingReservation
+        if ((existing_start_time <= end_time && end_time <= existing_end_time))
+        {
+            return true;
+        }
+
+        // Check if the reservationTime completely encloses the existingReservation
+        if (start_time <= existing_start_time && end_time >= existing_end_time)
+        {
+            return true;
+        }
+
+        // Check if the existingReservation completely encloses the reservationTime
+        if (existing_start_time <= start_time && existing_end_time >= end_time)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static void ShowReservationsForDay(DateTime selectedDate)
+    {
+        List<Reservation> reservations = Reserve.ReadFromJsonFile();
+
+        if (reservations != null)
+        {
+            Console.WriteLine($"Reservations for {selectedDate}:");
+            foreach (var reservation in reservations)
+            {
+                if (reservation.Time.Item1.Date == selectedDate)
+                {
+                    Console.WriteLine($"Table ID {reservation.Table.TableID} has been Reserved at {reservation.Time.Item1}");
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("No reservations found.");
+        }
     }
 }
