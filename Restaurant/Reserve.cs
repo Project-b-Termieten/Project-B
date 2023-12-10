@@ -166,4 +166,56 @@ public static class Reserve
 
         return false;
     }
+
+
+    static void ShowReservationsWithEmail(string jsonFilePath, string targetEmail)
+    {
+        string jsonContent = File.ReadAllText(jsonFilePath);
+    
+        JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
+    
+        // Printen van reserveringen voor de email
+        Console.WriteLine($"Reservations for {targetEmail}:");
+    
+        for (int i = 0; i < reservations.Count; i++)
+        {
+            if (String.Equals(reservations[i]["Email"]?.ToString(), targetEmail, StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine($"Reservation number: {i}\n Date: {reservations[i]["Time"]}");
+            }
+        }
+        Console.WriteLine("+--------------------------------+");
+        Console.WriteLine("| Enter number of reservation:   |");
+        Console.WriteLine("+--------------------------------+");    
+    }
+    static void Change_Reservation_Method(string jsonFilePath, int index)
+    {
+        Console.Write("Enter date and time (yyyy-MM-dd HH:mm): ");
+        if (DateTime.TryParseExact(Console.ReadLine() + ":00", "yyyy-MM-dd HH:mm:ss", null, DateTimeStyles.None, out DateTime result))
+        {
+            var newReservationTime = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
+            var jsonContent = File.ReadAllText(jsonFilePath);
+            var reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
+
+            if (index >= 0 && index < reservations.Count)
+            {
+                reservations[index]["Time"] = JToken.FromObject(newReservationTime);
+                File.WriteAllText(jsonFilePath, JsonConvert.SerializeObject(reservations, Formatting.Indented));
+            }
+
+            Console.WriteLine(
+    @"+--------------------------------+
+|                                |
+| Successfully changed the reser-|
+| vation!!                       |
+|                                |
+| (Press any button to return)   |
++--------------------------------+");
+            return;
+        }
+        else
+        {
+            Console.WriteLine("Invalid date format");
+        }
+    }
 }
