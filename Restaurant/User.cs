@@ -61,27 +61,24 @@ public class User : IUserOperations
 
                         while (Incomplete)
                         {
-                            // Get the date from the user
+
                             Console.Write("Enter date (yyyy-MM-dd): ");
                             string dateString = Console.ReadLine();
 
-                            // Parse date string
+                           
                             if (DateTime.TryParseExact(dateString, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out selectedDateTime))
                             {
-                                // Show reservations for the selected day
+                                
                                 Reserve.ShowReservationsForDay(selectedDateTime);
 
-                                // Get the time from the user
                                 Console.Write("Enter time (HH:mm): ");
                                 string timeString = Console.ReadLine();
 
-                                // Parse time string
                                 if (DateTime.TryParseExact(timeString, "HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedTime))
                                 {
-                                    // Combine date and time
                                     selectedDateTime = selectedDateTime.AddHours(selectedTime.Hour).AddMinutes(selectedTime.Minute);
 
-                                    // Display the selected date and time
+                                    
                                     Console.WriteLine($"Selected Date and Time: {selectedDateTime}");
                                     Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
                                     Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
