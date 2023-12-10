@@ -212,6 +212,7 @@ public class SuperAdmin : Admin, IUserOperations
             switch (userInput)
             {
                 case "1":
+                    ShowReservationsWithEmail("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", Email_User);
                     Console.WriteLine("Please Enter the Index of the Email,\nYou wish to remove");
                     int index = int.Parse(Console.ReadLine());
                     RemoveReservationByIndex("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", index);
