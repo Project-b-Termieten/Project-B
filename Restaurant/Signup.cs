@@ -1,29 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
 using System.Text.RegularExpressions;
-using System.Security.Cryptography;
 
 public class Signup
 {
-    private string HashPassword(string password)
-    {
-        using (SHA256 sha256Hash = SHA256.Create())
-        {
-            // ComputeHash - returns byte array
-            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-            // Convert byte array to a string
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                builder.Append(bytes[i].ToString("x2"));
-            }
-            return builder.ToString();
-        }
-    }
     public bool ValidateName(string name)
     {
         // Name should contain letters and spaces only
@@ -42,7 +21,7 @@ public class Signup
         return !string.IsNullOrEmpty(password) && password.Length >= 8;
     }
 
-    public User SignUp(string name, string email, string password, bool Admin = false)
+    public User SignUp(string name, string email, string password, bool admin)
     {
         while (true)
         {
@@ -68,7 +47,6 @@ public class Signup
 
             if (valid)
             {
-                string hashedPassword = HashPassword(password);
                 string filePath = @"../../../User_info.json";
 
                 List<User> users = new List<User>();
@@ -76,43 +54,35 @@ public class Signup
                 if (File.Exists(filePath))
                 {
                     string existingData = File.ReadAllText(filePath);
-                    users = JsonSerializer.Deserialize<List<User>>(existingData);
+                    users = JsonConvert.DeserializeObject<List<User>>(existingData, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    });
                 }
 
-                User newUser; // Declare the variable outside the if-else blocks
+                User newUser;
 
-                if (Admin)
+                if (admin)
                 {
-                    newUser = new User(name, email, hashedPassword, true);
+                    newUser = new Admin(name, email, password);
                 }
                 else
                 {
-                    newUser = new User(name, email, hashedPassword);
+                    newUser = new User(name, email, password);
                 }
 
-                // Add the new user to the list of existing users
                 users.Add(newUser);
 
-                string jsonString = JsonSerializer.Serialize(users);
+                string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.All
+                });
 
-                // Write the JSON data back to the file, overwriting the existing data
                 File.WriteAllText(filePath, jsonString);
-                Console.WriteLine("Succes!");
 
+                Console.WriteLine("Signup successful! User information saved to User_info.json.");
                 return newUser;
-            }
-            else
-            {
-                Console.WriteLine("Signup failed. Please check the error messages for details.");
-                Console.WriteLine("Please try again.");
-                Console.WriteLine("Please enter your name: ");
-                name = Console.ReadLine();
-                Console.WriteLine("Please enter your email: ");
-                email = Console.ReadLine();
-                Console.WriteLine("Please enter your password: ");
-                password = Console.ReadLine();
             }
         }
     }
-
 }
