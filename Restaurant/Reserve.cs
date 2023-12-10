@@ -167,7 +167,15 @@ public static class Reserve
         return false;
     }
 
-
+    public static void ChangeReservation(User currentUser)
+    {
+    
+        ShowReservationsWithEmail("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", currentUser.Email);
+        int index_ = int.Parse(Console.ReadLine());
+        Change_Reservation_Method("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", index_);
+        return;
+    }
+    
     static void ShowReservationsWithEmail(string jsonFilePath, string targetEmail)
     {
         string jsonContent = File.ReadAllText(jsonFilePath);
@@ -188,6 +196,7 @@ public static class Reserve
         Console.WriteLine("| Enter number of reservation:   |");
         Console.WriteLine("+--------------------------------+");    
     }
+    
     static void Change_Reservation_Method(string jsonFilePath, int index)
     {
         Console.Write("Enter date and time (yyyy-MM-dd HH:mm): ");
