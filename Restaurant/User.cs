@@ -27,19 +27,21 @@ public class User : IUserOperations
 
     public virtual void UserMenu()
     {
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("|  Welcome to Jake’s restaurant! |");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("| Options:                       |");
-            Console.WriteLine("| 1. Reservation                 |");
-            Console.WriteLine("| 2. Menu                        |");
-            Console.WriteLine("| 3. Restaurant Information      |");
-            Console.WriteLine("| 4. Logout                      |");
-            Console.WriteLine("| 5. Exit                        |");
-            Console.WriteLine("| 6. Place Order                 |");
-            Console.WriteLine("+--------------------------------+");
+        Console.WriteLine(
+    "+--------------------------------+\n" +
+    "|                                |\n" +
+    "|  Welcome to Jake’s restaurant! |\n" +
+    "|                                |\n" +
+    "+--------------------------------+\n" +
+    "| Options:                       |\n" +
+    "| 1. Reservation                 |\n" +
+    "| 2. Menu                        |\n" +
+    "| 3. Restaurant Information      |\n" +
+    "| 4. Logout                      |\n" +
+    "| 5. Exit                        |\n" +
+    "| 6. Place Order                 |\n" +
+    "+--------------------------------+");
+
     }
 
     public virtual bool UserInput(User currentUser, List<Table> tables)
@@ -49,8 +51,14 @@ public class User : IUserOperations
         switch (userInput)
         {
             case "1":
-                Console.WriteLine("(1.) Make Reservation");
-                Console.WriteLine("(2.) Cancel Reservation");
+                Console.Clear();
+    
+                Console.WriteLine("+--------------------------------+");
+                Console.WriteLine("| 1. Make Reservation            |");
+                Console.WriteLine("| 2. Cancel Reservation          |");
+                Console.WriteLine("| 3. Change Reservation          |");
+                Console.WriteLine("+--------------------------------+");
+
                 string reservationInput = Console.ReadLine();
                 switch (reservationInput)
                 {
@@ -59,20 +67,13 @@ public class User : IUserOperations
                         bool Incomplete = true;
                         while (Incomplete)
                         {
-                            // Get the date from the user
-                            Console.Write("Enter date (yyyy-MM-dd): ");
-                            string dateString = Console.ReadLine();
-
-                            // Get the time from the user
-                            Console.Write("Enter time (HH:mm): ");
-                            string timeString = Console.ReadLine();
-
-                            // Parse date and time strings
-                            if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
+                            Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
+                            userInput = Console.ReadLine() + ":00";
+                            string format = "yyyy-MM-dd HH:mm:ss";
+                            if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
                             {
-                                // Display the selected date and time
-                                Console.WriteLine($"Selected Date and Time: {selectedDateTime}");
-                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
+                                Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
+                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
                                 Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
                                 Incomplete = false;
                             }
@@ -85,6 +86,9 @@ public class User : IUserOperations
                         break;
                     case "2":
                         Reserve.CancelReservation(currentUser);
+                        break;
+                    case "3":
+                        Reserve.ChangeReservation(currentUser);
                         break;
                     default:
                         Console.WriteLine("Invalid input. Please select a valid option.");
