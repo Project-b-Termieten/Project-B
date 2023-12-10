@@ -1,16 +1,24 @@
 [
   {
-    "Name": "asdasdas",
-    "Email": "dasdasd@hotmail.com",
+    "Time": {
+      "Item1": "2023-11-24T18:00:00",
+      "Item2": "2023-11-24T19:00:00"
+    },
+    "Name": "altaaf",
+    "Email": "altaaf.d@hotmail.com",
     "Amount": 2,
     "Table": {
-      "TableID": 1,
+      "TableID": 2,
       "Capacity": 2
     }
   },
   {
-    "Name": "asdasdasd",
-    "Email": "asdasdasd@hotmail.com",
+    "Time": {
+      "Item1": "2023-11-24T18:00:00",
+      "Item2": "2023-11-24T19:00:00"
+    },
+    "Name": "hello",
+    "Email": "hello@gmail.com",
     "Amount": 2,
     "Table": {
       "TableID": 3,
@@ -18,38 +26,15 @@
     }
   },
   {
-    "Name": "jerrelel",
-    "Email": "asdasda@hotmail.com",
-    "Amount": 2,
-    "Table": {
-      "TableID": 6,
-      "Capacity": 2
-    }
-  },
-  {
+    "Time": {
+      "Item1": "2023-11-24T18:00:00",
+      "Item2": "2023-11-24T19:00:00"
+    },
     "Name": "hello",
-    "Email": "hello.o@hotmail.com",
-    "Amount": 4,
-    "Table": {
-      "TableID": 12,
-      "Capacity": 4
-    }
-  },
-  {
-    "Name": "Owner",
-    "Email": "Owner@hotmail.com",
-    "Amount": 4,
-    "Table": {
-      "TableID": 9,
-      "Capacity": 4
-    }
-  },
-  {
-    "Name": "adasdasd",
-    "Email": "asdasdasd@hotmail.com",
+    "Email": "hello@gmail.com",
     "Amount": 2,
     "Table": {
-      "TableID": 5,
+      "TableID": 1,
       "Capacity": 2
     }
   }
