@@ -1,19 +1,16 @@
-public class Food
+public class Food : MenuItem
 {
-    public string Name;
-    public double Price;
     public bool Vegan;
 
-    public Food(string name, double price, bool vegan = false)
+    public Food(string name, double price, bool vegan = false) : base(name, price)
     {
-        Name = name;
-        Price = price;
         Vegan = vegan;
     }
 
-    public string Display()
+    public override string Display()
     {
-        string Display_price = Price.ToString("F2");
-        return $"{Name} {Display_price}";
+        string DisplayPrice = Price.ToString("F2");
+        string veganInfo = Vegan ? " (Vegan)" : "";
+        return $"{Name} {DisplayPrice}{veganInfo}";
     }
 }
