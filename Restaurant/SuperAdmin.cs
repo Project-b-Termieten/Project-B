@@ -21,7 +21,7 @@ public class SuperAdmin : Admin, IUserOperations
     {
         {
             string userInput = Console.ReadLine();
-    
+
             switch (userInput)
             {
                 case "1":
@@ -29,13 +29,17 @@ public class SuperAdmin : Admin, IUserOperations
                     bool Incomplete = true;
                     while (Incomplete)
                     {
-                        Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
-                        userInput = Console.ReadLine() + ":00";
-                        string format = "yyyy-MM-dd HH:mm:ss";
-                        if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
+                        // Get the date from the user
+                        Console.Write("Enter date (yyyy-MM-dd): ");
+                        string dateString = Console.ReadLine();
+                        // Get the time from the user
+                        Console.Write("Enter time (HH:mm): ");
+                        string timeString = Console.ReadLine();
+                        // Parse date and time strings
+                        if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
                         {
-                            Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
-                            Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
+                            Console.WriteLine("DateTime using DateTime.TryParseExact: " + selectedDateTime);
+                            Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
                             Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
                             Incomplete = false;
                         }
@@ -51,7 +55,7 @@ public class SuperAdmin : Admin, IUserOperations
                 case "2":
                     Menu.Display_menu(Menu.ActiveFoodMenu, Menu.ActiveDrinkMenu);
                     Menu.Display_menu(Menu.FutureFood, Menu.FutureDrink);
-    
+
                     Console.ReadKey();
                     Console.Clear();
                     return true;
@@ -85,7 +89,7 @@ public class SuperAdmin : Admin, IUserOperations
         }
     }
 
-protected override void AdminMenu()
+    protected override void AdminMenu()
     {
         base.AdminMenu();
         Console.WriteLine("| 4. Create Admin User           |");
@@ -183,7 +187,7 @@ protected override void AdminMenu()
         Console.ReadKey();
         Console.Clear();
     }
-    
+
 
     public void Change_Reservation()
     {
@@ -273,7 +277,7 @@ protected override void AdminMenu()
     }
 
     static void RemoveReservationByIndex(string jsonFilePath, int index)
-    {        
+    {
         string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
 
         JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
@@ -329,7 +333,7 @@ protected override void AdminMenu()
             JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
             if (index >= 0 && index < reservations.Count)
             {
-                
+
                 JToken newTimeToken = JToken.FromObject(New_Reservation_Time);
                 reservations[index]["Time"] = newTimeToken;
                 string updatedJsonContent = JsonConvert.SerializeObject(reservations, Formatting.Indented);
