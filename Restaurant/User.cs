@@ -117,11 +117,8 @@ public class User : IUserOperations
                 Environment.Exit(0);
                 return true;
             case "6":
-
-
                     Order order = new Order();
                     order.PlaceOrder(currentUser);
-
                 return true;
             default:
                 Console.WriteLine("Invalid input. Please select a valid option.");
