@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System.Globalization;
 
@@ -26,8 +27,10 @@ public class Admin : User, IUserOperations
             switch (userInput)
             {
                 case "1":
-                    Console.WriteLine("(1.) Make Reservation");
-                    Console.WriteLine("(2.) Cancel Reservation");
+                    Console.WriteLine("+--------------------------------+");
+                    Console.WriteLine("| 1. Remove Reservation          |");
+                    Console.WriteLine("| 2. Change Reservation Time     |");
+                    Console.WriteLine("+--------------------------------+");
                     string reservationInput = Console.ReadLine();
                     switch (reservationInput)
                     {
@@ -36,19 +39,13 @@ public class Admin : User, IUserOperations
                             bool Incomplete = true;
                             while (Incomplete)
                             {
-                                // Get the date from the user
-                                Console.Write("Enter date (yyyy-MM-dd): ");
-                                string dateString = Console.ReadLine();
-
-                                // Get the time from the user
-                                Console.Write("Enter time (HH:mm): ");
-                                string timeString = Console.ReadLine();
-
-                                // Parse date and time strings
-                                if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
+                                Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
+                                userInput = Console.ReadLine() + ":00";
+                                string format = "yyyy-MM-dd HH:mm:ss";
+                                if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
                                 {
-                                    Console.WriteLine("DateTime using DateTime.TryParseExact: " + selectedDateTime);
-                                    Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
+                                    Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
+                                    Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
                                     Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
                                     Incomplete = false;
                                 }
@@ -70,7 +67,8 @@ public class Admin : User, IUserOperations
                     Console.Clear();
                     return true;
                 case "2":
-                    Menu.Display_menu();
+                    Menu.Display_menu(Menu.ActiveFoodMenu, Menu.ActiveDrinkMenu);
+                    Menu.Display_menu(Menu.FutureFood, Menu.FutureDrink);
                     Console.ReadKey();
                     Console.Clear();
                     return true;
@@ -136,7 +134,6 @@ public class Admin : User, IUserOperations
                 Console.Clear();
                 return true;
             case "3":
-                Console.Clear();
                 return false;  // Exiting the AdminMenu loop
             default:
                 Console.WriteLine("Invalid input. Please select a valid option.");
