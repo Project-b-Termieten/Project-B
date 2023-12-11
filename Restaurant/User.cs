@@ -117,7 +117,7 @@ public class User : IUserOperations
                 Environment.Exit(0);
                 return true;
             case "6":
-                if (!currentUser.IsAdmin && !currentUser.IsSuperAdmin)
+
                 {
                     Order order = new Order();
                     order.PlaceOrder(currentUser);
