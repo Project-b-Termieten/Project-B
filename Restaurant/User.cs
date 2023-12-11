@@ -122,10 +122,6 @@ public class User : IUserOperations
                     Order order = new Order();
                     order.PlaceOrder(currentUser);
                 }
-                else
-                {
-                    Console.WriteLine("Invalid input. Please select a valid option.");
-                }
                 return true;
             default:
                 Console.WriteLine("Invalid input. Please select a valid option.");
