@@ -15,7 +15,7 @@ public class Admin : User, IUserOperations
     public override void UserMenu()
     {
         base.UserMenu();
-        Console.WriteLine("| 6. Admin Menu                  |");
+        Console.WriteLine("| 7. Admin Menu                  |");
         Console.WriteLine("+--------------------------------+");
     }
 
@@ -91,6 +91,10 @@ public class Admin : User, IUserOperations
                     Environment.Exit(0);
                     return true;
                 case "6":
+                    Order order = new Order();
+                    order.PlaceOrder(currentUser);
+                    return true;
+                case "7":
                     bool adminMenu = true;
                     while (adminMenu)
                     {
