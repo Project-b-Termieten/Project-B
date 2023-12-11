@@ -234,4 +234,24 @@ public static class Reserve
             Console.WriteLine("Invalid date format");
         }
     }
+     public static void ShowReservationsForDay(DateTime selectedDate)
+    {
+        List<Reservation> reservations = Reserve.ReadFromJsonFile();
+
+        if (reservations != null)
+        {
+            Console.WriteLine($"Reservations for {selectedDate}:");
+            foreach (var reservation in reservations)
+            {
+                if (reservation.Time.Item1.Date == selectedDate)
+                {
+                    Console.WriteLine($"Table ID {reservation.Table.TableID} has been Reserved at {reservation.Time.Item1}");
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("No reservations found.");
+        }
+    }
 }
