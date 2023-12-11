@@ -118,7 +118,7 @@ public class User : IUserOperations
                 return true;
             case "6":
 
-                {
+
                     Order order = new Order();
                     order.PlaceOrder(currentUser);
                 }
