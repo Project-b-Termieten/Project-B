@@ -14,11 +14,11 @@
     public void PlaceOrder(User currentUser)
     {
         Console.WriteLine("Ordering Food:");
-        Menu.Display_menu();
+        Menu.Display_menu(Menu.ActiveDrinkMenu, Menu.ActiveDrinkMenu);
         OrderFood();
         Console.ReadLine();
         Console.WriteLine("\nOrdering Drink:");
-        Menu.Display_menu();
+        Menu.Display_menu(Menu.ActiveDrinkMenu, Menu.ActiveDrinkMenu);
         OrderDrink();
         totalPrice += (orderedFoods.Sum(f => f.Price) + orderedDrinks.Sum(d => d.Price));
 
