@@ -84,11 +84,11 @@ public static class Menu
                 string inputmenu = Console.ReadLine();
                 if (inputmenu == "1")
                 {
-                    Add_food(new_dish, ActiveFoodMenu);
+                    AddMenuItem(new_dish, ActiveFoodMenu);
                 }
                 else
                 {
-                    Add_food(new_dish, FutureFood);
+                    AddMenuItem(new_dish, FutureFood);
                 }
                 Console.WriteLine("The item has been added to the menu.");
 
@@ -101,11 +101,11 @@ public static class Menu
 
                 if (inputdrink == "1")
                 {
-                    Add_drink(new_drink, ActiveDrinkMenu);
+                    AddMenuItem(new_drink, ActiveDrinkMenu);
                 }
                 else
                 {
-                    Add_drink(new_drink, FutureDrink);
+                    AddMenuItem(new_drink, FutureDrink);
                 }
 
                 Console.WriteLine("The item has been added to the menu.");
@@ -308,33 +308,16 @@ public static class Menu
         Console.WriteLine("-----------------------------");
     }
 
-
-    static public void Add_food(Food Food_item, string fmenupat)
+    static public void AddMenuItem<T>(T item, string menuPath)
     {
         // Deserialize the existing data from the JSON file
-        string json = File.ReadAllText(fmenupat);
-        List<Food> existingFoods = JsonConvert.DeserializeObject<List<Food>>(json);
-
-        // Add the new food item to the existing list
-        existingFoods.Add(Food_item);
-
+        string json = File.ReadAllText(menuPath);
+        List<T> existingItems = JsonConvert.DeserializeObject<List<T>>(json);
+        // Add the new item to the existing list
+        existingItems.Add(item);
         // Serialize and write the updated list back to the JSON file
-        string updatedJson = JsonConvert.SerializeObject(existingFoods, Formatting.Indented);
-        File.WriteAllText(fmenupat, updatedJson);
-    }
-
-    static public void Add_drink(Drink Drink_item, string dmenupat)
-    {
-        // Deserialize the existing data from the JSON file
-        string json = File.ReadAllText(dmenupat);
-        List<Drink> existingdrinks = JsonConvert.DeserializeObject<List<Drink>>(json);
-
-        // Add the new food item to the existing list
-        existingdrinks.Add(Drink_item);
-
-        // Serialize and write the updated list back to the JSON file
-        string updatedJson = JsonConvert.SerializeObject(existingdrinks, Formatting.Indented);
-        File.WriteAllText(dmenupat, updatedJson);
+        string updatedJson = JsonConvert.SerializeObject(existingItems, Formatting.Indented);
+        File.WriteAllText(menuPath, updatedJson);
     }
 
     static public void Delete_food(string fm3nupath)
