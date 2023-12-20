@@ -30,14 +30,23 @@ public static class Reserve
     }
     public static void MakingReservation(string name, string email, List<Table> tables, Tuple<DateTime, DateTime> Reservation_time)
     {
-
         List<Reservation> reservations = ReadFromJsonFile();
         if (reservations == null)
         {
             reservations = new List<Reservation>();
         }
         int groupAmount = ValidateAmount();
+    
+        Console.WriteLine($"You want to make a reservation for {groupAmount} people. Is this correct? (Y/N)");
+        string confirmation = Console.ReadLine();
+    
+        if (confirmation.Trim().ToUpper() != "Y")
+        {
+            groupAmount = ValidateAmount();
+        }
+    
         int TableID = ValidateTable(groupAmount, reservations, tables, name, email, Reservation_time);
+    
         foreach (var table in tables)
         {
             if (table.TableID == TableID)
