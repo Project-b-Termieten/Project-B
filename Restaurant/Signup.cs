@@ -74,7 +74,6 @@ public class Signup
 
                 users.Add(newUser);
 
-                // Ask the user to confirm the entered information
                 Console.WriteLine("Please review your information:");
                 Console.WriteLine($"Name: {newUser.Name}");
                 Console.WriteLine($"Email: {newUser.Email}");
@@ -84,7 +83,7 @@ public class Signup
 
                 if (confirmation == "Y")
                 {
-                    // Write to JSON file only if information is confirmed
+                    
                     string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.All
