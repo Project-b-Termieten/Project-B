@@ -64,8 +64,7 @@ public class User : IUserOperations
                 {
                     case "1":
                         Information.DisplayMap();
-                        bool value = false;
-                        value = Enter_Datetime(currentUser, tables);
+                        Enter_Datetime(currentUser, tables);
                         break;
                     case "2":
                         Reserve.CancelReservation(currentUser);
