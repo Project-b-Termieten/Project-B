@@ -47,6 +47,7 @@ public class Signup
 
             if (valid)
             {
+                // Valid input, proceed with signup
                 string filePath = @"../../../User_info.json";
 
                 List<User> users = new List<User>();
@@ -73,16 +74,47 @@ public class Signup
 
                 users.Add(newUser);
 
-                string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
+                // Ask the user to confirm the entered information
+                Console.WriteLine("Please review your information:");
+                Console.WriteLine($"Name: {newUser.Name}");
+                Console.WriteLine($"Email: {newUser.Email}");
+                Console.WriteLine("Is the information correct? (Y/N)");
+
+                string confirmation = Console.ReadLine().Trim().ToUpper();
+
+                if (confirmation == "Y")
                 {
-                    TypeNameHandling = TypeNameHandling.All
-                });
+                    // Write to JSON file only if information is confirmed
+                    string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    });
 
-                File.WriteAllText(filePath, jsonString);
+                    File.WriteAllText(filePath, jsonString);
 
-                Console.WriteLine("Signup successful! User information saved to User_info.json.");
-                return newUser;
+                    Console.WriteLine("Signup successful! User information has been saved!.");
+                    return newUser;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter your information again.");
+                    Console.WriteLine("Please enter your name: ");
+                    name = Console.ReadLine();
+                    Console.WriteLine("Please enter your email: ");
+                    email = Console.ReadLine();
+                    Console.WriteLine("Please enter your password: (At least 8 characters)");
+                    password = Console.ReadLine();
+                }
             }
+
+            Console.WriteLine("Invalid input. Please try again.");
+            Console.WriteLine("Please enter your name: ");
+            name = Console.ReadLine();
+            Console.WriteLine("Please enter your email: ");
+            email = Console.ReadLine();
+            Console.WriteLine("Please enter your password: (At least 8 characters)");
+            password = Console.ReadLine();
         }
     }
+
 }
