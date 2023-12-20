@@ -5,8 +5,8 @@ public class Signup
 {
     public bool ValidateName(string name)
     {
-        // Name should contain letters and spaces only
-        return !string.IsNullOrEmpty(name) && Regex.IsMatch(name, "^[A-Za-z ]+$");
+        // Name should contain letters, numbers, and spaces only
+        return !string.IsNullOrEmpty(name) && Regex.IsMatch(name, "^[A-Za-z0-9 ]+$");
     }
 
     public bool ValidateEmail(string email)
@@ -29,7 +29,7 @@ public class Signup
 
             if (!ValidateName(name))
             {
-                Console.WriteLine("Invalid name format. Name should contain letters and spaces only.");
+                Console.WriteLine("Invalid name format. Name should contain letters, numbers and spaces only.");
                 valid = false;
             }
 
@@ -116,5 +116,6 @@ public class Signup
             password = Console.ReadLine();
         }
     }
+
 
 }
