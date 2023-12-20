@@ -70,45 +70,18 @@ public static class Menu
     }
 
 
-public static void Add_Item_Menu()
+    public static void Add_Item_Menu()
     {
         Console.WriteLine("What would you like to add?\n1: Food\n2: Drink");
         string userInput = Console.ReadLine();
         switch (userInput)
         {
             case "1":
-                bool Dish_vegan = true;
-                string action = "";
-                Console.WriteLine("What is the name of the dish?");
-                string Dish_name = Console.ReadLine();
-                Console.WriteLine("What is the price of the dish?");
-                double Dish_price = Convert.ToDouble(Console.ReadLine());
-                bool test = true;
-                while (test)
-                {
-                    Console.WriteLine("Is the dish vegan? (Y/N?)");
-                    action = Console.ReadLine().ToUpper();
-                    if (action == "Y")
-                    {
-                        Dish_vegan = true;
-                        test = false;
-                    }
-                    else if (action == "N")
-                    {
-                        Dish_vegan = false;
-                        test = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invallid input");
-                    }
-                }
-                Food new_dish = new Food(Dish_name, Dish_price, Dish_vegan);
+                Food new_dish = (Food)Item_Setup(userInput);
                 Console.WriteLine("To which menu would you like to add this item (1/2)");
-                   Console.WriteLine("1: Active Food Menu\n2: Future Food Menu");
-                
+                Console.WriteLine("1: Active Food Menu\n2: Future Food Menu");
+
                 string inputmenu = Console.ReadLine();
-       
                 if (inputmenu == "1")
                 {
                     Add_food(new_dish, ActiveFoodMenu);
@@ -117,19 +90,13 @@ public static void Add_Item_Menu()
                 {
                     Add_food(new_dish, FutureFood);
                 }
-
                 Console.WriteLine("The item has been added to the menu.");
 
                 break;
             case "2":
-                Console.WriteLine("What is the name of the drink?");
-                string drink_name = Console.ReadLine();
-                Console.WriteLine("What is the price of the drink?");
-                double drink_price = Convert.ToDouble(Console.ReadLine());
-                Drink new_drink = new Drink(drink_name, drink_price);
-
+                Drink new_drink = (Drink)Item_Setup(userInput);
                 Console.WriteLine("To which menu would you like to add this item (1/2)?");
-                    Console.WriteLine("1: Active Food Menu\n2: Future Food Menu");
+                Console.WriteLine("1: Active Food Menu\n2: Future Food Menu");
                 string inputdrink = Console.ReadLine();
 
                 if (inputdrink == "1")
@@ -144,6 +111,42 @@ public static void Add_Item_Menu()
                 Console.WriteLine("The item has been added to the menu.");
                 break;
         }
+    }
+    public static object Item_Setup(string F_D)
+    {
+
+        Console.WriteLine("What is the name of the item?");
+        string Item_name = Console.ReadLine();
+        Console.WriteLine("What is the price of the item? (:1.50)");
+        double Item_price = Convert.ToDouble(Console.ReadLine());
+        if (F_D == "1")
+        {
+            bool Dish_vegan = Vegan_Setup(Item_name, Item_price);
+            Food new_dish = new Food(Item_name, Item_price, Dish_vegan);
+            return new_dish;
+        }
+        Drink new_drink = new Drink(Item_name, Item_price);
+        return new_drink;
+    }
+    public static bool Vegan_Setup(string Dish_name, double Dish_price)
+    {
+        Console.WriteLine("Is the dish vegan? (Y/N?)");
+        string action = Console.ReadLine().ToUpper();
+        if (action == "Y")
+        {
+            return true;
+        }
+        else if (action == "N")
+        {
+            return false;
+        }
+        else
+        {
+            Console.WriteLine("Invallid input");
+            Vegan_Setup(Dish_name, Dish_price);
+        }
+        // C# wouldn't let it work without this return :(
+        return false;
     }
     /*public static void Remove_Item_Menu()
     {

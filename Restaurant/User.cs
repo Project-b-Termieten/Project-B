@@ -65,10 +65,7 @@ public class User : IUserOperations
                     case "1":
                         Information.DisplayMap();
                         bool value = false;
-                        while (!value)
-                        {
-                            value = Enter_Datetime(currentUser, tables);
-                        }
+                        value = Enter_Datetime(currentUser, tables);
                         break;
                     case "2":
                         Reserve.CancelReservation(currentUser);
@@ -131,6 +128,7 @@ public class User : IUserOperations
         else
         {
             Console.WriteLine("Invalid date");
+            Enter_Datetime(currentUser, tables);
             return false;
         }
     }
