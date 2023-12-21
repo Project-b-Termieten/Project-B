@@ -5,8 +5,8 @@ public static class Menu
     static private List<Food> List_of_Foods = new List<Food>();
     static private List<Drink> List_of_Drinks = new List<Drink>();
 
-    private static string _activeFoodMenu = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Menu_Food.json"; // Default value
-    private static string _activeDrinkMenu = @"C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Menu_Drink.json"; // Default value
+    private static string _activeFoodMenu = @"C:\Users\jerre\OneDrive\Bureaublad\projectbb\projectbb\Menu_Food.json"; // Default value
+    private static string _activeDrinkMenu = @"C:\Users\jerre\OneDrive\Bureaublad\projectbb\projectbb\Menu_Drink.json"; // Default value
 
     public static string ActiveFoodMenu
     {
@@ -69,85 +69,91 @@ public static class Menu
         list.Add(newItem);
     }
 
-
-    public static void Add_Item_Menu()
+    public static void Item_Setup()
     {
         Console.WriteLine("What would you like to add?\n1: Food\n2: Drink");
         string userInput = Console.ReadLine();
         switch (userInput)
         {
             case "1":
-                Food new_dish = (Food)Item_Setup(userInput);
+                bool Dish_vegan = true;
+                string action = "";
+                Console.WriteLine("What is the name of the dish?");
+                string Dish_name = Console.ReadLine();
+                Console.WriteLine("What is the price of the dish?");
+                double Dish_price = Convert.ToDouble(Console.ReadLine());
+                bool test = true;
+                while (test)
+                {
+                    Console.WriteLine("Is the dish vegan? (Y/N?)");
+                    action = Console.ReadLine().ToUpper();
+                    if (action == "Y")
+                    {
+                        Dish_vegan = true;
+                        test = false;
+                    }
+                    else if (action == "N")
+                    {
+                        Dish_vegan = false;
+                        test = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invallid input");
+                    }
+                }
+                Food new_dish = new Food(Dish_name, Dish_price, Dish_vegan);
                 Console.WriteLine("To which menu would you like to add this item (1/2)");
                 Console.WriteLine("1: Active Food Menu\n2: Future Food Menu");
 
                 string inputmenu = Console.ReadLine();
+
                 if (inputmenu == "1")
                 {
-                    AddMenuItem(new_dish, ActiveFoodMenu);
+                    Add_Item<Food>(new_dish, ActiveFoodMenu);
                 }
                 else
                 {
-                    AddMenuItem(new_dish, FutureFood);
+                    Add_Item<Food>(new_dish, FutureFood);
                 }
+
                 Console.WriteLine("The item has been added to the menu.");
 
                 break;
             case "2":
-                Drink new_drink = (Drink)Item_Setup(userInput);
+                Console.WriteLine("What is the name of the drink?");
+                string drink_name = Console.ReadLine();
+                Console.WriteLine("What is the price of the drink?");
+                double drink_price = Convert.ToDouble(Console.ReadLine());
+                Drink new_drink = new Drink(drink_name, drink_price);
+
                 Console.WriteLine("To which menu would you like to add this item (1/2)?");
                 Console.WriteLine("1: Active Food Menu\n2: Future Food Menu");
                 string inputdrink = Console.ReadLine();
 
                 if (inputdrink == "1")
                 {
-                    AddMenuItem(new_drink, ActiveDrinkMenu);
+                    Add_Item<Drink>(new_drink, ActiveDrinkMenu);
                 }
                 else
                 {
-                    AddMenuItem(new_drink, FutureDrink);
+                    Add_Item<Drink>(new_drink, FutureDrink);
                 }
 
                 Console.WriteLine("The item has been added to the menu.");
                 break;
         }
     }
-    public static object Item_Setup(string F_D)
+    public static void Add_Item<T>(T MenuItem, string MenuPath) where T : MenuItem
     {
+        string json = File.ReadAllText(MenuPath);
+        List<T> existingItems = JsonConvert.DeserializeObject<List<T>>(json);
+        existingItems.Add(MenuItem);
+        string updatedJson = JsonConvert.SerializeObject(existingItems, Formatting.Indented);
+        File.WriteAllText(MenuPath, updatedJson);
+    }
 
-        Console.WriteLine("What is the name of the item?");
-        string Item_name = Console.ReadLine();
-        Console.WriteLine("What is the price of the item? (:1.50)");
-        double Item_price = Convert.ToDouble(Console.ReadLine());
-        if (F_D == "1")
-        {
-            bool Dish_vegan = Vegan_Setup(Item_name, Item_price);
-            Food new_dish = new Food(Item_name, Item_price, Dish_vegan);
-            return new_dish;
-        }
-        Drink new_drink = new Drink(Item_name, Item_price);
-        return new_drink;
-    }
-    public static bool Vegan_Setup(string Dish_name, double Dish_price)
-    {
-        Console.WriteLine("Is the dish vegan? (Y/N?)");
-        string action = Console.ReadLine().ToUpper();
-        if (action == "Y")
-        {
-            return true;
-        }
-        else if (action == "N")
-        {
-            return false;
-        }
-        else
-        {
-            Console.WriteLine("Invallid input");
-            Vegan_Setup(Dish_name, Dish_price);
-        }
-        // C# wouldn't let it work without this return :(
-        return false;
-    }
+
     /*public static void Remove_Item_Menu()
     {
         Console.WriteLine("What would you like to remove?\n1: Food item\n2: Drink item");
@@ -181,60 +187,7 @@ public static class Menu
         }
     }*/
 
-    public static void Remove_Item_Menu()
-    {
-        Console.WriteLine("What would you like to remove?\n1: Food item\n2: Drink item");
-        string userInput = Console.ReadLine();
-
-        bool validInput = false;
-
-        while (!validInput)
-        {
-            switch (userInput)
-            {
-                case "1":
-                    Console.WriteLine("From which menu would you like to remove?\n1: Active Food Menu\n2: Future Food Menu");
-                    string inputFood = Console.ReadLine();
-                    if (inputFood == "1")
-                    {
-                        Delete_food(ActiveFoodMenu);
-                        validInput = true;
-                    }
-                    else if (inputFood == "2")
-                    {
-                        Delete_food(FutureFood);
-                        validInput = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Please enter 1 or 2.");
-                    }
-                    break;
-                case "2":
-                    Console.WriteLine("From which menu would you like to remove?\n1: Active Drink Menu\n2: Future Drink Menu");
-                    string inputDrink = Console.ReadLine();
-                    if (inputDrink == "1")
-                    {
-                        Delete_drink(ActiveDrinkMenu);
-                        validInput = true;
-                    }
-                    else if (inputDrink == "2")
-                    {
-                        Delete_drink(FutureDrink);
-                        validInput = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Please enter 1 or 2.");
-                    }
-                    break;
-                default:
-                    Console.WriteLine("Invalid selection. Please enter 1 or 2.");
-                    userInput = Console.ReadLine();
-                    break;
-            }
-        }
-    }
+   
     static public void Display_menu(string foodMenuPath, string drinkMenuPath)
     {
         if (foodMenuPath == null || drinkMenuPath == null)
@@ -249,7 +202,7 @@ public static class Menu
 
         try
         {
-            string foodJson = File.ReadAllText(foodMenuPath);
+            string foodJson = File.ReadAllText("C:\\Users\\jerre\\OneDrive\\Bureaublad\\projectbb\\projectbb\\Menu_Food.json");
             List<Food> existingFoods = JsonConvert.DeserializeObject<List<Food>>(foodJson);
             if (existingFoods != null)
             {
@@ -282,8 +235,8 @@ public static class Menu
 
         try
         {
-            string drinkJson = File.ReadAllText(drinkMenuPath);
-            List<Drink> existingDrinks = JsonConvert.DeserializeObject<List<Drink>>(drinkJson);
+            string drinkJson = File.ReadAllText("C:\\Users\\jerre\\OneDrive\\Bureaublad\\projectbb\\projectbb\\Menu_Drink.json");
+            List <Drink> existingDrinks = JsonConvert.DeserializeObject<List<Drink>>(drinkJson);
             if (existingDrinks != null)
             {
                 foreach (Drink drink_item in existingDrinks)
@@ -308,94 +261,117 @@ public static class Menu
         Console.WriteLine("-----------------------------");
     }
 
-    static public void AddMenuItem<T>(T item, string menuPath)
+
+    public static void Remove_Item_Menu()
+    {
+        Console.WriteLine("What would you like to remove?\n1: Food item\n2: Drink item");
+        string userInput = Console.ReadLine();
+
+        bool validInput = false;
+
+        while (!validInput)
+        {
+            switch (userInput)
+            {
+                case "1":
+                    Console.WriteLine("From which menu would you like to remove?\n1: Active Food Menu\n2: Future Food Menu");
+                    string inputFood = Console.ReadLine();
+                    Console.WriteLine("Name of the item that you want to delete: ");
+                    string itemName = Console.ReadLine();
+                    if (inputFood == "1")
+                    {
+                        Remove_Item<Food>(ActiveFoodMenu, itemName);
+                        validInput = true;
+                    }
+                    else if (inputFood == "2")
+                    {
+                        Remove_Item<Food>(FutureFood, itemName);
+                        validInput = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please enter 1 or 2.");
+                    }
+                    break;
+
+                case "2":
+                    Console.WriteLine("From which menu would you like to remove?\n1: Active Drink Menu\n2: Future Drink Menu");
+                    string inputDrink = Console.ReadLine();
+                    Console.WriteLine("Name of the drink that you want to delete: ");
+                    string drinkName = Console.ReadLine();
+                    if (inputDrink == "1")
+                    {
+                        Remove_Item<Drink>(ActiveDrinkMenu, drinkName);
+                        validInput = true;
+                    }
+                    else if (inputDrink == "2")
+                    {
+                        Remove_Item<Drink>(FutureDrink, drinkName);
+                        validInput = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please enter 1 or 2.");
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid selection. Please enter 1 or 2.");
+                    userInput = Console.ReadLine();
+                    break;
+            }
+        }
+    }
+
+    public static void Remove_Item<T>(string menuPath, string itemName) where T : MenuItem
     {
         // Deserialize the existing data from the JSON file
         string json = File.ReadAllText(menuPath);
         List<T> existingItems = JsonConvert.DeserializeObject<List<T>>(json);
-        // Add the new item to the existing list
-        existingItems.Add(item);
-        // Serialize and write the updated list back to the JSON file
-        string updatedJson = JsonConvert.SerializeObject(existingItems, Formatting.Indented);
-        File.WriteAllText(menuPath, updatedJson);
-    }
 
-    static public void Delete_food(string fm3nupath)
-    {
-        Console.WriteLine("Name of the dish that you want to delete: ");
-        string foodName = Console.ReadLine();
-
-
-        // Deserialize the existing data from the JSON file
-        string json = File.ReadAllText(fm3nupath);
-        List<Food> existingFoods = JsonConvert.DeserializeObject<List<Food>>(json);
-
-        // Find and remove the food item by its name
-        Food foodToRemove = existingFoods.FirstOrDefault(food => food.Name == foodName);
-        if (foodToRemove != null)
+        // Find and remove the item by its name
+        T itemToRemove = existingItems.FirstOrDefault(item => item.Name == itemName);
+        if (itemToRemove != null)
         {
-            existingFoods.Remove(foodToRemove);
+            existingItems.Remove(itemToRemove);
 
             // Serialize and write the updated list back to the JSON file
-            string updatedJson = JsonConvert.SerializeObject(existingFoods, Formatting.Indented);
-            File.WriteAllText(fm3nupath, updatedJson);
+            string updatedJson = JsonConvert.SerializeObject(existingItems, Formatting.Indented);
+            File.WriteAllText(menuPath, updatedJson);
 
-            Console.WriteLine($"Food item '{foodName}' has been deleted from the menu.");
+            Console.WriteLine($"{typeof(T).Name} item '{itemName}' has been deleted from the menu.");
         }
         else
         {
-            Console.WriteLine($"Food item '{foodName}' was not found in the menu.");
+            Console.WriteLine($"{typeof(T).Name} item '{itemName}' was not found in the menu.");
         }
     }
 
-    static public void Delete_drink(string dm3nupath)
+    public static T FindItemByName<T>(string itemName) where T : MenuItem
     {
+        string json;
 
-        Console.WriteLine("Name of the drink that you want to delete: ");
-
-        string drinkName = Console.ReadLine();
-        // Deserialize the existing data from the JSON file
-        string json = File.ReadAllText(dm3nupath);
-        List<Drink> existingDrinks = JsonConvert.DeserializeObject<List<Drink>>(json);
-
-        // Find and remove the drink item by its name
-        Drink drinkToRemove = existingDrinks.FirstOrDefault(drink => drink.Name == drinkName);
-        if (drinkToRemove != null)
+        if (typeof(T) == typeof(Food))
         {
-            existingDrinks.Remove(drinkToRemove);
-
-            // Serialize and write the updated list back to the JSON file
-            string updatedJson = JsonConvert.SerializeObject(existingDrinks, Formatting.Indented);
-            File.WriteAllText(dm3nupath, updatedJson);
-
-            Console.WriteLine($"Drink item '{drinkName}' has been deleted from the menu.");
+            json = File.ReadAllText(ActiveFoodMenu);
+        }
+        else if (typeof(T) == typeof(Drink))
+        {
+            json = File.ReadAllText(ActiveDrinkMenu);
         }
         else
         {
-            Console.WriteLine($"Drink item '{drinkName}' was not found in the menu.");
+            throw new InvalidOperationException("Unsupported item type");
         }
+
+        List<T> existingItems = JsonConvert.DeserializeObject<List<T>>(json);
+
+        T selectedItem = existingItems.FirstOrDefault(item =>
+            item.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+
+        return selectedItem;
     }
-    public static Food FindFoodByName(string foodName)
-    {
-        //active food
-        string json = File.ReadAllText(ActiveFoodMenu);
 
-        List<Food> existingFoods = JsonConvert.DeserializeObject<List<Food>>(json);
-
-        Food selectedFood = existingFoods.FirstOrDefault(food => food.Name.Equals(foodName, StringComparison.OrdinalIgnoreCase));
-
-        return selectedFood;
-    }
-    public static Drink FindDrinkByName(string drinkName)
-    {
-        string json = File.ReadAllText(ActiveDrinkMenu);
-
-        List<Drink> existingDrinks = JsonConvert.DeserializeObject<List<Drink>>(json);
-
-        Drink selectedDrink = existingDrinks.FirstOrDefault(drink => drink.Name.Equals(drinkName, StringComparison.OrdinalIgnoreCase));
-
-        return selectedDrink;
-    }
 
     public static void Create_new_menu()
     {
