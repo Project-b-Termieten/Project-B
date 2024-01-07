@@ -35,7 +35,7 @@
             foodName = Console.ReadLine();
             if (foodName.ToLower() != "done")
             {
-                Food food = Menu.FindFoodByName(foodName);
+                Food food = Menu.FindItemByName<Food>(foodName, Menu.ActiveFoodMenu);
                 if (food != null)
                 {
                     orderedFoods.Add(food);
@@ -58,7 +58,7 @@
             drinkName = Console.ReadLine();
             if (drinkName.ToLower() != "done")
             {
-                Drink drink = Menu.FindDrinkByName(drinkName);
+                Drink drink = Menu.FindItemByName<Drink>(drinkName, Menu.ActiveDrinkMenu);
                 if (drink != null)
                 {
                     orderedDrinks.Add(drink);
