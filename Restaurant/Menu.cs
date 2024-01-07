@@ -5,8 +5,8 @@ public static class Menu
     static private List<Food> List_of_Foods = new List<Food>();
     static private List<Drink> List_of_Drinks = new List<Drink>();
 
-    private static string _activeFoodMenu = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Menu_Food.json"; // Default value
-    private static string _activeDrinkMenu = @"C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Menu_Drink.json"; // Default value
+    private static string _activeFoodMenu = @"C:\Users\jimmy\Documents\GitHub\Project-B\Restaurant\Menu_Food.json"; // Default value
+    private static string _activeDrinkMenu = @"C:\Users\jimmy\Documents\GitHub\Project-B\Restaurant\Menu_Drink.json"; // Default value
 
     public static string ActiveFoodMenu
     {
@@ -148,38 +148,6 @@ public static class Menu
         // C# wouldn't let it work without this return :(
         return false;
     }
-    /*public static void Remove_Item_Menu()
-    {
-        Console.WriteLine("What would you like to remove?\n1: Food item\n2: Drink item");
-        string userInput = Console.ReadLine();
-        switch (userInput)
-        {
-            case "1":
-                Console.WriteLine("From what menu would you like to remove?");
-                string inputfood = Console.ReadLine();
-                if (inputfood == "1")
-                {
-                    Delete_food(ActiveFoodMenu);
-                }
-                else
-                {
-                    Delete_food(FutureFood);
-                }
-                break;
-            case "2":
-                Console.WriteLine("From what menu would you like to remove?");
-                string inputdrink = Console.ReadLine();
-                if (inputdrink == "1")
-                {
-                    Delete_drink(ActiveDrinkMenu);
-                }
-                else
-                {
-                    Delete_drink(FutureDrink);
-                }
-                break;
-        }
-    }*/
 
     public static void Remove_Item_Menu()
     {
@@ -197,12 +165,12 @@ public static class Menu
                     string inputFood = Console.ReadLine();
                     if (inputFood == "1")
                     {
-                        Delete_food(ActiveFoodMenu);
+                        Delete_Item<Food>(ActiveFoodMenu);
                         validInput = true;
                     }
                     else if (inputFood == "2")
                     {
-                        Delete_food(FutureFood);
+                        Delete_Item<Food>(FutureFood);
                         validInput = true;
                     }
                     else
@@ -215,12 +183,12 @@ public static class Menu
                     string inputDrink = Console.ReadLine();
                     if (inputDrink == "1")
                     {
-                        Delete_drink(ActiveDrinkMenu);
+                        Delete_Item<Drink>(ActiveDrinkMenu);
                         validInput = true;
                     }
                     else if (inputDrink == "2")
                     {
-                        Delete_drink(FutureDrink);
+                        Delete_Item<Drink>(FutureDrink);
                         validInput = true;
                     }
                     else
@@ -320,81 +288,49 @@ public static class Menu
         File.WriteAllText(menuPath, updatedJson);
     }
 
-    static public void Delete_food(string fm3nupath)
+    static public void Delete_Item<T>(string fm3nupath) where T : MenuItem
     {
-        Console.WriteLine("Name of the dish that you want to delete: ");
-        string foodName = Console.ReadLine();
+        Console.WriteLine("Name of the item that you want to delete: ");
+        string Item_name = Console.ReadLine();
 
 
         // Deserialize the existing data from the JSON file
         string json = File.ReadAllText(fm3nupath);
-        List<Food> existingFoods = JsonConvert.DeserializeObject<List<Food>>(json);
+        List<T> existingItems = JsonConvert.DeserializeObject<List<T>>(json);
 
-        // Find and remove the food item by its name
-        Food foodToRemove = existingFoods.FirstOrDefault(food => food.Name == foodName);
-        if (foodToRemove != null)
+        if(typeof(T) == typeof(Food) || typeof(T) == typeof(Drink))
         {
-            existingFoods.Remove(foodToRemove);
+            // Find and remove the food item by its name
+            T selectedItem = existingItems.FirstOrDefault(item => item.Name.Equals(Item_name, StringComparison.OrdinalIgnoreCase));
+        
+            if (selectedItem != null)
+            {
+                existingItems.Remove(selectedItem);
 
-            // Serialize and write the updated list back to the JSON file
-            string updatedJson = JsonConvert.SerializeObject(existingFoods, Formatting.Indented);
-            File.WriteAllText(fm3nupath, updatedJson);
+                // Serialize and write the updated list back to the JSON file
+                string updatedJson = JsonConvert.SerializeObject(existingItems, Formatting.Indented);
+                File.WriteAllText(fm3nupath, updatedJson);
 
-            Console.WriteLine($"Food item '{foodName}' has been deleted from the menu.");
+                Console.WriteLine($"Item '{Item_name}' has been deleted from the menu.");
+            }
+            return;
         }
         else
         {
-            Console.WriteLine($"Food item '{foodName}' was not found in the menu.");
+            Console.WriteLine($"Item '{Item_name}' was not found in the menu.");
         }
+
     }
 
-    static public void Delete_drink(string dm3nupath)
+    public static T FindItemByName<T>(string itemName, string fileName) where T : MenuItem
     {
+        string json = File.ReadAllText(fileName);
 
-        Console.WriteLine("Name of the drink that you want to delete: ");
+        List<T> existingItems = JsonConvert.DeserializeObject<List<T>>(json);
 
-        string drinkName = Console.ReadLine();
-        // Deserialize the existing data from the JSON file
-        string json = File.ReadAllText(dm3nupath);
-        List<Drink> existingDrinks = JsonConvert.DeserializeObject<List<Drink>>(json);
+        T selectedItem = existingItems.FirstOrDefault(item => item.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
 
-        // Find and remove the drink item by its name
-        Drink drinkToRemove = existingDrinks.FirstOrDefault(drink => drink.Name == drinkName);
-        if (drinkToRemove != null)
-        {
-            existingDrinks.Remove(drinkToRemove);
-
-            // Serialize and write the updated list back to the JSON file
-            string updatedJson = JsonConvert.SerializeObject(existingDrinks, Formatting.Indented);
-            File.WriteAllText(dm3nupath, updatedJson);
-
-            Console.WriteLine($"Drink item '{drinkName}' has been deleted from the menu.");
-        }
-        else
-        {
-            Console.WriteLine($"Drink item '{drinkName}' was not found in the menu.");
-        }
-    }
-    public static Food FindFoodByName(string foodName)
-    {
-        //active food
-        string json = File.ReadAllText(ActiveFoodMenu);
-
-        List<Food> existingFoods = JsonConvert.DeserializeObject<List<Food>>(json);
-
-        Food selectedFood = existingFoods.FirstOrDefault(food => food.Name.Equals(foodName, StringComparison.OrdinalIgnoreCase));
-
-        return selectedFood;
-    }
-    public static Drink FindDrinkByName(string drinkName)
-    {
-        string json = File.ReadAllText(ActiveDrinkMenu);
-
-        List<Drink> existingDrinks = JsonConvert.DeserializeObject<List<Drink>>(json);
-
-        Drink selectedDrink = existingDrinks.FirstOrDefault(drink => drink.Name.Equals(drinkName, StringComparison.OrdinalIgnoreCase));
-
-        return selectedDrink;
+        return selectedItem;
     }
 
     public static void Create_new_menu()
