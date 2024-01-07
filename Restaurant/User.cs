@@ -11,6 +11,12 @@ public class User : IUserOperations
     public bool IsSuperAdmin { get; set; }
     [JsonIgnore]
 
+    public List<Food> orderedFoods = new(); [JsonIgnore]
+
+    public List<Drink> orderedDrinks = new(); [JsonIgnore]
+
+    public double totalPrice; [JsonIgnore]
+
     public bool HasReserved { get; set; } = false;
     [JsonIgnore]
     public Tuple<DateTime, DateTime> Time { get; set; }
@@ -25,23 +31,24 @@ public class User : IUserOperations
     }
 
 
+
     public virtual void UserMenu()
     {
-        Console.WriteLine(
-    "+--------------------------------+\n" +
-    "|                                |\n" +
-    "|  Welcome to Jake’s restaurant! |\n" +
-    "|                                |\n" +
-    "+--------------------------------+\n" +
-    "| Options:                       |\n" +
-    "| 1. Reservation                 |\n" +
-    "| 2. Menu                        |\n" +
-    "| 3. Restaurant Information      |\n" +
-    "| 4. Logout                      |\n" +
-    "| 5. Exit                        |\n" +
-    "| 6. Place Order                 |\n" +
-    "+--------------------------------+");
+        Console.WriteLine("+--------------------------------+");
+        Console.WriteLine("|                                |");
+        Console.WriteLine("|  Welcome to Jake’s restaurant! |");
+        Console.WriteLine("|                                |");
+        Console.WriteLine("+--------------------------------+");
+        Console.WriteLine("| Options:                       |");
+        Console.WriteLine("| 1. Reservation                 |");
+        Console.WriteLine("| 2. Menu                        |");
+        Console.WriteLine("| 3. Restaurant Information      |");
+        Console.WriteLine("| 4. Logout                      |");
+        Console.WriteLine("| 5. Exit                        |");
+        Console.WriteLine("| 6. Place Order                 |");
+        Console.WriteLine("| 7. View Order                  |");
 
+        Console.WriteLine("+--------------------------------+");
     }
 
     public virtual bool UserInput(User currentUser, List<Table> tables)
@@ -52,7 +59,7 @@ public class User : IUserOperations
         {
             case "1":
                 Console.Clear();
-
+    
                 Console.WriteLine("+--------------------------------+");
                 Console.WriteLine("| 1. Make Reservation            |");
                 Console.WriteLine("| 2. Cancel Reservation          |");
@@ -64,7 +71,31 @@ public class User : IUserOperations
                 {
                     case "1":
                         Information.DisplayMap();
-                        Enter_Datetime(currentUser, tables);
+                        bool Incomplete = true;
+                        while (Incomplete)
+                        {
+                            Console.Write("Enter date (yyyy-MM-dd): ");
+                            string dateString = Console.ReadLine();
+
+
+                            // Get the time from the user
+                            Console.Write("Enter time (HH:mm): ");
+                            string timeString = Console.ReadLine();
+                            // Parse date and time strings
+                            if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
+                            {
+                                Reserve.ShowReservationsForDay(selectedDateTime);
+                                Console.WriteLine("DateTime using DateTime.TryParseExact: " + selectedDateTime);
+                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
+                                Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
+                                Incomplete = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid date format");
+                            }
+                        }
+                        HasReserved = true;
                         break;
                     case "2":
                         Reserve.CancelReservation(currentUser);
@@ -80,7 +111,11 @@ public class User : IUserOperations
                 Console.Clear();
                 return true;
             case "2":
-                Menu.Display_menu();
+ 
+                Menu.Display_menu(Menu.ActiveFoodMenu, Menu.ActiveDrinkMenu);
+
+                Console.WriteLine("\nUpcoming menu, available on the 1st of January! ");
+                Menu.Display_menu(Menu.FutureFood, Menu.FutureDrink);
                 Console.ReadKey();
                 Console.Clear();
                 return true;
@@ -99,36 +134,30 @@ public class User : IUserOperations
                 Environment.Exit(0);
                 return true;
             case "6":
-                Order order = new Order();
-                order.PlaceOrder(currentUser);
+                if (!currentUser.IsAdmin && !currentUser.IsSuperAdmin)
+                {
+                    Order order = new Order();
+                    order.PlaceOrder(currentUser);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please select a valid option.");
+                }
+                return true;
+            case "7":
+                if (!currentUser.IsAdmin && !currentUser.IsSuperAdmin)
+                {
+                    Order order = new Order();
+                    order.DisplayOrderedItems(currentUser);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please select a valid option.");
+                }
                 return true;
             default:
                 Console.WriteLine("Invalid input. Please select a valid option.");
                 return true;
-        }
-    }
-    public bool Enter_Datetime(User currentUser, List<Table> tables)
-    {
-        Information.DisplayMap();
-        // Get the date from the user
-        Console.Write("Enter date (yyyy-MM-dd): ");
-        string dateString = Console.ReadLine();
-        // Get the time from the user
-        Console.Write("Enter time (HH:mm): ");
-        string timeString = Console.ReadLine();
-        // Parse date and time strings
-        if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
-        {
-            Console.WriteLine("DateTime using DateTime.TryParseExact: " + selectedDateTime);
-            Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
-            Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
-            return true;
-        }
-        else
-        {
-            Console.WriteLine("Invalid date");
-            Enter_Datetime(currentUser, tables);
-            return false;
         }
     }
 }
