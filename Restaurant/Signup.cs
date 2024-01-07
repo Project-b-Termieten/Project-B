@@ -29,16 +29,16 @@ public class Signup
 
             if (!ValidateName(name))
             {
-                Console.WriteLine("Invalid name format. Name should contain letters and numbers only.");
+                Console.WriteLine("Invalid name format. Name should contain letters, numbers and spaces only.");
                 valid = false;
             }
-            
+
             if (!ValidateEmail(email))
             {
-                Console.WriteLine("Invalid email format. Please use the @ sign.");
+                Console.WriteLine("Invalid email format. Please enter a valid email address.");
                 valid = false;
             }
-            
+
             if (!ValidatePassword(password))
             {
                 Console.WriteLine("Invalid password format. Password should have at least 8 characters.");
