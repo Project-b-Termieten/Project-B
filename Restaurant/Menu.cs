@@ -298,21 +298,18 @@ public static class Menu
         string json = File.ReadAllText(fm3nupath);
         List<T> existingItems = JsonConvert.DeserializeObject<List<T>>(json);
 
-        if(typeof(T) == typeof(Food) || typeof(T) == typeof(Drink))
+        // Find and remove the food item by its name
+        T selectedItem = existingItems.FirstOrDefault(item => item.Name.Equals(Item_name, StringComparison.OrdinalIgnoreCase));
+
+        if (selectedItem != null)
         {
-            // Find and remove the food item by its name
-            T selectedItem = existingItems.FirstOrDefault(item => item.Name.Equals(Item_name, StringComparison.OrdinalIgnoreCase));
-        
-            if (selectedItem != null)
-            {
-                existingItems.Remove(selectedItem);
+            existingItems.Remove(selectedItem);
 
-                // Serialize and write the updated list back to the JSON file
-                string updatedJson = JsonConvert.SerializeObject(existingItems, Formatting.Indented);
-                File.WriteAllText(fm3nupath, updatedJson);
+            // Serialize and write the updated list back to the JSON file
+            string updatedJson = JsonConvert.SerializeObject(existingItems, Formatting.Indented);
+            File.WriteAllText(fm3nupath, updatedJson);
 
-                Console.WriteLine($"Item '{Item_name}' has been deleted from the menu.");
-            }
+            Console.WriteLine($"Item '{Item_name}' has been deleted from the menu.");
             return;
         }
         else
