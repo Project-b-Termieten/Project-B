@@ -1,4 +1,7 @@
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 
 public class Signup
@@ -25,11 +28,18 @@ public class Signup
     {
         while (true)
         {
+            Console.WriteLine("Please enter your name: ");
+            name = Console.ReadLine();
+            Console.WriteLine("Please enter your email: ");
+            email = Console.ReadLine();
+            Console.WriteLine("Please enter your password: (At least 8 characters)");
+            password = Console.ReadLine();
+
             bool valid = true;
 
             if (!ValidateName(name))
             {
-                Console.WriteLine("Invalid name format. Name should contain letters, numbers and spaces only.");
+                Console.WriteLine("Invalid name format. Name should contain letters, numbers, and spaces only.");
                 valid = false;
             }
 
@@ -74,16 +84,18 @@ public class Signup
 
                 users.Add(newUser);
 
+                // Ask the user to confirm the entered information
                 Console.WriteLine("Please review your information:");
                 Console.WriteLine($"Name: {newUser.Name}");
                 Console.WriteLine($"Email: {newUser.Email}");
+                Console.WriteLine($"Password {newUser.Password}");
                 Console.WriteLine("Is the information correct? (Y/N)");
 
-                string confirmation = Console.ReadLine().Trim().ToUpper();
+                string confirmation = Console.ReadLine()?.Trim().ToUpper();
 
-                if (confirmation == "Y")
+                if (!string.IsNullOrEmpty(confirmation) && confirmation == "Y")
                 {
-                    
+                    // Write to JSON file only if information is confirmed
                     string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.All
@@ -94,27 +106,13 @@ public class Signup
                     Console.WriteLine("Signup successful! User information has been saved!.");
                     return newUser;
                 }
-                else
+                else if (!string.IsNullOrEmpty(confirmation) && confirmation == "N")
                 {
                     Console.WriteLine("Please enter your information again.");
-                    Console.WriteLine("Please enter your name: ");
-                    name = Console.ReadLine();
-                    Console.WriteLine("Please enter your email: ");
-                    email = Console.ReadLine();
-                    Console.WriteLine("Please enter your password: (At least 8 characters)");
-                    password = Console.ReadLine();
                 }
             }
 
             Console.WriteLine("Invalid input. Please try again.");
-            Console.WriteLine("Please enter your name: ");
-            name = Console.ReadLine();
-            Console.WriteLine("Please enter your email: ");
-            email = Console.ReadLine();
-            Console.WriteLine("Please enter your password: (At least 8 characters)");
-            password = Console.ReadLine();
         }
     }
-
-
 }
