@@ -93,33 +93,55 @@ public static class Program
         Console.WriteLine("Do you want to LOGIN(1) or Sign up(2) ");
         string user_answer = Console.ReadLine().ToLower();
 
-        if (user_answer == "1")
+        while (true)
         {
-            Login userLogin = new Login();
-            // this causes error because the PromptForLogin method does not return a User.
-            currentUser = userLogin.PromptForLogin();
-            if (currentUser == null)
+            if (user_answer == "1")
             {
-                Console.WriteLine("Please try again or sign up.");
+                Login userLogin = new Login();
+                currentUser = userLogin.PromptForLogin();
+                if (currentUser == null)
+                {
+                    Console.WriteLine("Invalid login. Please try again or sign up.");
+                }
+                else
+                {
+                    string email = currentUser.Email;
+                    Console.WriteLine("Logging in with email: " + email);
+                    break; // Exit the loop if login is successful.
+                }
+            }
+            else if (user_answer == "2")
+            {
+                Signup usersignup = new Signup();
+                currentUser = usersignup.SignUp(null, null,null,false);
+            /*    Console.WriteLine("Please enter your name: ");
+                string name = Console.ReadLine();
+                Console.WriteLine("Please enter your email: ");
+                string email = Console.ReadLine();
+                Console.WriteLine("Please enter your password: (At least 8 characters)");
+                string password = Console.ReadLine();
+
+                // Call the SignUp method to validate and save user information
+                currentUser = usersignup.SignUp(name, email, password, false);*/
+                if (currentUser == null)
+                {
+                    Console.WriteLine("Invalid signup. Please try again.");
+                }
+                else
+                {
+                    Console.WriteLine("Signup successful. Logging in with email: " + currentUser.Email);
+                    break; // Exit the loop if signup is successful.
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice. Please enter either 1 or 2.");
             }
 
-            string email = currentUser.Email;
-
-            Console.WriteLine("Logging in with email: " + email);
+            Console.WriteLine("Do you want to LOGIN(1) or Sign up(2) ");
+            user_answer = Console.ReadLine().ToLower(); // Get the user's choice again.
         }
-        else if (user_answer == "2")
-        {
-            Signup usersignup = new Signup();
-            Console.WriteLine("Please enter your name: ");
-            string name = Console.ReadLine();
-            Console.WriteLine("Please enter your email: ");
-            string email = Console.ReadLine();
-            Console.WriteLine("Please enter your password: (Atleast 8 characters)");
-            string password = Console.ReadLine();
 
-            // Call the SignUp method to validate and save user information
-            currentUser = usersignup.SignUp(name, email, password, false);
-        }
         Console.ReadKey();
         Console.Clear();
     }
