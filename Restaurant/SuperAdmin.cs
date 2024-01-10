@@ -141,14 +141,13 @@ public class SuperAdmin : Admin, IUserOperations
 
     private void CreateAdmin()
     {
-        Signup usersignup = new Signup();
         Console.WriteLine("What is the name of the Admin?");
         string Name = Console.ReadLine();
         Console.WriteLine("What is the Email of the admin?");
         string Email = Console.ReadLine();
         Console.WriteLine("What is the password of the admin");
         string Password = Console.ReadLine();
-        usersignup.SignUp(Name, Email, Password, true);
+        Signup.SignUp(Name, Email, Password, true);
         Console.ReadKey();
         Console.Clear();
     }

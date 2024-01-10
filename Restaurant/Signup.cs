@@ -4,27 +4,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-public class Signup
+public static class Signup
 {
-    public bool ValidateName(string name)
+    public static bool ValidateName(string name)
     {
         // Name should contain letters, numbers, and spaces only
         return !string.IsNullOrEmpty(name) && Regex.IsMatch(name, "^[A-Za-z0-9 ]+$");
     }
 
-    public bool ValidateEmail(string email)
+    public static bool ValidateEmail(string email)
     {
         // Email should be in a valid format
         return !string.IsNullOrEmpty(email) && Regex.IsMatch(email, @"^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$");
     }
 
-    public bool ValidatePassword(string password)
+    public static bool ValidatePassword(string password)
     {
         // Password should have at least 8 characters
         return !string.IsNullOrEmpty(password) && password.Length >= 8;
     }
 
-    public User SignUp(string name, string email, string password, bool admin)
+    public static User SignUp(string name, string email, string password, bool admin)
     {
         while (true)
         {

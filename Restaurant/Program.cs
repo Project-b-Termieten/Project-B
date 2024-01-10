@@ -95,8 +95,7 @@ public static class Program
             }
             else if (user_answer == "2")
             {
-                Signup usersignup = new Signup();
-                currentUser = usersignup.SignUp(null, null, null, false);
+                currentUser = Signup.SignUp(null, null, null, false);
 
                 if (currentUser == null)
                 {
