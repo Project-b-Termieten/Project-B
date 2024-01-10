@@ -153,7 +153,7 @@ public static class Reserve
     }
     public static List<Reservation> ReadFromJsonFile()
     {
-        string filePath = "C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json";
+        string filePath = "Restaurant/Reservation.json";
         string jsonData = File.ReadAllText(filePath);
         List<Reservation> objects = JsonConvert.DeserializeObject<List<Reservation>>(jsonData);
         return objects;
@@ -161,7 +161,7 @@ public static class Reserve
 
     public static void WriteToJsonFile(List<Reservation> reservations)
     {
-        string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Reservation.json";
+        string filePath = @"Restaurant/Reservation.json";
         string jsonString = JsonConvert.SerializeObject(reservations, Formatting.Indented);
         File.WriteAllText(filePath, jsonString);
     }
@@ -200,9 +200,9 @@ public static class Reserve
     public static void ChangeReservation(User currentUser)
     {
 
-        ShowReservationsWithEmail("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", currentUser.Email);
+        ShowReservationsWithEmail("Restaurant/Reservation.json", currentUser.Email);
         int index_ = int.Parse(Console.ReadLine());
-        Change_Reservation_Method("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", index_);
+        Change_Reservation_Method("Restaurant/Reservation.json", index_);
         return; // Exit the method after changing reservation time
     }
 

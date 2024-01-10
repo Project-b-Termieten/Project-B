@@ -82,18 +82,25 @@ public class User : IUserOperations
                                 Console.WriteLine("Entered date is in the past, please enter a date in the future");
                                 continue; // Restart the loop to prompt for a future date
                             }
-
+                            DateTime currentTime = DateTime.Now;
                             // Get the time from the user
                             Console.Write("Enter time (HH:mm): ");
                             string timeString = Console.ReadLine();
                             // Parse date and time strings
                             if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
                             {
-                                Reserve.ShowReservationsForDay(selectedDateTime);
-                                Console.WriteLine("DateTime using DateTime.TryParseExact: " + selectedDateTime);
-                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(2));
-                                Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
-                                Incomplete = false;
+                                if (selectedDateTime > currentTime)
+                                {
+                                    Reserve.ShowReservationsForDay(selectedDateTime);
+                                    Console.WriteLine("DateTime using DateTime.TryParseExact: " + selectedDateTime);
+                                    Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(2));
+                                    Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
+                                    Incomplete = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Please select a valid date.");
+                                }
                             }
                             else
                             {

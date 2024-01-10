@@ -211,18 +211,18 @@ public class SuperAdmin : Admin, IUserOperations
             switch (userInput)
             {
                 case "1":
-                    ShowReservationsWithEmail("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", Email_User);
+                    ShowReservationsWithEmail("Restaurant/Reservation.json", Email_User);
                     Console.WriteLine("Please Enter the Index of the Email,\nYou wish to remove");
                     int index = int.Parse(Console.ReadLine());
-                    RemoveReservationByIndex("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", index);
+                    RemoveReservationByIndex("Restaurant/Reservation.json", index);
                     return; // Exit the method after removing reservation
                 case "2":
                     Console.WriteLine("+--------------------------------+");
                     Console.WriteLine("| Reservation to change:         |");
                     Console.WriteLine("+--------------------------------+");
-                    ShowReservationsWithEmail("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", Email_User);
+                    ShowReservationsWithEmail("Restaurant/Reservation.json", Email_User);
                     int index_ = int.Parse(Console.ReadLine());
-                    Change_Reservation_method("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", index_);
+                    Change_Reservation_method("Restaurant/Reservation.json", index_);
                     return; // Exit the method after changing reservation time
                 case "3":
                     return; // Exit the method without making any changes
@@ -236,7 +236,7 @@ public class SuperAdmin : Admin, IUserOperations
 
     bool Check_User_Present(string Email_User)
     {
-        string jsonFilePath = "C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\User_info.json";
+        string jsonFilePath = "Restaurant/Reservation.json";
 
         string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
 
