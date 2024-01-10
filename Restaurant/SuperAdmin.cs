@@ -303,14 +303,14 @@ public class SuperAdmin : Admin, IUserOperations
 
     static void Change_Reservation_method(string jsonFilePath, int index)
     {
-        Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
-        string userInput = Console.ReadLine() + ":00";
-        string format = "yyyy-MM-dd HH:mm:ss";
-        if (userInput.ToUpper() == "EXIT:00")
-        {
-            return;
-        }
-        if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
+        // Get the date from the user
+        Console.Write("Enter date (yyyy-MM-dd): ");
+        string dateString = Console.ReadLine();
+        // Get the time from the user
+        Console.Write("Enter time (HH:mm): ");
+        string timeString = Console.ReadLine();
+        // Parse date and time strings
+        if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime result))
         {
             Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
             Tuple<DateTime, DateTime> New_Reservation_Time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));

@@ -229,10 +229,14 @@ public static class Reserve
     
     static void Change_Reservation_methoda(string jsonFilePath, int index)
     {
-        Console.Write("Enter date and time (yyyy-MM-dd HH:mm): ");
-        string userInput = Console.ReadLine() + ":00";
-        string format = "yyyy-MM-dd HH:mm:ss";
-        if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
+        // Get the date from the user
+        Console.Write("Enter date (yyyy-MM-dd): ");
+        string dateString = Console.ReadLine();
+        // Get the time from the user
+        Console.Write("Enter time (HH:mm): ");
+        string timeString = Console.ReadLine();
+        // Parse date and time strings
+        if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime result))
         {
             Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
             Tuple<DateTime, DateTime> New_Reservation_Time = new Tuple<DateTime, DateTime>(result, result.AddHours(2));
@@ -266,8 +270,14 @@ public static class Reserve
 
     static void Change_Reservation_Method(string jsonFilePath, int index)
     {
-        Console.Write("Enter date and time (yyyy-MM-dd HH:mm): ");
-        if (DateTime.TryParseExact(Console.ReadLine() + ":00", "yyyy-MM-dd HH:mm:ss", null, DateTimeStyles.None, out DateTime result))
+        // Get the date from the user
+        Console.Write("Enter date (yyyy-MM-dd): ");
+        string dateString = Console.ReadLine();
+        // Get the time from the user
+        Console.Write("Enter time (HH:mm): ");
+        string timeString = Console.ReadLine();
+        // Parse date and time strings
+        if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime result))
         {
             var newReservationTime = new Tuple<DateTime, DateTime>(result, result.AddHours(2));
             var jsonContent = File.ReadAllText(jsonFilePath);
