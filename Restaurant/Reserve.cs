@@ -32,16 +32,23 @@ public static class Reserve
         Console.WriteLine($"Reservation at table {reservationToCancel.Table.TableID} for {reservationToCancel.Amount} people at {reservationToCancel.Time.Item1} has been canceled.");
     }
 
-    
+
     public static void MakingReservation(string name, string email, List<Table> tables, Tuple<DateTime, DateTime> Reservation_time)
     {
-
         List<Reservation> reservations = ReadFromJsonFile();
         if (reservations == null)
         {
             reservations = new List<Reservation>();
         }
         int groupAmount = ValidateAmount();
+        Console.WriteLine($"You want to make a reservation for {groupAmount} people. Is this correct? (Y/N)");
+        string confirmation = Console.ReadLine();
+
+        if (confirmation.Trim().ToUpper() != "Y")
+        {
+            groupAmount = ValidateAmount();
+        }
+
         int TableID = ValidateTable(groupAmount, reservations, tables, name, email, Reservation_time);
         foreach (var table in tables)
         {
@@ -59,7 +66,9 @@ public static class Reserve
 
     public static int ValidateAmount()
     {
-        Console.WriteLine("For how many people would you like to make a reservation? (Maximum of 6 people. Call restaurant for bigger reservations)");
+        Console.WriteLine("For how many people would you like to make a reservation?");
+        Console.WriteLine("(Maximum of 6 people, call restaurant for bigger reservations)");
+
         int groupAmount;
         while (!int.TryParse(Console.ReadLine(), out groupAmount) || groupAmount <= 0 || groupAmount > 6)
         {
@@ -80,12 +89,21 @@ public static class Reserve
 
         Console.WriteLine($"Reserved Seats for {targetDate.ToShortDateString()}:");
 
-        foreach (var reservation in reservations)
+        /*foreach (var reservation in reservations)
         {
             if (reservation.Time.Item1.Date == targetDate.Date)
             {
                 Console.WriteLine($"Reservation for {reservation.Amount} people at Table {reservation.Table.TableID} on {reservation.Time.Item1}");
             }
+        }*/
+
+        foreach (var reservation in reservations)
+        {
+            var date = reservation.Time.Item1.ToString("MMMM dd yyyy");
+            var startTime = reservation.Time.Item1.ToString("HH:mm");
+            var endTime = reservation.Time.Item2.ToString("HH:mm");
+
+            Console.WriteLine($"Table {reservation.Table.TableID}:\nDate: {date}\nTime: from {startTime} till {endTime}");
         }
     }
 
@@ -153,7 +171,7 @@ public static class Reserve
     }
     public static List<Reservation> ReadFromJsonFile()
     {
-        string filePath = "Restaurant/Reservation.json";
+        string filePath = "C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json";
         string jsonData = File.ReadAllText(filePath);
         List<Reservation> objects = JsonConvert.DeserializeObject<List<Reservation>>(jsonData);
         return objects;
@@ -161,7 +179,7 @@ public static class Reserve
 
     public static void WriteToJsonFile(List<Reservation> reservations)
     {
-        string filePath = @"Restaurant/Reservation.json";
+        string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Reservation.json";
         string jsonString = JsonConvert.SerializeObject(reservations, Formatting.Indented);
         File.WriteAllText(filePath, jsonString);
     }
@@ -200,9 +218,9 @@ public static class Reserve
     public static void ChangeReservation(User currentUser)
     {
 
-        ShowReservationsWithEmail("Restaurant/Reservation.json", currentUser.Email);
+        ShowReservationsWithEmail("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", currentUser.Email);
         int index_ = int.Parse(Console.ReadLine());
-        Change_Reservation_Method("Restaurant/Reservation.json", index_);
+        Change_Reservation_Method("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", index_);
         return; // Exit the method after changing reservation time
     }
 
@@ -219,148 +237,94 @@ public static class Reserve
         {
             if (String.Equals(reservations[i]["Email"]?.ToString(), targetEmail, StringComparison.OrdinalIgnoreCase))
             {
+
+
                 Console.WriteLine($"Reservation number: {i}\n Date: {reservations[i]["Time"]}");
             }
         }
+
+
+
         Console.WriteLine("+--------------------------------+");
         Console.WriteLine("| Enter number of reservation:   |");
-        Console.WriteLine("+--------------------------------+");    
+        Console.WriteLine("+--------------------------------+");
     }
-    
-    static void Change_Reservation_methoda(string jsonFilePath, int index)
-    {
-        // Get the date from the user
-        Console.Write("Enter date (yyyy-MM-dd): ");
-        string dateString = Console.ReadLine();
-        // Get the time from the user
-        Console.Write("Enter time (HH:mm): ");
-        string timeString = Console.ReadLine();
-        // Parse date and time strings
-        if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime result))
-        {
-            Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
-            Tuple<DateTime, DateTime> New_Reservation_Time = new Tuple<DateTime, DateTime>(result, result.AddHours(2));
-            string jsonContent = File.ReadAllText(jsonFilePath);
-            // Json data pakken
-            JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
-            if (index >= 0 && index < reservations.Count)
-            {
-                JToken newTimeToken = JToken.FromObject(New_Reservation_Time);
-                reservations[index]["Time"] = newTimeToken;
-                string updatedJsonContent = JsonConvert.SerializeObject(reservations, Formatting.Indented);
-                File.WriteAllText(jsonFilePath, updatedJsonContent);
-            }
-            //Console.Clear();
 
-            Console.WriteLine(
-@"+--------------------------------+
-|                                |
-| Succesfully changed the reser- |
-| vation!!                       |
-|                                |
-| (Press any button to return    |
-+--------------------------------+");
-            return; // Voltooid van reservering aanpssen, terug naar super admin menu
-        }
-        else
+
+    static void ShowReservationsWithEmaill(string jsonFilePath, string targetEmail)
+    {
+        string jsonContent = File.ReadAllText(jsonFilePath);
+
+        JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
+
+        // Print reservations for the email
+        Console.WriteLine($"Reservations for {targetEmail}:");
+
+        int reservationNumber = 1; // Starting reservation number
+
+        foreach (var reservation in reservations)
         {
-            Console.WriteLine("Invalid date format");
+            if (String.Equals(reservation["Email"]?.ToString(), targetEmail, StringComparison.OrdinalIgnoreCase))
+            {
+                var date = DateTime.Parse(reservation["Time"]["Item1"].ToString()).ToString("MMMM dd yyyy");
+                var startTime = DateTime.Parse(reservation["Time"]["Item1"].ToString()).ToString("HH:mm");
+                var endTime = DateTime.Parse(reservation["Time"]["Item2"].ToString()).ToString("HH:mm");
+
+                Console.WriteLine($"Reservation number: {reservationNumber}");
+                Console.WriteLine($"Date: {date}");
+                Console.WriteLine($"Time: from {startTime} till {endTime}\n");
+
+                reservationNumber++;
+            }
         }
     }
 
-    static void Change_Reservation_Method(string jsonFilePath, int index)
-    {
-        // Get the date from the user
-        Console.Write("Enter date (yyyy-MM-dd): ");
-        string dateString = Console.ReadLine();
-        // Get the time from the user
-        Console.Write("Enter time (HH:mm): ");
-        string timeString = Console.ReadLine();
-        // Parse date and time strings
-        if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime result))
-        {
-            var newReservationTime = new Tuple<DateTime, DateTime>(result, result.AddHours(2));
-            var jsonContent = File.ReadAllText(jsonFilePath);
-            var reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
 
-            if (index >= 0 && index < reservations.Count)
+
+
+    public static void Change_Reservation_Method(string jsonFilePath, int index)
+    {
+        Console.Write("Enter date and time (yyyy-MM-dd HH:mm): ");
+
+        if (DateTime.TryParseExact(Console.ReadLine() + ":00", "yyyy-MM-dd HH:mm:ss", null, DateTimeStyles.None, out DateTime userInput))
+        {
+            if (userInput < DateTime.Now)
             {
-                reservations[index]["Time"] = JToken.FromObject(newReservationTime);
-                File.WriteAllText(jsonFilePath, JsonConvert.SerializeObject(reservations, Formatting.Indented));
+                Console.WriteLine("Please enter a date and time in the future.");
+                return;
             }
 
-            Console.WriteLine(
-    @"+--------------------------------+
+            if (DateTime.TryParseExact(Console.ReadLine() + ":00", "yyyy-MM-dd HH:mm:ss", null, DateTimeStyles.None, out DateTime result))
+            {
+                var newReservationTime = new Tuple<DateTime, DateTime>(result, result.AddHours(2));
+                var jsonContent = File.ReadAllText(jsonFilePath);
+                var reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
+
+                if (index >= 0 && index < reservations.Count)
+                {
+                    reservations[index]["Time"] = JToken.FromObject(newReservationTime);
+                    File.WriteAllText(jsonFilePath, JsonConvert.SerializeObject(reservations, Formatting.Indented));
+                }
+
+                Console.WriteLine(
+        @"+--------------------------------+
 |                                |
 | Successfully changed the reser-|
 | vation!!                       |
 |                                |
 | (Press any button to return)   |
 +--------------------------------+");
-            return;
-        }
-        else
-        {
-            Console.WriteLine("Invalid date format");
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Invalid date format");
+                return;
+            }
         }
     }
 
-    /*
-    static void Change_Reservation_method(string jsonFilePath, int index)
-    {
-        Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
-        string userInput = Console.ReadLine() + ":00";
-        string format = "yyyy-MM-dd HH:mm:ss";
-        if (userInput.ToUpper() == "EXIT:00")
-        {
-            return;
-        }
-        if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
-        {
-            //Console.WriteLine("Your date: " + result);
-            Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
-            Tuple<DateTime, DateTime> New_Reservation_Time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
-            List<Reservation> List_of_Reservations = ReadFromJsonFile();
-            foreach (Reservation Existing_reservation in List_of_Reservations)
-            {
-                if (IsReservationOverlapping(Existing_reservation.Time, New_Reservation_Time))
-                {
-                    continue;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid date");
-                    Change_Reservation_method(jsonFilePath, index);
-                }
-            }
-            string jsonContent = File.ReadAllText(jsonFilePath);
-            // Json data pakken
-            JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
-            if (index >= 0 && index < reservations.Count)
-            {
-
-                JToken newTimeToken = JToken.FromObject(New_Reservation_Time);
-                reservations[index]["Time"] = newTimeToken;
-                string updatedJsonContent = JsonConvert.SerializeObject(reservations, Formatting.Indented);
-                File.WriteAllText(jsonFilePath, updatedJsonContent);
-            }
-            Console.Clear();
-
-            Console.WriteLine(
-@"+--------------------------------+
-|                                |
-| Succesfully changed the reser- |
-| vation!!                       |
-|                                |
-| (Press any button to return    |
-+--------------------------------+");
-            return; // Voltooid van reservering aanpssen, terug naar super admin menu
-        }
-        else
-        {
-            Console.WriteLine("Invalid date format");
-        }
-    }*/
+        
 
     public static void ShowReservationsForDay(DateTime selectedDate)
     {
@@ -382,4 +346,8 @@ public static class Reserve
             Console.WriteLine("No reservations found.");
         }
     }
+
+
 }
+
+
