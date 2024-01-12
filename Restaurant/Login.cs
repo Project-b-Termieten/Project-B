@@ -11,6 +11,10 @@ public class Login
         Email = email;
         Password = password;
     }
+     public Login()
+     {
+         
+     }
 
     public bool ValidateEmail(string email)
     {
