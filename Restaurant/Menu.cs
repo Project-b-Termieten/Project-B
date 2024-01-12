@@ -5,8 +5,8 @@ public static class Menu
     static private List<Food> List_of_Foods = new List<Food>();
     static private List<Drink> List_of_Drinks = new List<Drink>();
 
-    private static string _activeFoodMenu = @"C:\Users\jimmy\Documents\GitHub\Project-B\Restaurant\Menu_Food.json"; // Default value
-    private static string _activeDrinkMenu = @"C:\Users\jimmy\Documents\GitHub\Project-B\Restaurant\Menu_Drink.json"; // Default value
+    private static string _activeFoodMenu = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Menu_Food.json"; // Default value
+    private static string _activeDrinkMenu = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Menu_Drink.json"; // Default value
 
     public static string ActiveFoodMenu
     {
@@ -117,7 +117,7 @@ public static class Menu
 
         Console.WriteLine("What is the name of the item?");
         string Item_name = Console.ReadLine();
-        Console.WriteLine("What is the price of the item? (:1.50)");
+        Console.WriteLine("What is the price of the item?");
         double Item_price = Convert.ToDouble(Console.ReadLine());
         if (F_D == "1")
         {
@@ -203,6 +203,7 @@ public static class Menu
             }
         }
     }
+
     static public void Display_menu(string foodMenuPath, string drinkMenuPath)
     {
         if (foodMenuPath == null || drinkMenuPath == null)
@@ -298,18 +299,21 @@ public static class Menu
         string json = File.ReadAllText(fm3nupath);
         List<T> existingItems = JsonConvert.DeserializeObject<List<T>>(json);
 
-        // Find and remove the food item by its name
-        T selectedItem = existingItems.FirstOrDefault(item => item.Name.Equals(Item_name, StringComparison.OrdinalIgnoreCase));
-
-        if (selectedItem != null)
+        if (typeof(T) == typeof(Food) || typeof(T) == typeof(Drink))
         {
-            existingItems.Remove(selectedItem);
+            // Find and remove the food item by its name
+            T selectedItem = existingItems.FirstOrDefault(item => item.Name.Equals(Item_name, StringComparison.OrdinalIgnoreCase));
 
-            // Serialize and write the updated list back to the JSON file
-            string updatedJson = JsonConvert.SerializeObject(existingItems, Formatting.Indented);
-            File.WriteAllText(fm3nupath, updatedJson);
+            if (selectedItem != null)
+            {
+                existingItems.Remove(selectedItem);
 
-            Console.WriteLine($"Item '{Item_name}' has been deleted from the menu.");
+                // Serialize and write the updated list back to the JSON file
+                string updatedJson = JsonConvert.SerializeObject(existingItems, Formatting.Indented);
+                File.WriteAllText(fm3nupath, updatedJson);
+
+                Console.WriteLine($"Item '{Item_name}' has been deleted from the menu.");
+            }
             return;
         }
         else
@@ -332,12 +336,12 @@ public static class Menu
 
     public static void Create_new_menu()
     {
-        // Lijst voor het menu
+        // Basis items
         List<Food> foods = new List<Food>
         {
             new Food("Burger", 9.99, false),
-            new Food("Fishtick skin", 9.99, false),
-            new Food("One piece of eggplant", 15.0, true)
+            new Food("Special burger", 11.99, false),
+            new Food("apple salad", 6.99, true),
         };
 
 
@@ -350,25 +354,24 @@ public static class Menu
 
         string foodJson = JsonConvert.SerializeObject(foods, Formatting.Indented);
         File.WriteAllText($"C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\{foodFileName}", foodJson);
-        FutureFood = @"C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\" + foodFileName;
-        // Basisitems, deze zijn in elk menu aanwezig
+        FutureFood = @"C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\" + foodFileName+".json";
+        // Basisitems
         List<Drink> drinks = new List<Drink>
         {
             new Drink("Water", 2.0),
-            new Drink("Gert's Biertje", 3.5),
-            new Drink("Python juice", 3.0),
+            new Drink("Cola", 3.5),
+            new Drink("Python juice", 4.99),
         };
 
         string drinkJson = JsonConvert.SerializeObject(drinks, Formatting.Indented);
         File.WriteAllText($"C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\{drinkFileName}", drinkJson);
-        FutureDrink = @"C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\" + drinkFileName;
+        FutureDrink = @"C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\" + drinkFileName +".json";
         Console.WriteLine(
  @"+--------------------------------+
 |                                |
 | Succesfully created the menu   |
 |                                |
-|                                |
-| (Press any button to retur)    |
+| Press Enter button to return.  |
 +--------------------------------+");
 
         ManageList(FoodMenus, FutureFood);
@@ -385,8 +388,7 @@ public static class Menu
 |                                |
 | Succesfully activated the menu |
 |                                |
-|                                |
-| (Press any button to return)   |
+| Press Enter button to return.  |
 +--------------------------------+");
         ActiveFoodMenu = FutureFood;
         ActiveDrinkMenu = FutureDrink;
