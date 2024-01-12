@@ -30,7 +30,11 @@ public class Login
         // Validate the entered email
         if (!ValidateEmail(email))
         {
-            Console.WriteLine("Invalid email format. Please enter a valid email address.");
+            Console.WriteLine(@"
++--------------------------------+
+| Invalid Email adress, make su- |
+| re it conains an '@'.          |
++--------------------------------+");
             return null;
         }
 
@@ -38,9 +42,9 @@ public class Login
         string password = Console.ReadLine();
 
         // Load user information from the JSON file
-        string filePath = "C:\\Users\\jerre\\OneDrive\\Bureaublad\\projectbb\\projectbb\\User_info.json";
+        string filePath = "C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\User_info.json";
 
-        // Ensure the file exists
+        // File error handling hier beneden
         if (!File.Exists(filePath))
         {
             Console.WriteLine("User data file not found. Please create an account first.");
@@ -49,35 +53,35 @@ public class Login
 
         try
         {
-            // Read all text from the file
             string json = File.ReadAllText(filePath);
 
-            // Deserialize the JSON data to a List of User objects using Newtonsoft.Json
             List<User> users = JsonConvert.DeserializeObject<List<User>>(json, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All
             });
 
-            // Find the user with the entered email
+            // Vinden van gebruiker op email adres
             User storedUser = users?.FirstOrDefault(user => user.Email == email);
 
             if (storedUser != null && password == storedUser.Password)
             {
-                // Identify the type of the user
+                // Identificeren van type account
                 if (storedUser is SuperAdmin superAdmin)
                 {
+                    Console.Clear();
                     Console.WriteLine($"Welcome, Super Admin {superAdmin.Name}!");
                 }
                 else if (storedUser is Admin admin)
                 {
+                    Console.Clear();
                     Console.WriteLine($"Welcome, Admin {admin.Name}!");
                 }
                 else if (storedUser is User regularUser)
                 {
+                    Console.Clear();
                     Console.WriteLine($"Welcome, User {regularUser.Name}!");
                 }
 
-                // Return the deserialized user with the correct type
                 return storedUser;
             }
             else
