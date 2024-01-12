@@ -15,28 +15,6 @@ public static class Program
 
     public static void Main()
     {
-        /*string filePath = "C:\\Users\\jerre\\OneDrive\\Bureaublad\\projectbb\\projectbb\\User_info.json";
-
-        // Read existing user data from the file
-        List<User> users = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText(filePath), new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.All
-        });
-
-        // Add the hardcoded superadmin to the list
-        SuperAdmin superAdmin = new SuperAdmin("superadmin", "superadmin@example.com", "superadmin");
-        users.Add(superAdmin);
-
-        // Serialize the updated list of users with type information
-        string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.All
-        });
-
-        // Write the updated user data back to the file
-        File.WriteAllText(filePath, jsonString);*/
-        
-
         //START VAN PROGRAMMA IS HIER \/
         Startmenu();
     }
@@ -45,7 +23,6 @@ public static class Program
     {
         while (true)
         {
-            //Console.BackgroundColor = ConsoleColor.White;
 
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine(@"
@@ -106,7 +83,7 @@ public static class Program
                 case "4":
                     Console.WriteLine(@"
 +--------------------------------------------------------+
-| Looking forward to see you at our restaurant, dag dag!! |
+| Looking forward to see you at our restaurant, dag dag!!|
 +--------------------------------------------------------+");
 
 
@@ -188,65 +165,14 @@ public static class Program
         Console.ReadKey();
         Console.Clear();
     }
+}
 
 
-    /*public static void Login_or_Signup()
-    {
-        while (true)
-        {
-            Console.WriteLine(@"
-+--------------------------------+
-| Please select an option:       |
-| 1. Login                       |
-| 2. Signup                      |
-+--------------------------------+");
-            string user_answer = Console.ReadLine().ToLower();
-
-            if (user_answer == "1")
-            {
-                Login userLogin = new Login();
-                currentUser = userLogin.PromptForLogin();
-                if (currentUser == null)
-                {
-                    Console.WriteLine("Please try again or sign up.");
-                }
-                else
-                {
-                    string email = currentUser.Email;
-                    Console.WriteLine("Logging in with email: " + email);
-                    break; // Exit the loop if login is successful.
-                }
-            }
-            else if (user_answer == "2")
-            {
-                Signup usersignup = new Signup();
-                currentUser = usersignup.SignUp(null, null, null, false);
-
-                if (currentUser == null)
-                {
-                    Console.WriteLine("Invalid signup. Please try again.");
-                }
-                else
-                {
-                    Console.WriteLine("Signup successful. Logging in with email: " + currentUser.Email);
-                    break; // Exit the loop if signup is successful.
-                }
-            }
-            else
-            {
-                Console.WriteLine("Invalid choice. Please enter either 1 or 2.");
-            }
-        }
-
-        Console.ReadKey();
-        Console.Clear();
-    }*/
-
-
+    /*//==================================
     //CODE BELOW TO HARDCODE A SUPERADMIN
     //==================================
 
-    /*string filePath = "C:\\Users\\jerre\\OneDrive\\Bureaublad\\projectbb\\projectbb\\User_info.json";
+    string filePath = "C:\\Users\\jerre\\OneDrive\\Bureaublad\\projectbb\\projectbb\\User_info.json";
 
 // Read existing user data from the file
 List<User> users = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText(filePath), new JsonSerializerSettings
@@ -267,5 +193,4 @@ string jsonString = JsonConvert.SerializeObject(users, Formatting.Indented, new 
 // Write the updated user data back to the file
 //File.WriteAllText(filePath, jsonString);*/
 
-    
-}
+
