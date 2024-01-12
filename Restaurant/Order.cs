@@ -2,20 +2,11 @@ using Newtonsoft.Json;
 
 public class Order
 {
-    /*private List<Food> orderedFoods;
-    private List<Drink> orderedDrinks;
-    private double totalPrice;
+    public const string filePath = @"../../../Orders.json"; // Replace with your JSON file path
 
-    public Order()
-    {
-        orderedFoods = new List<Food>();
-        orderedDrinks = new List<Drink>();
-        totalPrice = 0;
-    }*/
 
     public void PlaceOrder(User cuser)
     {
-       
         Console.WriteLine("Ordering Food:");
 
         Menu.Display_menu(Menu.ActiveFoodMenu, Menu.ActiveDrinkMenu);
@@ -48,11 +39,6 @@ public class Order
                 {
                     cuser.orderedFoods.Add(food);
                     Console.WriteLine($"You have ordered: {food.Display()}");
-
-                    string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Orders.json"; // Replace with your JSON file path
-
-                    // add code that adds an empty orderedfood lists, drink list and total price to the json
-
                     
                     AddFoodToOrder(cuser.Email, food);
 
@@ -67,7 +53,6 @@ public class Order
 
         private void AddFoodToOrder(string userEmail, Food newFoodItem)
         {
-            string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Orders.json";
 
             try
             {
@@ -121,7 +106,6 @@ public class Order
                     cuser.orderedDrinks.Add(drink);
                     Console.WriteLine($"You have ordered: {drink.Display()}");
 
-                    string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Orders.json"; // Replace with your JSON file path
 
                     if (cuser.orderedFoods == null || cuser.orderedDrinks == null)
                     {
@@ -139,7 +123,6 @@ public class Order
 
     private void AddDrinkToOrder(string userEmail, Drink newDrinkItem)
     {
-        string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Orders.json"; // Replace with your JSON file path
 
         try
         {
@@ -178,60 +161,12 @@ public class Order
     }
 
 
-    /*public void awd(User cuser)
-    {
-        if (cuser.orderedFoods == null && cuser.orderedDrinks == null)
-        {
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("|     You haven't ordered yet    |");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("+--------------------------------+");
-
-        }
-        else
-        {
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("|  Welcome to Jake’s restaurant! |");
-            Console.WriteLine("|                                |");
-            Console.WriteLine("|          Ordered Items         |");
-            Console.WriteLine($"| For {cuser.Name,-26} |");
-            Console.WriteLine("|--------------------------------|");
-
-            foreach (var food in cuser.orderedFoods)
-            {
-                Console.WriteLine($"| Food: {food.Display(),-24} |");
-            }
-
-            foreach (var drink in cuser.orderedDrinks)
-            {
-                Console.WriteLine($"| Drink: {drink.Display(),-23} |");
-            }
-
-            Console.WriteLine("+--------------------------------+");
-            Console.WriteLine($"| Total Price: {cuser.totalPrice,-17:F2} |");
-            Console.WriteLine("+--------------------------------+");
-
-            Console.Write("Do you want to order more items? (Y/N): ");
-            string response = Console.ReadLine().ToUpper();
-
-            if (response == "Y")
-            {
-                PlaceOrder(cuser);
-            }
-            else
-            {
-                Console.WriteLine("Thank you for your order!");
-            }
-        }
-    }*/
+    
 
     public void DisplayOrderedItems(User cuser)
     {
         try
         {
-            string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Orders.json"; // Replace with your JSON file path
 
             string json = File.ReadAllText(filePath);
 
@@ -287,10 +222,10 @@ public class Order
                             break;
                     }
                 case "2": { ClearOrderedItemsByEmail(cuser.Email); break; }
-                case "3": { break; }
+                case "": { Console.Clear();  break; }
                 default:
                     Console.WriteLine("Invalid input. Please select a valid option.");
-                    break;
+                    return;
             }
         }
         catch (FileNotFoundException)
@@ -305,7 +240,6 @@ public class Order
 
     private void CreateInitialOrder(User cuser)
     {
-        string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Orders.json"; // Replace with your JSON file path
 
         OrderInformation newOrder = new OrderInformation
         {
@@ -329,7 +263,6 @@ public class Order
 
     private void ClearOrderedItemsByEmail(string userEmail)
     {
-        string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Orders.json"; // Replace with your JSON file path
 
         try
         {
@@ -371,7 +304,6 @@ public class Order
 
     private bool DoesUserExist(string userEmail)
     {
-        string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Orders.json";
 
         try
         {
