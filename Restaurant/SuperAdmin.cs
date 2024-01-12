@@ -17,6 +17,11 @@ public class SuperAdmin : Admin, IUserOperations
         IsSuperAdmin = true;
     }
 
+    public override void UserMenu()
+    {
+        base.UserMenu();
+    }
+
     public override bool UserInput(User currentUser, List<Table> tables)
     {
         {
@@ -29,17 +34,24 @@ public class SuperAdmin : Admin, IUserOperations
                     bool Incomplete = true;
                     while (Incomplete)
                     {
-                        // Get the date from the user
-                        Console.Write("Enter date (yyyy-MM-dd): ");
+                        // Jerrel, dit is voor pakken van datum
+                        Console.Write("Enter date (yyyy-MM-dd or press ENTER to return): ");
                         string dateString = Console.ReadLine();
-                        // Get the time from the user
+                        if (dateString == "")
+                        {
+                            Console.Clear();
+                            return true;
+                        }
+                        // deze voor time
                         Console.Write("Enter time (HH:mm): ");
                         string timeString = Console.ReadLine();
-                        // Parse date and time strings
+                        
                         if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
                         {
-                            Console.WriteLine("DateTime using DateTime.TryParseExact: " + selectedDateTime);
-                            Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
+                            Reserve.ShowReservationsForDay(selectedDateTime);
+
+                            //Console.WriteLine("DateTime using DateTime.TryParseExact: " + selectedDateTime); deze line is niet meer nodig
+                            Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(2));
                             Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
                             Incomplete = false;
                         }
@@ -54,7 +66,7 @@ public class SuperAdmin : Admin, IUserOperations
                     return true;
                 case "2":
                     Menu.Display_menu(Menu.ActiveFoodMenu, Menu.ActiveDrinkMenu);
-                    Menu.Display_menu(Menu.FutureFood, Menu.FutureDrink);
+                    //Menu.Display_menu(Menu.FutureFood, Menu.FutureDrink);
 
                     Console.ReadKey();
                     Console.Clear();
@@ -74,11 +86,28 @@ public class SuperAdmin : Admin, IUserOperations
                     Environment.Exit(0);
                     return true;
                 case "6":
+                    Order superadminorder = new Order();
+                    superadminorder.PlaceOrder(currentUser);
+                    Console.ReadKey();
+                    Console.Clear();
+                    return true;
+                case "7":
+                    if (!currentUser.IsAdmin && !currentUser.IsSuperAdmin)
+                    {
+                        Order superadminOrder = new Order();
+                        superadminOrder.DisplayOrderedItems(currentUser);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please select a valid option.");
+                    }
+                    return true;
+                case "8":
                     bool adminMenu = true;
                     while (adminMenu)
                     {
                         AdminMenu();
-                        Console.Write("Please select an option (1/2/3/4/5): ");
+                        Console.Write("Please select an option: ");
                         adminMenu = AdminInput();
                     }
                     return true;
@@ -110,6 +139,7 @@ public class SuperAdmin : Admin, IUserOperations
         switch (AdminInput)
         {
             case "3":
+                Console.Clear();
                 return false;
             case "4":
                 CreateAdmin();
@@ -138,16 +168,16 @@ public class SuperAdmin : Admin, IUserOperations
         }
     }
 
-
     private void CreateAdmin()
     {
-        Console.WriteLine("What is the name of the Admin?");
+        Signup usersignup = new Signup();
+        /*Console.WriteLine("What is the name of the Admin?");
         string Name = Console.ReadLine();
         Console.WriteLine("What is the Email of the admin?");
         string Email = Console.ReadLine();
         Console.WriteLine("What is the password of the admin");
-        string Password = Console.ReadLine();
-        Signup.SignUp(Name, Email, Password, true);
+        string Password = Console.ReadLine();*/
+        usersignup.SignUp(Name, Email, Password, true);
         Console.ReadKey();
         Console.Clear();
     }
@@ -210,18 +240,17 @@ public class SuperAdmin : Admin, IUserOperations
             switch (userInput)
             {
                 case "1":
-                    ShowReservationsWithEmail("Restaurant/Reservation.json", Email_User);
                     Console.WriteLine("Please Enter the Index of the Email,\nYou wish to remove");
                     int index = int.Parse(Console.ReadLine());
-                    RemoveReservationByIndex("Restaurant/Reservation.json", index);
+                    RemoveReservationByIndex("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", index);
                     return; // Exit the method after removing reservation
                 case "2":
                     Console.WriteLine("+--------------------------------+");
                     Console.WriteLine("| Reservation to change:         |");
                     Console.WriteLine("+--------------------------------+");
-                    ShowReservationsWithEmail("Restaurant/Reservation.json", Email_User);
+                    ShowReservationsWithEmail("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", Email_User);
                     int index_ = int.Parse(Console.ReadLine());
-                    Change_Reservation_method("Restaurant/Reservation.json", index_);
+                    Change_Reservation_method("C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Reservation.json", index_);
                     return; // Exit the method after changing reservation time
                 case "3":
                     return; // Exit the method without making any changes
@@ -235,7 +264,7 @@ public class SuperAdmin : Admin, IUserOperations
 
     bool Check_User_Present(string Email_User)
     {
-        string jsonFilePath = "Restaurant/Reservation.json";
+        string jsonFilePath = "C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\User_info.json";
 
         string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
 
@@ -301,16 +330,16 @@ public class SuperAdmin : Admin, IUserOperations
     }
 
 
-    static void Change_Reservation_method(string jsonFilePath, int index)
+    /*static void Change_Reservation_method(string jsonFilePath, int index)
     {
-        // Get the date from the user
-        Console.Write("Enter date (yyyy-MM-dd): ");
-        string dateString = Console.ReadLine();
-        // Get the time from the user
-        Console.Write("Enter time (HH:mm): ");
-        string timeString = Console.ReadLine();
-        // Parse date and time strings
-        if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime result))
+        Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
+        string userInput = Console.ReadLine() + ":00";
+        string format = "yyyy-MM-dd HH:mm:ss";
+        if (userInput.ToUpper() == "EXIT:00")
+        {
+            return;
+        }
+        if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
         {
             Console.WriteLine("DateTime using DateTime.TryParseExact: " + result);
             Tuple<DateTime, DateTime> New_Reservation_Time = new Tuple<DateTime, DateTime>(result, result.AddHours(1));
@@ -352,7 +381,58 @@ public class SuperAdmin : Admin, IUserOperations
         {
             Console.WriteLine("Invalid date format");
         }
+    }*/
+
+    static void Change_Reservation_method(string jsonFilePath, int index)
+    {
+        Console.Write("Enter date and time (yyyy-MM-dd HH:mm) or exit: ");
+        string userInput = Console.ReadLine() + ":00";
+        string format = "yyyy-MM-dd HH:mm:ss";
+        if (userInput.ToUpper() == "EXIT:00")
+        {
+            return;
+        }
+
+        if (DateTime.TryParseExact(userInput, format, null, DateTimeStyles.None, out DateTime result))
+        {
+            //Console.WriteLine("DateTime using DateTime.TryParseExact: " + result); deze line is niet meer nodig Altaaf
+            Tuple<DateTime, DateTime> New_Reservation_Time = new Tuple<DateTime, DateTime>(result, result.AddHours(2));
+            List<Reservation> List_of_Reservations = Reserve.ReadFromJsonFile();
+            foreach (Reservation Existing_reservation in List_of_Reservations)
+            {
+                if (Reserve.IsReservationOverlapping(Existing_reservation.Time, New_Reservation_Time))
+                {
+                    continue;
+                }
+                else
+                {
+                    //Console.WriteLine("Invalid date");
+                    Change_Reservation_method(jsonFilePath, index);
+                }
+            }
+            string jsonContent = System.IO.File.ReadAllText(jsonFilePath);
+            // Json data pakken
+            JArray reservations = JsonConvert.DeserializeObject<JArray>(jsonContent);
+            if (index >= 0 && index < reservations.Count)
+            {
+
+                JToken newTimeToken = JToken.FromObject(New_Reservation_Time);
+                reservations[index]["Time"] = newTimeToken;
+                string updatedJsonContent = JsonConvert.SerializeObject(reservations, Formatting.Indented);
+                System.IO.File.WriteAllText(jsonFilePath, updatedJsonContent);
+            }
+            Console.Clear();
+            Console.WriteLine(
+@"+--------------------------------+
+|                                |
+| Succesfully changed the reser- |
+| vation!!                       |
+|                                |");
+            return; // Voltooid van reservering aanpssen, terug naar super admin menu
+        }
+        else
+        {
+            Console.WriteLine("Invalid date format");
+        }
     }
-
-
 }
