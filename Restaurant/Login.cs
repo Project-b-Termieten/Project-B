@@ -12,10 +12,6 @@ public class Login
         Password = password;
     }
 
-    public Login()
-    {
-    }
-
     public bool ValidateEmail(string email)
     {
         // Email should be in a valid format
