@@ -15,7 +15,7 @@ public class Admin : User, IUserOperations
     public override void UserMenu()
     {
         base.UserMenu();
-        Console.WriteLine("| 7. Admin Menu                  |");
+        Console.WriteLine("| 8. Admin Menu                  |");
         Console.WriteLine("+--------------------------------+");
     }
 
@@ -39,7 +39,6 @@ public class Admin : User, IUserOperations
                             bool Incomplete = true;
                             while (Incomplete)
                             {
-                                // Get the date from the user
                                 Console.Write("Enter date (yyyy-MM-dd): ");
                                 string dateString = Console.ReadLine();
                                 // Get the time from the user
@@ -48,8 +47,10 @@ public class Admin : User, IUserOperations
                                 // Parse date and time strings
                                 if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
                                 {
-                                    Console.WriteLine("DateTime using DateTime.TryParseExact: " + selectedDateTime);
-                                    Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
+                                    Reserve.ShowReservationsForDay(selectedDateTime);
+
+                                    //Console.WriteLine("DateTime using DateTime.TryParseExact: " + selectedDateTime);
+                                    Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(2));
                                     Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
                                     Incomplete = false;
                                 }
@@ -72,7 +73,6 @@ public class Admin : User, IUserOperations
                     return true;
                 case "2":
                     Menu.Display_menu(Menu.ActiveFoodMenu, Menu.ActiveDrinkMenu);
-                    Menu.Display_menu(Menu.FutureFood, Menu.FutureDrink);
                     Console.ReadKey();
                     Console.Clear();
                     return true;
@@ -91,15 +91,27 @@ public class Admin : User, IUserOperations
                     Environment.Exit(0);
                     return true;
                 case "6":
-                    Order order = new Order();
-                    order.PlaceOrder(currentUser);
+                    Order superadminorder = new Order();
+                    superadminorder.PlaceOrder(currentUser);
+                    Console.ReadKey();
+                    Console.Clear();
                     return true;
                 case "7":
+                    if (!currentUser.IsAdmin && !currentUser.IsSuperAdmin)
+                    {
+                        Order superadminOrder = new Order();
+                        superadminOrder.DisplayOrderedItems(currentUser);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please select a valid option.");
+                    }
+                    return true;
+                case "8":
                     bool adminMenu = true;
                     while (adminMenu)
                     {
                         AdminMenu();
-                        Console.Write("Please select an option (1/2/3): ");
                         adminMenu = AdminInput();
                     }
                     return true;
@@ -115,10 +127,10 @@ public class Admin : User, IUserOperations
         {
             Console.WriteLine("+--------------------------------+");
             Console.WriteLine("|                                |");
-            Console.WriteLine("|  Welcome Admin                 |");
+            Console.WriteLine("|         Welcome Admin          |");
             Console.WriteLine("|                                |");
             Console.WriteLine("+--------------------------------+");
-            Console.WriteLine("| Options:                       |");
+            Console.WriteLine("| Please select an option:       |");
             Console.WriteLine("| 1. Add item to Menu            |");
             Console.WriteLine("| 2. Remove item from Menu       |");
             Console.WriteLine("| 3. Return to User Menu         |");
@@ -143,10 +155,9 @@ public class Admin : User, IUserOperations
                 return true;
             case "3":
                 return false;  // Exiting the AdminMenu loop
-            default:
-                Console.WriteLine("Invalid input. Please select a valid option.");
-                Console.ReadKey();
+            default:               
                 Console.Clear();
+                Console.WriteLine("Invalid input. Please select a valid option.");
                 return true;
         }
     }
