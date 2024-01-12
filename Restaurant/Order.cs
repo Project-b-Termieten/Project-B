@@ -17,11 +17,12 @@ public class Order
     {
        
         Console.WriteLine("Ordering Food:");
+
         Menu.Display_menu(Menu.ActiveFoodMenu, Menu.ActiveDrinkMenu);
         OrderFood(cuser);
         Console.ReadLine();
         Console.WriteLine("\nOrdering Drink:");
-        Menu.Display_menu(Menu.ActiveFoodMenu, Menu.ActiveDrinkMenu);
+        //Menu.Display_menu(Menu.ActiveFoodMenu, Menu.ActiveDrinkMenu);
         OrderDrink(cuser);
         cuser.totalPrice += (cuser.orderedFoods.Sum(f => f.Price) + cuser.orderedDrinks.Sum(d => d.Price));
         DisplayOrderedItems(cuser);
@@ -66,7 +67,7 @@ public class Order
 
         private void AddFoodToOrder(string userEmail, Food newFoodItem)
         {
-            string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Orders.json"; // Replace with your JSON file path
+            string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Orders.json";
 
             try
             {
@@ -87,7 +88,7 @@ public class Order
                     string updatedJson = JsonConvert.SerializeObject(orders, Formatting.Indented);
                     File.WriteAllText(filePath, updatedJson);
 
-                    Console.WriteLine("Food item added to the order successfully.");
+                    //Console.WriteLine("Food item added to the order successfully.");
                 }
                 else
                 {
@@ -274,7 +275,7 @@ public class Order
 
             Console.WriteLine("| 1. Add more items              |");
             Console.WriteLine("| 2. Start over                  |");
-            Console.WriteLine("| 3. Return                      |");
+            Console.WriteLine("| (or press Enter to return)     |");
             Console.WriteLine("+--------------------------------+");
 
             string input = Console.ReadLine();
@@ -367,6 +368,7 @@ public class Order
         }
     }
 
+
     private bool DoesUserExist(string userEmail)
     {
         string filePath = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Orders.json";
@@ -374,6 +376,32 @@ public class Order
         try
         {
             string json = File.ReadAllText(filePath);
+
+            List<OrderInformation> orders = JsonConvert.DeserializeObject<List<OrderInformation>>(json);
+
+            // Check if the user's order exists by email
+            bool userExists = orders.Any(order => order.Email == userEmail);
+
+            return userExists;
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("Order information file not found.");
+        }
+        catch (JsonReaderException)
+        {
+            Console.WriteLine("Error reading JSON file.");
+        }
+
+        return false;
+    }
+
+    private bool DoesUserExist(string userEmail, string file_path)
+    {
+        
+        try
+        {
+            string json = File.ReadAllText(file_path);
 
             List<OrderInformation> orders = JsonConvert.DeserializeObject<List<OrderInformation>>(json);
 
