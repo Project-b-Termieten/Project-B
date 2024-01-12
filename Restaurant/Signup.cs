@@ -4,27 +4,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-public static class Signup
+public class Signup
 {
-    public static bool ValidateName(string name)
+    public bool ValidateName(string name)
     {
         // Name should contain letters, numbers, and spaces only
         return !string.IsNullOrEmpty(name) && Regex.IsMatch(name, "^[A-Za-z0-9 ]+$");
     }
 
-    public static bool ValidateEmail(string email)
+    public bool ValidateEmail(string email)
     {
         // Email should be in a valid format
         return !string.IsNullOrEmpty(email) && Regex.IsMatch(email, @"^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$");
     }
 
-    public static bool ValidatePassword(string password)
+    public bool ValidatePassword(string password)
     {
         // Password should have at least 8 characters
         return !string.IsNullOrEmpty(password) && password.Length >= 8;
     }
 
-    public static User SignUp(string name, string email, string password, bool admin)
+    public User SignUp(string name, string email, string password, bool admin)
     {
         while (true)
         {
@@ -48,6 +48,7 @@ public static class Signup
                 Console.WriteLine("Invalid email format. Please enter a valid email address.");
                 valid = false;
             }
+
 
             if (!ValidatePassword(password))
             {
@@ -84,12 +85,19 @@ public static class Signup
 
                 users.Add(newUser);
 
-                // Ask the user to confirm the entered information
-                Console.WriteLine("Please review your information:");
-                Console.WriteLine($"Name: {newUser.Name}");
-                Console.WriteLine($"Email: {newUser.Email}");
-                Console.WriteLine($"Password {newUser.Password}");
-                Console.WriteLine("Is the information correct? (Y/N)");
+                // Hier wordt gevraagd of de info correct is Jerrel
+
+                Console.WriteLine("+--------------------------------+");
+                Console.WriteLine("| Please review your personal    |");
+                Console.WriteLine("| information:                   |");
+                Console.WriteLine($"| Name:     {newUser.Name,-20} |");
+                Console.WriteLine($"| Email:    {newUser.Email,-20} |");
+                Console.WriteLine($"| Password: {newUser.Password,-20} |");
+                Console.WriteLine("|                                |");
+                Console.WriteLine("| Is the information correct?    |");
+                Console.WriteLine("| (Y/N)                          |");
+                Console.WriteLine("+--------------------------------+");
+
 
                 string confirmation = Console.ReadLine()?.Trim().ToUpper();
 
@@ -102,8 +110,8 @@ public static class Signup
                     });
 
                     File.WriteAllText(filePath, jsonString);
+                    
 
-                    Console.WriteLine("Signup successful! User information has been saved!.");
                     return newUser;
                 }
                 else if (!string.IsNullOrEmpty(confirmation) && confirmation == "N")
