@@ -63,6 +63,7 @@ public class User : IUserOperations
                 Console.WriteLine("| 1. Make Reservation            |");
                 Console.WriteLine("| 2. Cancel Reservation          |");
                 Console.WriteLine("| 3. Change Reservation          |");
+                Console.WriteLine("| 4. View Reservations           |");
                 Console.WriteLine("+--------------------------------+");
 
                 string reservationInput = Console.ReadLine();
@@ -70,32 +71,43 @@ public class User : IUserOperations
                 {
                     case "1":
                         Information.DisplayMap();
-                        bool Incomplete = true;
-                        while (Incomplete)
+                        bool incomplete = true;
+
+                        while (incomplete)
                         {
-                            // Get the date from the user
+                            // Pak datum van gebruiker
                             Console.Write("Enter date (yyyy-MM-dd): ");
                             string dateString = Console.ReadLine();
-                            Reserve.ShowReservationsForDay(DateTime.ParseExact(dateString, "yyyy-MM-dd", CultureInfo.InvariantCulture));
 
-                            // Get the time from the user
+                            DateTime reservationDate;
+                            bool isValidDate = DateTime.TryParseExact(dateString, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out reservationDate);
+
+                            if (!isValidDate)
+                            {
+                                Console.WriteLine("Invalid date format. Please enter a valid date in the format yyyy-MM-dd.");
+                                continue; // Restart the loop
+                            }
+
+                            Reserve.ShowReservationsForDay(reservationDate);
+
+                            // Pakken van de tijd
                             Console.Write("Enter time (HH:mm): ");
                             string timeString = Console.ReadLine();
 
-                            // Parse date and time strings
-                            if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
-                            {
+                            DateTime selectedDateTime;
 
-                                Console.WriteLine("Date: " + selectedDateTime);
-                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
-                                Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
-                                Incomplete = false;
+                            if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, DateTimeStyles.None, out selectedDateTime))
+                            {
+                                Tuple<DateTime, DateTime> reservationTime = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
+                                Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservationTime);
+                                incomplete = false;
                             }
                             else
                             {
-                                Console.WriteLine("Invalid date format");
+                                Console.WriteLine("Invalid time format. Please enter a valid time in the format HH:mm.");
                             }
                         }
+                        break;
                         HasReserved = true;
                         break;
                     case "2":
@@ -103,6 +115,9 @@ public class User : IUserOperations
                         break;
                     case "3":
                         Reserve.ChangeReservation(currentUser);
+                        break;
+                    case "4":
+                        Reserve.ShowReservationsWithEmail(currentUser.Email);
                         break;
                     default:
                         Console.WriteLine("Invalid input. Please select a valid option.");
@@ -168,8 +183,7 @@ public class User : IUserOperations
                 return true;
         }
 
-
-        
+         
     }
 
     public bool DatePastCheck(string dateString)
