@@ -47,7 +47,6 @@ public class User : IUserOperations
         Console.WriteLine("| 5. Exit                        |");
         Console.WriteLine("| 6. Place Order                 |");
         Console.WriteLine("| 7. View Order                  |");
-
         Console.WriteLine("+--------------------------------+");
     }
 
@@ -74,33 +73,23 @@ public class User : IUserOperations
                         bool Incomplete = true;
                         while (Incomplete)
                         {
+                            // Get the date from the user
                             Console.Write("Enter date (yyyy-MM-dd): ");
                             string dateString = Console.ReadLine();
+                            Reserve.ShowReservationsForDay(DateTime.ParseExact(dateString, "yyyy-MM-dd", CultureInfo.InvariantCulture));
 
-                            if (DatePastCheck(dateString) == false)
-                            {
-                                Console.WriteLine("Entered date is in the past, please enter a date in the future");
-                                continue; // Restart the loop to prompt for a future date
-                            }
-                            DateTime currentTime = DateTime.Now;
                             // Get the time from the user
                             Console.Write("Enter time (HH:mm): ");
                             string timeString = Console.ReadLine();
+
                             // Parse date and time strings
                             if (DateTime.TryParseExact(dateString + " " + timeString, "yyyy-MM-dd HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime selectedDateTime))
                             {
-                                if (selectedDateTime > currentTime)
-                                {
-                                    Reserve.ShowReservationsForDay(selectedDateTime);
-                                    Console.WriteLine("DateTime using DateTime.TryParseExact: " + selectedDateTime);
-                                    Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(2));
-                                    Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
-                                    Incomplete = false;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Please select a valid date.");
-                                }
+
+                                Console.WriteLine("Date: " + selectedDateTime);
+                                Tuple<DateTime, DateTime> reservation_time = new Tuple<DateTime, DateTime>(selectedDateTime, selectedDateTime.AddHours(1));
+                                Reserve.MakingReservation(currentUser.Name, currentUser.Email, tables, reservation_time);
+                                Incomplete = false;
                             }
                             else
                             {
@@ -123,12 +112,17 @@ public class User : IUserOperations
                 Console.Clear();
                 return true;
             case "2":
- 
                 Menu.Display_menu(Menu.ActiveFoodMenu, Menu.ActiveDrinkMenu);
-
-                Console.WriteLine("\nUpcoming menu, available on the 1st of January! ");
-                Menu.Display_menu(Menu.FutureFood, Menu.FutureDrink);
                 Console.ReadKey();
+                if (Menu.FutureFood == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    Menu.Display_menu(Menu.FutureFood, Menu.FutureDrink);
+
+                }
                 Console.Clear();
                 return true;
             case "3":
@@ -155,6 +149,8 @@ public class User : IUserOperations
                 {
                     Console.WriteLine("Invalid input. Please select a valid option.");
                 }
+                Console.ReadKey();
+                Console.Clear();
                 return true;
             case "7":
                 if (!currentUser.IsAdmin && !currentUser.IsSuperAdmin)
@@ -182,7 +178,7 @@ public class User : IUserOperations
         {
             if (selectedDate < DateTime.Now.Date)
             {
-                Console.WriteLine("Please enter a date in the future.");
+                //Console.WriteLine("Please enter a date in the future.");
                 return false; // Date is in the past
             }
         }
