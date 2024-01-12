@@ -11,10 +11,10 @@ public class Login
         Email = email;
         Password = password;
     }
-     public Login()
-     {
-         
-     }
+
+    public Login()
+    {
+    }
 
     public bool ValidateEmail(string email)
     {
@@ -42,7 +42,7 @@ public class Login
         string password = Console.ReadLine();
 
         // Load user information from the JSON file
-        string filePath = "C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\User_info.json";
+        string filePath = @"../../../User_info.json";
 
         // File error handling hier beneden
         if (!File.Exists(filePath))
