@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-
 public class Signup
 {
     public bool ValidateName(string name)
@@ -24,11 +23,9 @@ public class Signup
 
     public User SignUp(string name, string email, string password, bool admin)
     {
-        bool valid = false; 
-
-        while (!valid) 
+        while (true)
         {
-            valid = true;
+            bool valid = true; // Assume input is valid until proven otherwise
 
             if (!ValidateName(name))
             {
@@ -50,6 +47,7 @@ public class Signup
 
             if (valid)
             {
+                // Proceed with signup
                 string filePath = @"../../../User_info.json";
 
                 List<User> users = new List<User>();
@@ -88,15 +86,23 @@ public class Signup
             }
             else
             {
+                // Prompt user to enter details again
                 Console.WriteLine("Please enter your name: ");
                 name = Console.ReadLine();
                 Console.WriteLine("Please enter your email: ");
                 email = Console.ReadLine();
                 Console.WriteLine("Please enter your password: (At least 8 characters)");
                 password = Console.ReadLine();
+
+                // Check if the user wants to retry or cancel signup
+                Console.WriteLine("Do you want to retry signup? (yes/no)");
+                string choice = Console.ReadLine().ToLower();
+                if (choice != "yes")
+                {
+                    Console.WriteLine("Signup cancelled.");
+                    return null;
+                }
             }
         }
-
-        return null;
     }
 }
