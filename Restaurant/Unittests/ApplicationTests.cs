@@ -4,7 +4,7 @@ using System.IO;
 using System.Xml.Linq;
 
 
-namespace RestaurantAltaaf.Tests;
+namespace JakesRestaurant.Tests;
 
 [TestClass]
 public class Applicationtests
