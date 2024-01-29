@@ -9,9 +9,9 @@ namespace RestaurantAltaaf.Tests;
 [TestClass]
 public class Applicationtests
 {
-    private const string ActiveFoodMenu = @"C:\\Users\\aidan\\OneDrive\\Documenten\\c# docs\\RestaurantAltaaf\\RestaurantAltaaf\\Menu_Food.json";
-    private const string ActiveDrinkmenu = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\Menu_Drink.json";
-    private const string UsersJson = @"C:\Users\aidan\OneDrive\Documenten\c# docs\RestaurantAltaaf\RestaurantAltaaf\User_info.json"; // Provide the correct path to your JSON file
+    private const string ActiveFoodMenu = "../../../Menu_Food.json";
+private const string ActiveDrinkmenu = "../../../Menu_Drink.json";
+private const string UsersJson = "../../../User_info.json";
 
 
     [TestMethod]
