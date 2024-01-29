@@ -10,8 +10,8 @@ namespace RestaurantAltaaf.Tests;
 public class Applicationtests
 {
     private const string ActiveFoodMenu = "../../../Menu_Food.json";
-private const string ActiveDrinkmenu = "../../../Menu_Drink.json";
-private const string UsersJson = "../../../User_info.json";
+    private const string ActiveDrinkmenu = "../../../Menu_Drink.json";
+    private const string UsersJson = "../../../User_info.json";
 
 
     [TestMethod]
