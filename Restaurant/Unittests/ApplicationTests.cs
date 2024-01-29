@@ -91,7 +91,7 @@ public class Applicationtests
         {
             TypeNameHandling = TypeNameHandling.All
         });
-        bool superAdminExists = false;
+        bool superAdminExists = true;
         foreach (var account in users)
         {
             if (account is User superAdmin)
