@@ -2,6 +2,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 
+// MUST READ, for this test file to work you must install the NewtonSoft.JSON, MSTest.TestFramework and MSTest.TestAdaptor packages.
+
+
 namespace JakesRestaurant.Tests
 {
     [TestClass]
