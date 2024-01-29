@@ -176,7 +176,7 @@ public class SuperAdmin : Admin, IUserOperations
         string Email = Console.ReadLine();
         Console.WriteLine("What is the password of the admin");
         string Password = Console.ReadLine();*/
-        usersignup.SignUp(Name, Email, Password, true);
+        usersignup.SignUp(true);
         Console.ReadKey();
         Console.Clear();
     }
