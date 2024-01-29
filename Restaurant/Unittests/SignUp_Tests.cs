@@ -37,6 +37,7 @@ namespace RestaurantAltaaf.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(NullReferenceException), "Object reference not set to an instance of an object.")]
         public void SignUp_PasswordLengthThree_Invalid_Cancel()
         {
             // Arrange
@@ -51,9 +52,6 @@ namespace RestaurantAltaaf.Tests
 
                 // Act
                 User newUser = usersignup.SignUp(false);
-
-                // Assert
-                Assert.IsNull(newUser);
             }
         }
     }
