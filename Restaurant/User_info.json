@@ -1,8 +1,8 @@
 {
-  "$type": "System.Collections.Generic.List`1[[User, projectbb]], System.Private.CoreLib",
+  "$type": "System.Collections.Generic.List`1[[User, JakesRestaurant]], System.Private.CoreLib",
   "$values": [
     {
-      "$type": "SuperAdmin, projectbb",
+      "$type": "SuperAdmin, JakesRestaurant",
       "Name": "superadmin",
       "Email": "superadmin@example.com",
       "Password": "superadmin",
