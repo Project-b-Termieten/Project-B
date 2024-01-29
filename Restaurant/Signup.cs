@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 public class Signup
 {
@@ -21,10 +22,16 @@ public class Signup
         return !string.IsNullOrEmpty(password) && password.Length >= 8;
     }
 
-    public User SignUp(string name, string email, string password, bool admin)
+    public User SignUp(bool admin)
     {
         while (true)
         {
+            Console.WriteLine("Please enter your name: ");
+            string name = Console.ReadLine();
+            Console.WriteLine("Please enter your email: ");
+            string email = Console.ReadLine();
+            Console.WriteLine("Please enter your password: (At least 8 characters)");
+            string password = Console.ReadLine();
             bool valid = true; // Assume input is valid until proven otherwise
 
             if (!ValidateName(name))
