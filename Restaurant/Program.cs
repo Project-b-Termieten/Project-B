@@ -135,7 +135,7 @@ public static class Program
 
                 case "2":
                     Signup usersignup = new Signup();
-                    currentUser = usersignup.SignUp(null, null, null, false);
+                    currentUser = usersignup.SignUp(false);
 
                     if (currentUser == null)
                     {
