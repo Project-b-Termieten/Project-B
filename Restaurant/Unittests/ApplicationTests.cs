@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Xml.Linq;
 
+// MUST READ, for this test file to work you must install the NewtonSoft.JSON, MSTest.TestFramework and MSTest.TestAdaptor packages.
 
 namespace JakesRestaurant.Tests;
 
